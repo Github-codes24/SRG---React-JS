@@ -28,7 +28,7 @@ const Addwallets = () => {
             >
               {" "}
               <BsNewspaper className="text-2xl" />
-              Manage Wallet/
+              Manage Wallet
               
             </button>
             <button
