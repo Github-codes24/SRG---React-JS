@@ -31,7 +31,7 @@ const ManageWallet = () => {
           <div className="flex items-center justify-start gap-x-2">
             <button
               className="bg-[#746BD9] text-white px-1 py-3 rounded-xl flex items-center justify-center gap-2"
-              onClick={() => navigate("/banktransaction")}
+              onClick={() => navigate("/wallet")}
             >
               <IoIosAddCircle className="text-2xl" />
               Add Wallet
@@ -39,7 +39,7 @@ const ManageWallet = () => {
 
             <button
               className="bg-[#746BD9] text-white px-1 py-3 rounded-xl flex items-center justify-center gap-2"
-              onClick={() => navigate("/managebank")}
+              onClick={() => navigate("/wallet/walletrecharge")}
             >
               <IoIosAddCircle className="text-2xl" />
               Wallet Recharge
@@ -47,7 +47,7 @@ const ManageWallet = () => {
 
             <button
               className="bg-[#746BD9] text-white px-1 py-3 rounded-xl flex items-center justify-center gap-2"
-              onClick={() => navigate("/banktransaction")}
+              onClick={() => navigate("/wallet/walletrefund")}
             >
               <FaRegMoneyBill1 className="text-2xl" />
               Wallet Refund
@@ -55,7 +55,7 @@ const ManageWallet = () => {
 
             <button
               className="bg-[#746BD9] text-white px-1 py-3 rounded-xl flex items-center justify-center gap-2"
-              onClick={() => navigate("/managebank")}
+              onClick={() => navigate("/wallet/walletledger")}
             >
               <SlNotebook className="text-2xl" />
               Wallet Ledger

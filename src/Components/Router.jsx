@@ -41,18 +41,17 @@ const Dashboard = () => {
           <Sidebar />
           <div className="flex-1 p-4 bg-gray-100">
             <Routes>
-              <Route path="/" element={<AddNewBank />} />
-              <Route path="/managebank" element={<ManageBank />} />
-              <Route path="/banktransaction" element={<BankTransaction />} />
-              <Route path="/bankledger" element={<BankLedger />} />
-              <Route path="/addwallet" element={<Addwallets />} />
-
+              <Route path="/bank" element={<AddNewBank />} />
+              <Route path="/bank/managebank" element={<ManageBank />} />
+              <Route path="/bank/banktransaction" element={<BankTransaction />} />
+              <Route path="/bank/bankledger" element={<BankLedger />} />
               {/* Wallet */}
 
-              <Route path="/managewallet" element={<Managewallet />} />
-              <Route path="/walletledger" element={<Walletledger />} />
-              <Route path="/walletrecharge" element={<Walletrecharge />} />
-              <Route path="/walletrefund" element={<Walletrefund />} />
+              <Route path="/wallet" element={<Addwallets />} />
+              <Route path="/wallet/managewallet" element={<Managewallet />} />
+              <Route path="/wallet/walletledger" element={<Walletledger />} />
+              <Route path="/wallet/walletrecharge" element={<Walletrecharge />} />
+              <Route path="/wallet/walletrefund" element={<Walletrefund />} />
 
               {/* Attendance section */}
               
@@ -61,7 +60,7 @@ const Dashboard = () => {
               <Route path="/attendance/manageattendance" element={<ManageAttendance />} />
 
               {/* Return Service */}
-              <Route path="/returnservice/customerlist" element={<CustomerList/>} />
+              <Route path="/returnservice" element={<CustomerList/>} />
               <Route path="/returnservice/servicereturn" element={<ServiceReturn/>} />
               <Route path="/returnservice/walletreturn" element={<WalletReturn/>} />
 

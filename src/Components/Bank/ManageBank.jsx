@@ -29,13 +29,13 @@ const ManageBank = () => {
         </h1>
         <hr />
         <div className="buttons gap-2 md:flex items-center justify-start">
-        <button className="bg-[#746BD9] text-white px-1 py-3 rounded-xl flex items-center justify-center gap-2" onClick={() => navigate("/")}>
+        <button className="bg-[#746BD9] text-white px-1 py-3 rounded-xl flex items-center justify-center gap-2" onClick={() => navigate("/bank")}>
           <IoIosAddCircle className='text-2xl' /> Add new Bank
         </button>
-        <button className="bg-[#746BD9] text-white px-1 py-3 rounded-xl flex items-center justify-center gap-2" onClick={() => navigate("/banktransaction")}>
+        <button className="bg-[#746BD9] text-white px-1 py-3 rounded-xl flex items-center justify-center gap-2" onClick={() => navigate("/bank/banktransaction")}>
           <GrTransaction className="text-2xl" /> Bank Transaction
         </button>
-        <button className="bg-[#746BD9] text-white px-1 py-3 rounded-xl flex items-center justify-center gap-2" onClick={() => navigate("/bankledger")}>
+        <button className="bg-[#746BD9] text-white px-1 py-3 rounded-xl flex items-center justify-center gap-2" onClick={() => navigate("/bank/bankledger")}>
           <PiNotebookLight className="text-2xl" /> Bank Ledger
         </button>
       </div>

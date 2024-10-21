@@ -24,7 +24,7 @@ const Addwallets = () => {
           <div className="flex items-center gap-2">
             <button
               className="bg-[#746BD9] text-white px-1 py-3 rounded-xl flex items-center justify-center gap-2"
-              onClick={() => navigate("/managewallet")}
+              onClick={() => navigate("/wallet/managewallet")}
             >
               {" "}
               <BsNewspaper className="text-2xl" />
@@ -33,7 +33,7 @@ const Addwallets = () => {
             </button>
             <button
               className="bg-[#746BD9] text-white px-1 py-3 rounded-xl flex items-center justify-center gap-2"
-              onClick={() => navigate("/walletrecharge")}
+              onClick={() => navigate("/wallet/walletrecharge")}
             >
               {" "}
               <IoIosAddCircle className="text-2xl" />
@@ -41,13 +41,13 @@ const Addwallets = () => {
             </button>
             <button
               className="bg-[#746BD9] text-white px-1 py-3 rounded-xl flex items-center justify-center gap-2"
-              onClick={() => navigate("/walletrefund")}
+              onClick={() => navigate("/wallet/walletrefund")}
             >
               <IoCashOutline className="text-2xl" /> Wallet Refund
             </button>
             <button
               className="bg-[#746BD9] text-white px-1 py-3 rounded-xl flex items-center justify-center gap-2"
-              onClick={() => navigate("/walletledger")}
+              onClick={() => navigate("/wallet/walletledger")}
             >
               <SlNotebook className="text-2xl" /> Wallet Ledger
             </button>

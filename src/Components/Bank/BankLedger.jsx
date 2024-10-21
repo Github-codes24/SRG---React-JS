@@ -18,19 +18,19 @@ const BankLedger = () => {
       <div className="buttons gap-2 md:flex items-center justify-between mt-3">
         <p className='text-2xl text-[#878484]'>Bank Ledger</p>
       <div className='flex items-center gap-2'>
-      <button className="bg-[#746BD9] text-white px-1 py-3 rounded-xl flex items-center justify-center gap-2" onClick={() => navigate("/")}>
+      <button className="bg-[#746BD9] text-white px-1 py-3 rounded-xl flex items-center justify-center gap-2" onClick={() => navigate("/bank")}>
           {" "}
           
            < IoIosAddCircle className='text-2xl'/> Add new Bank
         </button>
-        <button className="bg-[#746BD9] text-white px-1 py-3 rounded-xl flex items-center justify-center gap-2" onClick={() => navigate("/banktransaction")}>
+        <button className="bg-[#746BD9] text-white px-1 py-3 rounded-xl flex items-center justify-center gap-2" onClick={() => navigate("/bank/banktransaction")}>
           {" "}
           <GrTransaction className="text-2xl" />
           Bank Transaction
         </button>
         <button
           className="bg-[#746BD9] text-white px-1 py-3 rounded-xl flex items-center justify-center gap-2"
-          onClick={() => navigate("/managebank")}
+          onClick={() => navigate("/bank/managebank")}
         >
           <RiBankLine className="text-2xl" /> Manage Bank
         </button>
