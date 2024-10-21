@@ -81,7 +81,9 @@ const Addwallets = () => {
             />
           </div>
         </form>
-        <div></div>
+        <div className="flex items-center justify-center"> 
+          <button className="px-5 py-2 text-white rounded-xl bg-[#3A6D8C]">Save</button>
+        </div>
       </div>
     </div>
   );

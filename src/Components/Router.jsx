@@ -46,12 +46,16 @@ const Dashboard = () => {
               <Route path="/banktransaction" element={<BankTransaction />} />
               <Route path="/bankledger" element={<BankLedger />} />
               <Route path="/addwallet" element={<Addwallets />} />
+
               {/* Wallet */}
+
               <Route path="/managewallet" element={<Managewallet />} />
               <Route path="/walletledger" element={<Walletledger />} />
               <Route path="/walletrecharge" element={<Walletrecharge />} />
               <Route path="/walletrefund" element={<Walletrefund />} />
+
               {/* Attendance section */}
+              
               <Route path="/attendance" element={<Attendance />} />
               <Route path="/attendance/attendancereport" element={<AttendanceReport />} />
               <Route path="/attendance/manageattendance" element={<ManageAttendance />} />
