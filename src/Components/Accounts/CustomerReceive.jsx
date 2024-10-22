@@ -125,7 +125,7 @@ const CustomerReceive = () => {
                     </option>
                   </select>
                 </td>
-                <td className="border px-4 py-2 text-center bg-gray-200">23500.00</td>
+                <td className="border px-4 py-2 text-center bg-gray-200">23500</td>
                 <td className="border px-4 py-2 text-center bg-gray-200">
                   Customer
                 </td>

@@ -34,6 +34,11 @@ import Dashboard from "../Pages/Dashboard"
 import OpeningBalance from "./Accounts/OpeningBalance";
 import CustomerReceive from "./Accounts/CustomerReceive";
 import CashTransfer from "./Accounts/CashTransfer";
+import ReceiptVoucher from "./Accounts/ReceiptVoucher";
+import PaymentVoucher from "./Accounts/PaymentVoucher";
+import ContraVoucher from "./Accounts/ContraVoucher";
+import JournalVoucher from "./Accounts/JournalVoucher";
+import VoucherApproval from "./Accounts/VoucherApproval";
 
 const Routeing = () => {
   return (
@@ -89,6 +94,11 @@ const Routeing = () => {
             <Route path="/accounts/openingbalance" element={<OpeningBalance />}/>
             <Route path="/accounts/customerreceive" element={<CustomerReceive />}/>
             <Route path="/accounts/cashtransfer" element={<CashTransfer/>}/>
+            <Route path="/accounts/receiptsvoucher" element={<ReceiptVoucher/>}/>
+            <Route path="/accounts/paymentvoucher" element={<PaymentVoucher/>}/>
+            <Route path="/accounts/contravoucher" element={<ContraVoucher/>}/>
+            <Route path="/accounts/journalvoucher" element={<JournalVoucher/>}/>
+            <Route path="/accounts/voucherapproval" element={<VoucherApproval/>}/>
             </Routes>
           </div>
         </div>
