@@ -31,6 +31,9 @@ import ServiceSlab from "./Master/ServiceLab";
 import ManageService from "./Master/ManageService";
 import LedgerList from "./Master/LedgerList"
 import Dashboard from "../Pages/Dashboard"
+import OpeningBalance from "./Accounts/OpeningBalance";
+import CustomerReceive from "./Accounts/CustomerReceive";
+import CashTransfer from "./Accounts/CashTransfer";
 
 const Routeing = () => {
   return (
@@ -81,6 +84,11 @@ const Routeing = () => {
             <Route path="/master/AddService" element={<AddService/>}/>
             <Route path="/master/ServiceSlab" element={<ServiceSlab />}/>
             <Route path="/master/ManageService" element={<ManageService />}/>
+
+            {/* Accounts */}
+            <Route path="/accounts/openingbalance" element={<OpeningBalance />}/>
+            <Route path="/accounts/customerreceive" element={<CustomerReceive />}/>
+            <Route path="/accounts/cashtransfer" element={<CashTransfer/>}/>
             </Routes>
           </div>
         </div>
