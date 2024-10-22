@@ -29,8 +29,10 @@ import ManageServiceCategory from "./Master/ManageServiceCategory";
 import AddService from "./Master/AddService";
 import ServiceSlab from "./Master/ServiceLab";
 import ManageService from "./Master/ManageService";
+import LedgerList from "./Master/LedgerList"
+import Dashboard from "../Pages/Dashboard"
 
-const Dashboard = () => {
+const Routeing = () => {
   return (
     <Router>
       <div className="h-screen flex flex-col">
@@ -41,6 +43,7 @@ const Dashboard = () => {
           <Sidebar />
           <div className="flex-1 p-4 bg-gray-100">
             <Routes>
+              <Route path="/" element={<Dashboard />} />
               <Route path="/bank" element={<AddNewBank />} />
               <Route path="/bank/managebank" element={<ManageBank />} />
               <Route path="/bank/banktransaction" element={<BankTransaction />} />
@@ -65,6 +68,7 @@ const Dashboard = () => {
               <Route path="/returnservice/walletreturn" element={<WalletReturn/>} />
 
               {/* Master */}
+            <Route path="/master/" element={<LedgerList/>}/>
             <Route path="/master/ManageLedger" element={<ManageLedger/>}/>
             <Route path="/master/AddAccountHead" element={<AddAccountHead/>}/>
             <Route path="/master/AccountList" element={<AccountList/>}/>
@@ -85,4 +89,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default Routeing;
