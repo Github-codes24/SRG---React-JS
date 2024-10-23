@@ -39,6 +39,9 @@ import PaymentVoucher from "./Accounts/PaymentVoucher";
 import ContraVoucher from "./Accounts/ContraVoucher";
 import JournalVoucher from "./Accounts/JournalVoucher";
 import VoucherApproval from "./Accounts/VoucherApproval";
+import PurchaseService from "./Purchase/PurchaseService";
+import PurchaseMATM from "./Purchase/PurchaseMATM";
+import PurchaseManage from "./Purchase/PurchaseManage";
 
 const Routeing = () => {
   return (
@@ -99,6 +102,11 @@ const Routeing = () => {
             <Route path="/accounts/contravoucher" element={<ContraVoucher/>}/>
             <Route path="/accounts/journalvoucher" element={<JournalVoucher/>}/>
             <Route path="/accounts/voucherapproval" element={<VoucherApproval/>}/>
+
+            {/* Purchase */}
+            <Route path="/purchase/purchaseservice" element={<PurchaseService/>}/>
+            <Route path="/purchase/purchasematm" element={<PurchaseMATM/>}/>
+            <Route path="/purchase/purchasemanage" element={<PurchaseManage/>}/>
             </Routes>
           </div>
         </div>
