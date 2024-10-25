@@ -44,6 +44,11 @@ import PurchaseMATM from "./Purchase/PurchaseMATM";
 import PurchaseManage from "./Purchase/PurchaseManage";
 import ClosingAccount from "./Accounts/ClosingAccount";
 import ChartAccount from "./Accounts/ChartAccount";
+import AddExpenseItem from "./Expense/AddExpenseItem";
+import ManageExpenseItem from "./Expense/ManageExpenseItem";
+import AddExpense from "./Expense/AddExpense";
+import ExpenseStatment from "./Expense/ExpenseStatment";
+import ManageExpense from "./Expense/ManageExpense";
 
 const Routeing = () => {
   return (
@@ -111,6 +116,13 @@ const Routeing = () => {
             <Route path="/purchase/purchaseservice" element={<PurchaseService/>}/>
             <Route path="/purchase/purchasematm" element={<PurchaseMATM/>}/>
             <Route path="/purchase/purchasemanage" element={<PurchaseManage/>}/>
+
+            {/* Expense */}
+            <Route path="/expense/addexpenseitem" element={<AddExpenseItem/>}/>
+            <Route path="/expense/manageexpenseitem" element={<ManageExpenseItem/>}/>
+            <Route path="/expense/addexpense" element={<AddExpense/>}/>
+            <Route path="/expense/manageexpense" element={<ManageExpense/>}/>
+            <Route path="/expense/expensestatment" element={<ExpenseStatment/>}/>
             </Routes>
           </div>
         </div>
