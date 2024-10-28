@@ -85,7 +85,7 @@ const BestServiceSalesChart = () => {
   };
 
   return (
-    <div className="w-[60%] max-w-4xl mx-auto bg-white shadow-lg rounded-lg">
+    <div className="w-[60%]  max-w-4xl mx-auto bg-white shadow-lg rounded-lg">
       <div className="flex justify-between items-center border-b border-black p-3">
         <h2 className="text-lg font-semibold text-gray-500">
           Best Service Sales

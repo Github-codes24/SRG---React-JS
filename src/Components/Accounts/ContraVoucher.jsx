@@ -8,7 +8,7 @@ const ContraVoucher = () => {
       <div className="flex items-center justify-end my-2">
         <MdOutlineHome className="text-2xl" />
         <span className="text-base md:text-xl">
-          Home / Accounts / Payment Voucher
+          Home / Accounts / Contra Voucher
         </span>
       </div>
       <div className="bg-white pt-2 pb-2 rounded">

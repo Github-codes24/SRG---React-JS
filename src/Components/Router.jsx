@@ -50,6 +50,7 @@ import AddExpense from "./Expense/AddExpense";
 import ExpenseStatment from "./Expense/ExpenseStatment";
 import ManageExpense from "./Expense/ManageExpense";
 
+
 const Routeing = () => {
   return (
     <Router>
@@ -123,6 +124,11 @@ const Routeing = () => {
             <Route path="/expense/addexpense" element={<AddExpense/>}/>
             <Route path="/expense/manageexpense" element={<ManageExpense/>}/>
             <Route path="/expense/expensestatment" element={<ExpenseStatment/>}/>
+            {/* Setting */}
+            {/* <Route path="/setting/smsconfigure" element={<SmsConfigure/>}/>
+            <Route path="/setting/userpermissionsetting/rolelist" element={<RoleList />}/>
+            {/* <Route path="/setting/userpermissionsetting/addrole" element={<AddRole />}/> */}
+            {/* <Route path="/setting/userpermissionsetting/userassignrole" element={<UserAsignRole />}/> */}
             </Routes>
           </div>
         </div>
