@@ -49,6 +49,16 @@ import ManageExpenseItem from "./Expense/ManageExpenseItem";
 import AddExpense from "./Expense/AddExpense";
 import ExpenseStatment from "./Expense/ExpenseStatment";
 import ManageExpense from "./Expense/ManageExpense";
+import CashBook from "./AccountReports/CashBook";
+import BankBook from "./AccountReports/BankBook";
+import GeneralLedger from "./AccountReports/GeneralLedgerReport";
+import TrailBalance from "./AccountReports/TrailBalance";
+import GeneralLedgerReport from "./AccountReports/GeneralLedgerReport";
+import ReportTrialBalance from "./AccountReports/ReportTrialBalance";
+import ProfitReport from "./AccountReports/ProfitReport";
+import ProfitReport2 from "./AccountReports/ProfitReport2";
+import CashFlowReport from "./AccountReports/CashFlowReport";
+import CashFlowReport2 from "./AccountReports/CashFlowReport2";
 
 
 const Routeing = () => {
@@ -124,6 +134,19 @@ const Routeing = () => {
             <Route path="/expense/addexpense" element={<AddExpense/>}/>
             <Route path="/expense/manageexpense" element={<ManageExpense/>}/>
             <Route path="/expense/expensestatment" element={<ExpenseStatment/>}/>
+
+          {/* Account Report */}
+          <Route path="/accountreport/cashbook" element={<CashBook/>}/>
+          <Route path="/accountreport/bankbook" element={<BankBook/>}/>
+          <Route path="/accountreport/generalledger" element={< GeneralLedger />} />
+          < Route path="/accountreport/generalledgerreport" element={ < GeneralLedgerReport />} />
+          <Route path="/accountreport/trailbalance" element={<TrailBalance/>}/>
+          <Route path="/accountreport/reporttrialbalance" element={<ReportTrialBalance/>}/>
+          <Route path="/accountreport/profitreport" element={<ProfitReport/>}/>
+          <Route path="/accountreport/profitreport2" element={<ProfitReport2/>}/>
+          <Route path="/accountreport/cashflowreport" element={<CashFlowReport/>}/>
+          <Route path="/accountreport/cashflowreport2" element={<CashFlowReport2/>}/>
+
             {/* Setting */}
             {/* <Route path="/setting/smsconfigure" element={<SmsConfigure/>}/>
             <Route path="/setting/userpermissionsetting/rolelist" element={<RoleList />}/>

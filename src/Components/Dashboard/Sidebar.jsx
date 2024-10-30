@@ -622,47 +622,47 @@ const Sidebar = () => {
           </li>
           {accountReportOpen && isExpanded && (
             <div className=" bg-[#6F6C90] rounded-2xl text-white text-sm text-center ">
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
-                Cash Book
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"  onClick={()=>navigate("/accountreport/cashbook")}>
+                Cash Book 
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"  onClick={()=>navigate("/accountreport/bankbook")}>
                 Bank Book
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/accountreport/generalledger")}>
                 General Ledger
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/accountreport/trialbalance")}>
                 Trail Balance
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/accountreport/profitreport")}>
                 Profit Loss
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/accountreport/cashflowreport")}>
                 Cash Flow Report
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/accountreport/")}>
                 Balance Sheet
               </p>
 
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/accountreport")}>
                 Account Summery
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/accountreport")}>
                 Income & Expenditure Report
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/accountreport")}>
                 Receipts & Payment Report
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/accountreport")}>
                 Service Detailed Report
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/accountreport")}>
                 Service Item Details Report
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/accountreport")}>
                 Top Customer
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/accountreport")}>
                 Business Liquidity
               </p>
             </div>
