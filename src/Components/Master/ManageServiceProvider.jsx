@@ -1,5 +1,6 @@
 import React from 'react';
 import { FaEdit, FaTrashAlt } from 'react-icons/fa';
+import { MdOutlineHome } from "react-icons/md";
 
 const ManageServiceProvider = () => {
   const data = [
@@ -17,10 +18,41 @@ const ManageServiceProvider = () => {
     { SL : 13, SelectAccountHead: '',ParentGroup:"Current Assets" , AccountHeads:'A/C Receivables', },
     { SL : 14, SelectAccountHead: '',ParentGroup:"Current Assets" , AccountHeads:'A/C Receivables', },
     { SL : 15, SelectAccountHead: '',ParentGroup:"Current Assets" , AccountHeads:'A/C Receivables', },
+    { SL : 16, SelectAccountHead: '',ParentGroup:"Current Assets" , AccountHeads:'A/C Receivables',},
+    {SL : 17, SelectAccountHead: '',ParentGroup:"Current Assets" , AccountHeads:'A/C Receivables',},
+    { SL : 18, SelectAccountHead: '',ParentGroup:"Current Assets" , AccountHeads:'A/C Receivables',},
+    {SL : 19, SelectAccountHead: '',ParentGroup:"Current Assets" , AccountHeads:'A/C Receivables',},
+    { SL : 20, SelectAccountHead: '',ParentGroup:"Current Assets" , AccountHeads:'A/C Receivables', },
+    { SL : 21, SelectAccountHead: '',ParentGroup:"Current Assets" , AccountHeads:'A/C Receivables', },
+    { SL : 22, SelectAccountHead: '',ParentGroup:"Current Assets" , AccountHeads:'A/C Receivables', },
+    { SL : 23, SelectAccountHead: '',ParentGroup:"Current Assets" , AccountHeads:'A/C Receivables', },
+    { SL : 24, SelectAccountHead: '',ParentGroup:"Current Assets" , AccountHeads:'A/C Receivables', },
+    { SL : 25, SelectAccountHead: '',ParentGroup:"Current Assets" , AccountHeads:'A/C Receivables', },
+    { SL : 26, SelectAccountHead: '',ParentGroup:"Current Assets" , AccountHeads:'A/C Receivables', },
+    { SL : 27, SelectAccountHead: '',ParentGroup:"Current Assets" , AccountHeads:'A/C Receivables', },
+    { SL : 28, SelectAccountHead: '',ParentGroup:"Current Assets" , AccountHeads:'A/C Receivables', },
+    { SL : 29, SelectAccountHead: '',ParentGroup:"Current Assets" , AccountHeads:'A/C Receivables', },
+    { SL : 30, SelectAccountHead: '',ParentGroup:"Current Assets" , AccountHeads:'A/C Receivables', },
+    { SL : 31, SelectAccountHead: '',ParentGroup:"Current Assets" , AccountHeads:'A/C Receivables', },
+    { SL : 32, SelectAccountHead: '',ParentGroup:"Current Assets" , AccountHeads:'A/C Receivables', },
+    { SL : 33, SelectAccountHead: '',ParentGroup:"Current Assets" , AccountHeads:'A/C Receivables', },
+    { SL : 34, SelectAccountHead: '',ParentGroup:"Current Assets" , AccountHeads:'A/C Receivables', },
+    { SL : 35, SelectAccountHead: '',ParentGroup:"Current Assets" , AccountHeads:'A/C Receivables', },
+    { SL : 36, SelectAccountHead: '',ParentGroup:"Current Assets" , AccountHeads:'A/C Receivables', },
+    { SL : 37, SelectAccountHead: '',ParentGroup:"Current Assets" , AccountHeads:'A/C Receivables', },
+    { SL : 38, SelectAccountHead: '',ParentGroup:"Current Assets" , AccountHeads:'A/C Receivables', },
+   
    
   ];
 
   return (
+    <>
+    <div className="flex items-center justify-end mr-5">
+        <MdOutlineHome className="text-3xl text-[#3A6D8C]" />
+        <span className="text-base md:text-xl text-[#5C5858]">
+        Home  /  Master  / Manage Service Provider
+        </span>
+      </div>
     <div className="container mx-auto p-4">
 
 <div className="flex justify-between items-center mb-6">
@@ -45,7 +77,7 @@ const ManageServiceProvider = () => {
       </div>
 <div>
 </div>
-
+<hr className='mb-5'/>
 
       <table className="w-full border-collapse border border-gray-300">
         <thead>
@@ -60,17 +92,19 @@ const ManageServiceProvider = () => {
           {data.map((item) => (
             <tr key={item.id} className="odd:bg-white even:bg-gray-50">
               <td className="border border-gray-300 p-2">{item.SL}</td>
-              <td className="border border-gray-300 p-2">{item.SelectAccountHead}</td>
+              <td className="border border-gray-300 p-2"><input type="checkbox" /></td>
               <td className="border border-gray-300 p-2">{item.ParentGroup}</td>
               <td className="border border-gray-300 p-2">{item.AccountHeads}</td>
-               
             </tr>
           ))}
         </tbody>
       </table>
-      
-    
+      <div className="buttons flex items-center justify-center gap-4 mt-5">
+            <button className="px-6 py-1 bg-[#3A6D8C] rounded-md text-white" type="reset">Clear All</button>
+            <button className="px-6 py-1 bg-[#3A6D8C] rounded-md text-white" type="submit">Update</button>
+          </div>
     </div>
+    </>
   );
 };
 

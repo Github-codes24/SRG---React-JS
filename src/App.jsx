@@ -1,8 +1,8 @@
 import Router from "./Components/Router"
+import Dashboard from "./Pages/Dashboard"
 const App = () => {
   return (
     <div>
-      {/* <Dashboard /> */}
       <Router />
     </div>
   )

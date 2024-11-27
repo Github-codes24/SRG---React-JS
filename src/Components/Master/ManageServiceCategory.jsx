@@ -1,5 +1,7 @@
 import React from 'react';
 import { FaEdit, FaTrashAlt } from 'react-icons/fa';
+import { MdOutlineHome } from "react-icons/md";
+
 
 const ManageServiceCategory = () => {
   const data = [
@@ -12,6 +14,13 @@ const ManageServiceCategory = () => {
   ];
 
   return (
+    <>
+    <div className="flex items-center justify-end mr-5">
+        <MdOutlineHome className="text-3xl text-[#3A6D8C]" />
+        <span className="text-base md:text-xl text-[#5C5858]">
+        Home  /  Master  / Manage Service Category
+        </span>
+      </div>
     <div className="container mx-auto p-4">
 
 <div className="flex justify-between items-center mb-6">
@@ -127,6 +136,7 @@ const ManageServiceCategory = () => {
         <button className="px-2 py-1 border rounded-full border-[#9E95FF]">Next</button>
       </div>
     </div>
+    </>
   );
 };
 

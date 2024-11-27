@@ -1,153 +1,3 @@
-// import React, { useState } from 'react';
-// import { RiBankLine } from "react-icons/ri";
-// import { IoIosArrowDown } from "react-icons/io";
-// import { FaRegCircleUser } from "react-icons/fa6";
-// import { LuWallet2 } from "react-icons/lu";
-// import { RiShoppingCart2Line } from "react-icons/ri";
-// import { RiUserSettingsLine } from "react-icons/ri";
-// import { RiRepeatLine } from "react-icons/ri";
-// import { RiTeamLine } from "react-icons/ri";
-// import { TbReportAnalytics } from "react-icons/tb";
-// import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io"; 
-// import { AiOutlineDashboard } from "react-icons/ai";
-// import { PiNotebookLight } from 'react-icons/pi';
-// import { MdAccountBalanceWallet } from 'react-icons/md';
-// import { GiExpense } from 'react-icons/gi';
-
-// const Sidebar = () => {
-//   const [isExpanded, setIsExpanded] = useState(true); 
-
-  
-//   const toggleSidebar = () => {
-//     setIsExpanded(!isExpanded);
-//   };
-
-//   return (
-//     <aside className={`bg-[#2E2E48] text-white h-full p-4 transition-width duration-300 ${isExpanded ? 'w-64' : 'w-16'} flex flex-col`}>
-//       <div className="relative">
-//         {/* Toggle Button */}
-//         <button 
-//           onClick={toggleSidebar} 
-//           className="absolute -right-4 top-1/2 transform -translate-y-1/2 bg-purple-500 text-white rounded-full p-2 shadow-md"
-//         >
-//           {isExpanded ? <IoIosArrowBack className="text-xl" /> : <IoIosArrowForward className="text-xl" />}
-//         </button>
-        
-//         {/* Logo Section */}
-//         <div className="flex items-center justify-center py-4">
-//           {isExpanded ? (
-//             <h1 className="text-2xl font-bold"></h1> 
-//           ) : (
-//             <span className="text-2xl font-bold"></span> 
-//           )}
-//         </div>
-//       </div>
-
-//       <ul className='my-2'>
-//         <li className="flex rounded-2xl border px-2 py-2 my-1  border-[#8B8BC945] items-center justify-between">
-//           <li className='flex items-center gap-2'>
-//             <AiOutlineDashboard className='text-2xl text-[#62D0F1]' />
-//             {isExpanded && <p className='text-lg'>Dashboard</p>}
-//           </li>
-//           {isExpanded && <IoIosArrowDown className='text-xl' />}
-//         </li>
-
-//         <li className="flex rounded-2xl border px-2 py-2 my-1 border-[#8B8BC945] items-center justify-between">
-//           <li className='flex  items-center gap-2 '>
-//             <PiNotebookLight className='text-2xl text-[#62D0F1]' />
-//             {isExpanded && <p className='text-lg'>Master</p>}
-//           </li>
-//           {isExpanded && <IoIosArrowDown className='text-xl' />}
-//         </li>
-        
-        
-//         <li className="flex rounded-2xl border px-2 py-2 my-1 border-[#8B8BC945] items-center justify-between">
-//           <li className='flex  items-center gap-2 '>
-//             <FaRegCircleUser className='text-2xl text-[#62D0F1]' />
-//             {isExpanded && <p className='text-lg'>Customer</p>}
-//           </li>
-//           {isExpanded && <IoIosArrowDown className='text-xl' />}
-//         </li>
-//         <li className="flex rounded-2xl border px-2 py-2 my-1 border-[#8B8BC945] items-center justify-between">
-//           <li className='flex  items-center gap-2 '>
-//             <RiBankLine className='text-2xl text-[#62D0F1]' />
-//             {isExpanded && <p className='text-lg'>Bank</p>}
-//           </li>
-//           {isExpanded && <IoIosArrowDown className='text-xl' />}
-//         </li>
-//         <li className="flex rounded-2xl border px-2 py-2 my-1 border-[#8B8BC945] items-center justify-between">
-//           <li className='flex  items-center gap-2 '>
-//             <LuWallet2 className='text-2xl text-[#62D0F1]' />
-//             {isExpanded && <p className='text-lg'>Wallets</p>}
-//           </li>
-//           {isExpanded && <IoIosArrowDown className='text-xl' />}
-//         </li>
-        
-//         <li className="flex rounded-2xl border px-2 py-2 my-1 border-[#8B8BC945] items-center justify-between">
-//           <li className='flex  items-center gap-2 '>
-//             <RiShoppingCart2Line className='text-2xl text-[#62D0F1]' />
-//             {isExpanded && <p className='text-lg'>Purchase</p>}
-//           </li>
-//           {isExpanded && <IoIosArrowDown className='text-xl' />}
-//         </li>
-//         <li className="flex rounded-2xl border px-2 py-2 my-1 border-[#8B8BC945] items-center justify-between">
-//           <li className='flex  items-center gap-2 '>
-//             <RiUserSettingsLine className='text-2xl text-[#62D0F1]' />
-//             {isExpanded && <p className='text-lg'>Service</p>}
-//           </li>
-//           {isExpanded && <IoIosArrowDown className='text-xl' />}
-//         </li>
-//         <li className="flex rounded-2xl border px-2 py-2 my-1 border-[#8B8BC945] items-center justify-between">
-//           <li className='flex  items-center gap-2 '>
-//             <MdAccountBalanceWallet className='text-2xl text-[#62D0F1]' />
-//             {isExpanded && <p className='text-lg'>Accounts</p>}
-//           </li>
-//           {isExpanded && <IoIosArrowDown className='text-xl' />}
-//         </li>
-//         <li className="flex rounded-2xl border px-2 py-2 my-1 border-[#8B8BC945] items-center justify-between">
-//           <li className='flex  items-center gap-2 '>
-//             <TbReportAnalytics className='text-2xl text-[#62D0F1]' />
-//             {isExpanded && <p className='text-lg'>Report</p>}
-//           </li>
-//           {isExpanded && <IoIosArrowDown className='text-xl' />}
-//         </li>
-//         <li className="flex rounded-2xl border px-2 py-2 my-1 border-[#8B8BC945] items-center justify-between">
-//           <li className='flex  items-center gap-2 '>
-//             <RiTeamLine className='text-2xl text-[#62D0F1]' />
-//             {isExpanded && <p className='text-lg'>HRM</p>}
-//           </li>
-//           {isExpanded && <IoIosArrowDown className='text-xl' />}
-//         </li>
-//         <li className="flex rounded-2xl border px-2 py-2 my-1 border-[#8B8BC945] items-center justify-between">
-//           <li className='flex  items-center gap-2 '>
-//             <RiRepeatLine className='text-2xl text-[#62D0F1]' />
-//             {isExpanded && <p className='text-lg'>Return Services</p>}
-//           </li>
-//           {isExpanded && <IoIosArrowDown className='text-xl' />}
-//         </li>
-//         <li className="flex rounded-2xl border px-2 py-2 my-1 border-[#8B8BC945] items-center justify-between">
-//           <li className='flex  items-center gap-2 '>
-//             <GiExpense className='text-2xl text-[#62D0F1]' />
-//             {isExpanded && <p className='text-lg'>Expense</p>}
-//           </li>
-//           {isExpanded && <IoIosArrowDown className='text-xl' />}
-//         </li>
-//         <li className="flex rounded-2xl border px-2 py-2 my-1 border-[#8B8BC945] items-center justify-between">
-//           <li className='flex  items-center gap-2 '>
-//             <FaRegCircleUser className='text-2xl text-[#62D0F1]' />
-//             {isExpanded && <p className='text-lg'>Attendence</p>}
-//           </li>
-//           {isExpanded && <IoIosArrowDown className='text-xl' />}
-//         </li>
-        
-//       </ul>
-//     </aside>
-//   );
-// };
-
-// export default Sidebar;
-
-
 import React, { useState } from "react";
 import Logo from "../../assets/DashboardImages/logo1 1.png";
 // import Profile from "../../assets/DashboardImages/Profile.png";
@@ -278,7 +128,7 @@ const Sidebar = () => {
               <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/master/AddWebsite")}>
                 Add Website
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/master/Websitelist")}>
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/master/websiteledger")}>
                 Website Ledger
               </p>
               <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/master/AddServiceBranch")}>
@@ -297,11 +147,11 @@ const Sidebar = () => {
                 Manage Service
               </p>
 
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/master/setserviceprovider")}>
                 Set Service Provider
               </p>
 
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/master/manageserviceprovider")}>
                 Manage Service
               </p>
             </div>
@@ -327,22 +177,22 @@ const Sidebar = () => {
 
           {customerOpen && isExpanded && (
             <div className=" bg-[#6F6C90] rounded-2xl text-white text-sm text-center ">
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("")}>
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/customer/addcustomer")}>
                 Add Customer
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("")}>
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/customer/customerlist")}>
                 Customer List
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("")}>
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/customer/creditcustomer")}>
                 Credit Customer
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("")}>
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/customer/paidcustomer")}>
                 Paid Customer
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("")}>
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/customer/customerledger")}>
                 Customer Ledger
               </p>
-              <p className=" py-3 px-4 rounded-lg cursor-pointer" onClick={()=>navigate("")}>
+              <p className=" py-3 px-4 rounded-lg cursor-pointer" onClick={()=>navigate("/customer/customeradvance")}>
                 Customer Advance
               </p>
             </div>
@@ -465,25 +315,25 @@ const Sidebar = () => {
           </li>
           {serviceOpen && isExpanded && (
             <div className=" bg-[#6F6C90] rounded-2xl text-white text-sm text-center ">
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"  onClick={()=>navigate("")}>
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"  onClick={()=>navigate("/service/jobcardnew")}>
                 Job Card New
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("")}>
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/service/jobcardledger")}>
                 Job Card Ledger
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("")}>
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/service/serviceinvoice")}>
                 Service Invoice
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("")}>
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/service/matmservice")}>
                 MATM Service Invoice
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("")}>
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/service/manageserviceinvoice")}>
                 Manage Service Invoice
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("")}>
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/service/paymentcollection")}>
                 Payment Collection
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("")}>
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/service/invoicelist")}>
                 Invoice List All
               </p>
             </div>
@@ -558,47 +408,47 @@ const Sidebar = () => {
           </li>
           {reportOpen && isExpanded && (
             <div className=" bg-[#6F6C90] rounded-2xl text-white text-sm text-center ">
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/report/closingreport")} >
                 Closing Report
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/report/todaysreport")}>
                 Todays Report
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/report/servicesalesreport")}>
                 Service Sales Report
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/report/userwisesalesreport")}>
                 User Wise Sales Report
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/report/duereport")}>
                 Due Report
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/report/purchasereport")}>
                 Purchase Report
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/report/")}>
                 Sales Return
               </p>
 
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/report/")}>
                 Todays Customer Reciept
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/report/")}>
                 Income & Expenditure Report
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/report/")}>
                 Receipts & Payment Report
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/report/")}>
                 Service Detailed Report
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/report/")}>
                 Service Item Details Report
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/report/")}>
                 Top Customer
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/report/")}>
                 Business Liquidity
               </p>
             </div>
@@ -685,16 +535,16 @@ const Sidebar = () => {
           </li>
           {hrmOpen && isExpanded && (
             <div className=" bg-[#6F6C90] rounded-2xl text-white text-sm text-center ">
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={ () => navigate("/hrm/adddesignation") }>
                 Add Designation
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={ () => navigate("/hrm/managedesignation") }>
                 Manage Designation
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={ () => navigate("/hrm/addemployee") }>
                 Add Employee
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={ () => navigate("/hrm/manageemployee") }>
                 Manage Employee
               </p>
             </div>
@@ -719,16 +569,19 @@ const Sidebar = () => {
           {attendenceOpen && isExpanded && (
             <div className=" bg-[#6F6C90] rounded-2xl text-white text-sm text-center ">
               <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/attendence/addexpenseitem")}>
-                Add Designation
+                Attendence
               </p>
               <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/attendence/manageexpenseitem")}>
-                Manage Designation
+                Manage Attendence
               </p>
               <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/attendence/addexpense")}>
-                Add Employee
+                Attendence Report
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/attendence/")}>
-                Manage Employee
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/attendence/datewiseattendence")}>
+                Date Wise Attendence Report
+              </p>
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/attendence/employyewiseattendence")}>
+                Employee Wise Attendence
               </p>
             </div>
           )}
@@ -751,26 +604,26 @@ const Sidebar = () => {
           </li>
           {payrollOpen && isExpanded && (
             <div className=" bg-[#6F6C90] rounded-2xl text-white text-sm text-center ">
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/payroll/addbenefits")}>
                 Add Benefits
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/payroll/managebenefits")}>
                 Manage Benefits
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/payroll/salarysetup")}>
                 Salary Setup
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/payroll/managesalarysetup")}>
                 Manage Salary Setup
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/payroll/salarygenerate")}>
                 Salary Generate
               </p>
 
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/payroll/employeesalarypayment")}>
                 Employee Salary Payment
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/payroll/managesalarygenerate")}>
                 Manage Salary Generate
               </p>
             </div>
@@ -794,16 +647,16 @@ const Sidebar = () => {
           </li>
           {officeLoanOpen && isExpanded && (
             <div className=" bg-[#6F6C90] rounded-2xl text-white text-sm text-center ">
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/officeloan/addperson")}>
                 Add Person
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/officeloan/manageperson")}>
                 Manage Person
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/officeloan/addofficeloan")}>
                 Add Office Loan
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
+              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/officeloan/addpayments")}>
                 Add Payments
               </p>
             </div>

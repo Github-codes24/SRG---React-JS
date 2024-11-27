@@ -1,9 +1,189 @@
-import React from "react";
+import React, { useEffect, useState,useRef } from "react";
+import axios from "axios";
 import { BsPencilFill } from "react-icons/bs";
 import { FaMagnifyingGlass, FaTrash } from "react-icons/fa6";
 import { MdOutlineHome } from "react-icons/md";
+import * as XLSX from 'xlsx';
+import html2pdf from 'html2pdf.js';
+import BASE_URL from "../../api";
 
 const ManageExpense = () => {
+  const [expenses, setExpenses] = useState([]);
+  const [editExpense, setEditExpense] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+
+  const tableRef = useRef();
+
+  //excel button
+  const exportToExcel = () => {
+    const table = tableRef.current;
+
+    // Create a workbook and add a worksheet
+    const wb = XLSX.utils.table_to_book(table, { sheet: "Sheet1" });
+
+    // Write the workbook to an Excel file and trigger the download
+    XLSX.writeFile(wb, "Manage_Expense.xlsx");
+  };
+
+   //pdfviewer
+   const handleDownloadPDF = () => {
+    // Get the HTML content of the table
+    const element = tableRef.current;
+
+    // Options for html2pdf
+    const options = {
+      filename: 'Manage_Expense.pdf', // Name of the output PDF file
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 }, // Higher scale for better quality
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }, // PDF paper size and orientation
+    };
+
+    // Convert the table to PDF
+    html2pdf().from(element).set(options).save();
+  };
+  
+
+   //print method
+   const handlePrint = () => {
+    const printContent = document.getElementById('table').outerHTML;
+    const newWindow = window.open('', '_blank');
+    newWindow.document.open();
+    newWindow.document.write(`
+      <html>
+        <head>
+          <title>Expense Statement</title>
+          <style>
+            table { border-collapse: collapse; width: 100%; }
+            th, td { border: 1px solid black; padding: 8px; text-align: left; }
+            th { background-color: #f2f2f2; }
+          </style>
+        </head>
+        <body>${printContent}</body>
+      </html>
+    `);
+    newWindow.document.close();
+    newWindow.print();
+  };
+ 
+ 
+  
+  //copy button
+  const copyTableToClipboard = () => {
+    const table = tableRef.current;
+    
+    // Create a range and select the content
+    const range = document.createRange();
+    range.selectNode(table);
+    
+    // Select the content in the table
+    window.getSelection().removeAllRanges();  // Clear previous selections
+    window.getSelection().addRange(range);   // Add the range to the selection
+
+    try {
+      // Execute the copy command
+      document.execCommand('copy');
+      alert('Table content copied to clipboard!');
+    } catch (err) {
+      console.error('Error copying table content: ', err);
+    }
+
+    // Clear the selection (optional)
+    window.getSelection().removeAllRanges();
+  };
+
+   //csv button
+   const exportToCSV = () => {
+    const table = tableRef.current;
+    let csvContent = "";
+
+    // Get table headers
+    const headers = [];
+    for (let i = 0; i < table.rows[0].cells.length; i++) {
+      headers.push(table.rows[0].cells[i].innerText); // Get header text
+    }
+    csvContent += headers.join(",") + "\n"; // Add header row to CSV
+
+    // Get table rows (excluding the header)
+    for (let i = 1; i < table.rows.length; i++) {
+      const row = table.rows[i];
+      const rowData = [];
+      for (let j = 0; j < row.cells.length; j++) {
+        rowData.push(row.cells[j].innerText); // Get each cell's text
+      }
+      csvContent += rowData.join(",") + "\n"; // Add row to CSV
+    }
+
+    // Create a Blob from the CSV content
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+
+    // Create a link element to trigger the file download
+    const link = document.createElement("a");
+    if (link.download !== undefined) {
+      // Create a URL for the Blob and set the download attribute
+      const url = URL.createObjectURL(blob);
+      link.setAttribute("href", url);
+      link.setAttribute("download", "Manage_Expense.csv"); // Filename for the CSV
+      link.style.visibility = "hidden"; // Hide the link
+      document.body.appendChild(link); // Append the link to the body
+      link.click(); // Trigger the download
+      document.body.removeChild(link); // Remove the link after the download
+    }
+  };
+
+
+  // Fetch expenses
+  useEffect(() => {
+    axios
+      .get(`${BASE_URL}/api/expenses`) // Replace with your API endpoint
+      .then((response) => setExpenses(response.data))
+      .catch((error) => console.error(error));
+  }, []);
+
+  const deleteItem = async (id) => {
+  
+  
+    try {
+      const response = await axios.delete(`${BASE_URL}/api/expenses/${id}`);
+      console.log("Delete successful:", response.data);
+      return response.data; // Return response if needed
+    } catch (error) {
+      console.error("Error deleting item:", error);
+      throw error; // Rethrow error for handling in the caller
+    }
+  };
+  const handleDelete = async (id) => {
+    try {
+      
+      await deleteItem(id);
+      console.log(`Item with ID ${id} deleted successfully`);
+      // Update the UI after deletion, e.g., refetch data or remove from state
+    } catch (error) {
+      console.error("Failed to delete item:", error.message);
+    }
+  };
+
+  // Handle edit
+  const handleEdit = (expense) => {
+    setEditExpense(expense);
+    setShowModal(true);
+  };
+
+  // Save edited expense
+  const saveEdit = (e) => {
+    e.preventDefault();
+    axios
+      .put(`${BASE_URL}/api/expenses/${editExpense._id}`, editExpense) // Replace with your API endpoint
+      .then((response) => {
+        setExpenses(
+          expenses.map((expense) =>
+            expense._id === response.data._id ? response.data : expense
+          )
+        );
+        setShowModal(false);
+        setEditExpense(null);
+      })
+      .catch((error) => console.error(error));
+  };
   return (
     <div>
       <div className="flex items-center justify-end">
@@ -43,29 +223,34 @@ const ManageExpense = () => {
         <div className="flex justify-center flex-grow">
           <button
             type="button"
+            onClick={copyTableToClipboard}
             className="px-4 py-2 bg-purple-950 text-white rounded-lg m-2"
           >
             Copy
           </button>
           <button
             type="button"
+            onClick={exportToCSV}
             className="px-4 py-2 bg-purple-950 text-white rounded-lg m-2"
           >
             CSV
           </button>
           <button
             type="button"
+            onClick={exportToExcel}
             className="px-4 py-2 bg-purple-950 text-white rounded-lg m-2"
           >
             Excel
           </button>
           <button
             type="button"
+            onClick={handleDownloadPDF}
             className="px-4 py-2 bg-purple-950 text-white rounded-lg m-2"
           >
             PDF
           </button>
           <button
+          onClick={handlePrint}
             type="button"
             className="px-4 py-2 bg-purple-950 text-white rounded-lg m-2"
           >
@@ -86,82 +271,145 @@ const ManageExpense = () => {
         </div>
       </div>
 
-      <div className="overflow-x-auto">
-      <table className="min-w-full bg-white border border-gray-300">
-        <thead>
-          <tr>
-            <th className="py-2 px-4 border font-semibold text-[#595995]">SL. No</th>
-            <th className="py-2 px-4 border font-semibold text-[#595995]">Voucher No.</th>
-            <th className="py-2 px-4 border font-semibold text-[#595995]">Expense Type</th>
-            <th className="py-2 px-4 border font-semibold text-[#595995]">Payment Type</th>
-            <th className="py-2 px-4 border font-semibold text-[#595995]">Amount</th>
-            <th className="py-2 px-4 border font-semibold text-[#595995]">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr className="text-[#636465BD]">
-            <td className="py-2 px-4 border text-center font-medium text-sm">1</td>
-            <td className="py-2 px-4 border text-center font-medium text-sm">EXP 1</td>
-            <td className="py-2 px-4 border text-center font-medium text-sm">Petrol Expense</td>
-            <td className="py-2 px-4 border text-center font-medium text-sm">Cash Payment</td>
-            <td className="py-2 px-4 border text-center font-medium text-sm">500.00</td>
-            <td className="py-2 px-4 border">
-              <div className="w-full flex items-center justify-center gap-x-3">
-                <button className="bg-[#75A68F] p-1"><BsPencilFill className="text-white" /></button>
-                <button className="bg-[#BF2D35] p-1"><FaTrash className="text-white" /></button>
+      <div className="bg-white">
+        <p className="text-2xl p-2 text-[#878484] font-medium">Manage Expense</p>
+        <hr />
+        <div className="overflow-x-auto">
+          <table id="table" ref={tableRef} className="min-w-full bg-white border border-gray-300">
+            <thead>
+              <tr>
+                <th className="py-2 px-4 border font-semibold text-[#595995]">SL. No</th>
+                <th className="py-2 px-4 border font-semibold text-[#595995]">Voucher No.</th>
+                <th className="py-2 px-4 border font-semibold text-[#595995]">Expense Type</th>
+                <th className="py-2 px-4 border font-semibold text-[#595995]">Payment Type</th>
+                <th className="py-2 px-4 border font-semibold text-[#595995]">Amount</th>
+                <th className="py-2 px-4 border font-semibold text-[#595995]">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {expenses.map((expense, index) => (
+                <tr key={expense._id} className="text-[#636465BD]">
+                  <td className="py-2 px-4 border text-center font-medium text-sm">
+                    {index + 1}
+                  </td>
+                  <td className="py-2 px-4 border text-center font-medium text-sm">
+                    {expense.voucherNumber}
+                  </td>
+                  <td className="py-2 px-4 border text-center font-medium text-sm">
+                    {expense.expenseType}
+                  </td>
+                  <td className="py-2 px-4 border text-center font-medium text-sm">
+                    {expense.paymentType}
+                  </td>
+                  <td className="py-2 px-4 border text-center font-medium text-sm">
+                    {expense.amount}
+                  </td>
+                  <td className="py-2 px-4 border">
+                    <div className="w-full flex items-center justify-center gap-x-3">
+                      <button
+                        className="bg-[#75A68F] p-1"
+                        onClick={() => handleEdit(expense)}
+                      >
+                        <BsPencilFill className="text-white" />
+                      </button>
+                      <button
+                        className="bg-[#BF2D35] p-1"
+                        onClick={() => handleDelete(expense._id)}
+                      >
+                        <FaTrash className="text-white" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Edit Modal */}
+      {showModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-1/2">
+            <h2 className="text-2xl font-semibold mb-4">Edit Expense</h2>
+            <form onSubmit={saveEdit}>
+              <div className="flex flex-col gap-4">
+                <div>
+                  <label className="block font-semibold">Voucher Number</label>
+                  <input
+                    type="text"
+                    className="w-full border px-3 py-2 rounded-md"
+                    value={editExpense?.voucherNumber || ""}
+                    onChange={(e) =>
+                      setEditExpense({
+                        ...editExpense,
+                        voucherNumber: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+                <div>
+                  <label className="block font-semibold">Expense Type</label>
+                  <input
+                    type="text"
+                    className="w-full border px-3 py-2 rounded-md"
+                    value={editExpense?.expenseType || ""}
+                    onChange={(e) =>
+                      setEditExpense({
+                        ...editExpense,
+                        expenseType: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+                <div>
+                  <label className="block font-semibold">Payment Type</label>
+                  <input
+                    type="text"
+                    className="w-full border px-3 py-2 rounded-md"
+                    value={editExpense?.paymentType || ""}
+                    onChange={(e) =>
+                      setEditExpense({
+                        ...editExpense,
+                        paymentType: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+                <div>
+                  <label className="block font-semibold">Amount</label>
+                  <input
+                    type="number"
+                    className="w-full border px-3 py-2 rounded-md"
+                    value={editExpense?.amount || ""}
+                    onChange={(e) =>
+                      setEditExpense({
+                        ...editExpense,
+                        amount: e.target.value,
+                      })
+                    }
+                  />
+                </div>
               </div>
-            </td>
-          </tr>
-          <tr className="text-[#636465BD]">
-            <td className="py-2 px-4 border text-center font-medium text-sm">2</td>
-            <td className="py-2 px-4 border text-center font-medium text-sm">EXP 2</td>
-            <td className="py-2 px-4 border text-center font-medium text-sm">Petrol Expense</td>
-            <td className="py-2 px-4 border text-center font-medium text-sm">Cash Payment</td>
-            <td className="py-2 px-4 border text-center font-medium text-sm">500.00</td>
-            <td className="py-2 px-4 border">
-              <div className="w-full flex items-center justify-center gap-x-3">
-                <button className="bg-[#75A68F] p-1"><BsPencilFill className="text-white" /></button>
-                <button className="bg-[#BF2D35] p-1"><FaTrash className="text-white" /></button>
+              <div className="flex justify-end gap-4 mt-4">
+                <button
+                  type="button"
+                  className="px-4 py-2 bg-gray-500 text-white rounded-md"
+                  onClick={() => setShowModal(false)}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                >
+                  Save
+                </button>
               </div>
-            </td>
-          </tr>
-          <tr className="text-[#636465BD]">
-            <td className="py-2 px-4 border text-center font-medium text-sm">3</td>
-            <td className="py-2 px-4 border text-center font-medium text-sm">EXP 3</td>
-            <td className="py-2 px-4 border text-center font-medium text-sm">House Rent Expense</td>
-            <td className="py-2 px-4 border text-center font-medium text-sm">Bank Payment</td>
-            <td className="py-2 px-4 border text-center font-medium text-sm">500.00</td>
-            <td className="py-2 px-4 border">
-              <div className="w-full flex items-center justify-center gap-x-3">
-                <button className="bg-[#75A68F] p-1"><BsPencilFill className="text-white" /></button>
-                <button className="bg-[#BF2D35] p-1"><FaTrash className="text-white" /></button>
-              </div>
-            </td>
-          </tr>
-          <tr className="text-[#636465BD]">
-            <td className="py-2 px-4 border text-center font-medium text-sm">4</td>
-            <td className="py-2 px-4 border text-center font-medium text-sm">EXP 4</td>
-            <td className="py-2 px-4 border text-center font-medium text-sm">Petrol Expense</td>
-            <td className="py-2 px-4 border text-center font-medium text-sm">Cash Payment</td>
-            <td className="py-2 px-4 border text-center font-medium text-sm">500.00</td>
-            <td className="py-2 px-4 border">
-              <div className="w-full flex items-center justify-center gap-x-3">
-                <button className="bg-[#75A68F] p-1"><BsPencilFill className="text-white" /></button>
-                <button className="bg-[#BF2D35] p-1"><FaTrash className="text-white" /></button>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td className="py-2 px-4 border"></td>
-            <td className="py-2 px-4 border"></td>
-            <td className="py-2 px-4 border"></td>
-            <td className="py-2 px-4 border text-end text-[#595995] font-medium">Total</td>
-            <td className="py-2 px-4 border text-[#636465BD] text-center font-semibold">25000.00</td>
-            <td className="py-2 px-4 border"></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+            </form>
+          </div>
+        </div>
+      )}
 
     <div className="flex items-center justify-between my-8 px-2 pb-5">
       <p className="text-[#636465] font-medium">Showing 1 to 20 enteries</p>

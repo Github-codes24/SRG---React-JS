@@ -1,13 +1,12 @@
-import React from 'react'
-import { FaRegMoneyBill1 } from 'react-icons/fa6'
-import { IoIosAddCircle } from 'react-icons/io'
-import { MdOutlineHome } from 'react-icons/md'
-import { SlNotebook } from 'react-icons/sl'
-import { useNavigate } from 'react-router-dom'
+import React from "react";
+import { FaRegMoneyBill1 } from "react-icons/fa6";
+import { IoIosAddCircle } from "react-icons/io";
+import { MdOutlineHome } from "react-icons/md";
+import { SlNotebook } from "react-icons/sl";
+import { useNavigate } from "react-router-dom";
 
 const Walletrefund = () => {
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   return (
     <div>
       <div className="flex items-center justify-end">
@@ -17,8 +16,8 @@ const Walletrefund = () => {
         </span>
       </div>
 
-      <div className='bg-white'>
-      <div className="flex items-center justify-between my-2 bg-white px-2 py-1">
+      <div className="bg-white">
+        <div className="flex items-center justify-between my-2 bg-white px-2 py-1">
           <h1 className="text-[#878484] text-2xl">Manage Wallets</h1>
 
           {/* Action Buttons */}
@@ -55,7 +54,6 @@ const Walletrefund = () => {
               Wallet Ledger
             </button>
           </div>
-          
         </div>
         <hr />
         <form>
@@ -138,46 +136,54 @@ const Walletrefund = () => {
               className="w-full h-9 p-2 border border-[#D3D1D1] outline-none rounded"
             />
           </div>
-          
         </form>
         <div className="overflow-x-auto">
-  <table className="min-w-full bg-white border border-gray-300">
-    <thead>
-      <tr>
-        <th className="border px-4 py-2">Ledger Name</th>
-        <th className="border px-4 py-2">Ledger Balance</th>
-        <th className="border px-4 py-2">Account Head</th>
-        <th className="border px-4 py-2">Account</th>
-      </tr>
-    </thead>
-    <tbody>
-      {/* Row 1 */}
-      <tr className="hover:bg-gray-100">
-        <td className="border px-4 py-2 text-center"><select name="" >
-          <option value="refund" selected>Refund</option></select></td>
-        <td className="border px-4 py-2 text-center bg-gray-200">00</td>
-        <td className="border px-4 py-2 text-center bg-gray-200">Indirect Income</td>
-        <td className="border px-4 py-2 text-center"><input className='w-full h-full outline-none' type="number" /></td>
-      </tr>
-      {/* Row 2 */}
-      <tr className="hover:bg-gray-100">
-        <td className="border px-4 py-2 text-center">Account Head</td>
-        <td className="border px-4 py-2 text-center"></td>
-        <td className="border px-4 py-2 text-center">Total</td>
-        <td className="border px-4 py-2 text-center bg-gray-200"></td>
-      </tr>
-      {/* Row 3 */}
-
-    </tbody>
-  </table>
-  <div className="flex items-center justify-center my-4">
-  <button className='px-6 py-2 bg-[#3A6D8C] text-white rounded-lg '>Save</button>
-  </div>
-</div>
+          <table className="min-w-full bg-white border border-gray-300">
+            <thead>
+              <tr>
+                <th className="border px-4 py-2">Ledger Name</th>
+                <th className="border px-4 py-2">Ledger Balance</th>
+                <th className="border px-4 py-2">Account Head</th>
+                <th className="border px-4 py-2">Account</th>
+              </tr>
+            </thead>
+            <tbody>
+              {/* Row 1 */}
+              <tr className="hover:bg-gray-100">
+                <td className="border px-4 py-2 text-center">
+                  <select name="">
+                    <option value="refund" selected>
+                      Refund
+                    </option>
+                  </select>
+                </td>
+                <td className="border px-4 py-2 text-center bg-gray-200">00</td>
+                <td className="border px-4 py-2 text-center bg-gray-200">
+                  Indirect Income
+                </td>
+                <td className="border px-4 py-2 text-center">
+                  <input className="w-full h-full outline-none" type="number" />
+                </td>
+              </tr>
+              {/* Row 2 */}
+              <tr className="hover:bg-gray-100">
+                <td className="border px-4 py-2 text-center">Account Head</td>
+                <td className="border px-4 py-2 text-center"></td>
+                <td className="border px-4 py-2 text-center">Total</td>
+                <td className="border px-4 py-2 text-center bg-gray-200"></td>
+              </tr>
+              {/* Row 3 */}
+            </tbody>
+          </table>
+          <div className="flex items-center justify-center my-4">
+            <button className="px-6 py-2 bg-[#3A6D8C] text-white rounded-lg ">
+              Save
+            </button>
+          </div>
+        </div>
       </div>
-        
     </div>
-  )
-}
+  );
+};
 
-export default Walletrefund
+export default Walletrefund;

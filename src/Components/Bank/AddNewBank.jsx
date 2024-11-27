@@ -1,11 +1,67 @@
-import React from "react";
+
+import React, { useState } from "react";
 import { MdOutlineHome } from "react-icons/md";
 import { GrTransaction } from "react-icons/gr";
 import { RiBankLine } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import BASE_URL from "../../api";
 
 const AddNewBank = () => {
   const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    bankName: "",
+    accountName: "",
+    accountNumber: "",
+    branch: "",
+    ifscCode: "",
+    amount: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleReset = () => {
+    setFormData({
+      bankName: "",
+      accountName: "",
+      accountNumber: "",
+      branch: "",
+      ifscCode: "",
+      amount: "",
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Correct method call
+
+    try {
+      const response = await axios.post(
+        `${BASE_URL}/api/banks/add` ,
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log(response.data);
+      alert("Bank details saved successfully.");
+      setFormData({
+        bankName: "",
+        accountName: "",
+        accountNumber: "",
+        branch: "",
+        ifscCode: "",
+        amount: "",
+      });
+    } catch (error) {
+      console.error("Error adding bank:", error);
+      alert("Failed to save bank details. Please try again.");
+    }
+  };
 
   return (
     <div>
@@ -37,29 +93,35 @@ const AddNewBank = () => {
           </div>
         </div>
         <hr />
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="w-full md:flex items-center justify-between my-4 px-8">
             <label
-              htmlFor="bankname"
+              htmlFor="bankName"
               className="w-[200px] text-[#595995] font-semibold"
             >
               Bank Name <span className="text-red-600 text-2xl">*</span>
             </label>
             <input
               type="text"
+              name="bankName"
+              value={formData.bankName}
+              onChange={handleChange}
               placeholder="Bank Name "
               className="w-full h-9 p-2 border border-[#D3D1D1] outline-none rounded"
             />
           </div>
           <div className="w-full md:flex items-center justify-between my-4 px-8">
             <label
-              htmlFor="A/C Name "
+              htmlFor="accountName"
               className="w-[200px] text-[#595995] font-semibold"
             >
               A/C Name <span className="text-red-600 text-2xl">*</span>
             </label>
             <input
               type="text"
+              name="accountName"
+              value={formData.accountName}
+              onChange={handleChange}
               placeholder="A/C Name "
               className="w-full h-9 p-2 border border-[#D3D1D1] outline-none rounded"
             />
@@ -67,52 +129,64 @@ const AddNewBank = () => {
 
           <div className="w-full md:flex items-center justify-between my-4 px-8">
             <label
-              htmlFor="A/C Number"
+              htmlFor="accountNumber"
               className="w-[200px] text-[#595995] font-semibold"
             >
               A/C Number <span className="text-red-600 text-2xl">*</span>
             </label>
             <input
               type="text"
+              name="accountNumber"
+              value={formData.accountNumber}
+              onChange={handleChange}
               placeholder="A/C Number "
               className="w-full h-9 p-2 border border-[#D3D1D1] outline-none rounded"
             />
           </div>
           <div className="w-full md:flex items-center justify-between my-4 px-8">
             <label
-              htmlFor="Branch"
+              htmlFor="branch"
               className="w-[200px] text-[#595995] font-semibold"
             >
               Branch <span className="text-red-600 text-2xl">*</span>
             </label>
             <input
               type="text"
+              name="branch"
+              value={formData.branch}
+              onChange={handleChange}
               placeholder="Branch"
               className="w-full h-9 p-2 border border-[#D3D1D1] outline-none rounded"
             />
           </div>
           <div className="w-full md:flex items-center justify-between my-4 px-8">
             <label
-              htmlFor="IFSC Code"
+              htmlFor="ifscCode"
               className="w-[200px] text-[#595995] font-semibold"
             >
               IFSC Code <span className="text-red-600 text-2xl"></span>
             </label>
             <input
               type="text"
+              name="ifscCode"
+              value={formData.ifscCode}
+              onChange={handleChange}
               placeholder="IFSC Code"
               className="w-full h-9 p-2 border border-[#D3D1D1] outline-none rounded"
             />
           </div>
           <div className="w-full md:flex items-center justify-between my-4 px-8">
             <label
-              htmlFor="Amount"
+              htmlFor="amount"
               className="w-[200px] text-[#595995] font-semibold"
             >
               Amount <span className="text-red-600 text-2xl"></span>
             </label>
             <input
               type="text"
+              name="amount"
+              value={formData.amount}
+              onChange={handleChange}
               placeholder="Amount"
               className="w-full h-9 p-2 border border-[#D3D1D1] outline-none rounded"
             />
@@ -120,6 +194,7 @@ const AddNewBank = () => {
 
           <div className="buttons flex items-center justify-center gap-4">
             <button
+              onClick={handleReset}
               className="px-6 py-1 bg-[#629584] rounded-md text-white"
               type="reset"
             >

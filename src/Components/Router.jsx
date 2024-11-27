@@ -21,15 +21,12 @@ import ManageLedger from "./Master/ManageLedger";
 import AddAccountHead from "./Master/AddAccountHead";
 import AccountList from "./Master/AccountList";
 import AddWebsite from "./Master/AddWebsite";
-import Websitelist from "./Master/Websitelist";
 import AddServiceBranch from "./Master/AddServiceBranch";
 import ManageServiceBranch from "./Master/ManageServiceBranch";
 import AddServiceCategory from "./Master/AddServiceCategory";
 import ManageServiceCategory from "./Master/ManageServiceCategory";
 import AddService from "./Master/AddService";
-import ServiceSlab from "./Master/ServiceLab";
 import ManageService from "./Master/ManageService";
-import LedgerList from "./Master/LedgerList"
 import Dashboard from "../Pages/Dashboard"
 import OpeningBalance from "./Accounts/OpeningBalance";
 import CustomerReceive from "./Accounts/CustomerReceive";
@@ -59,6 +56,54 @@ import ProfitReport from "./AccountReports/ProfitReport";
 import ProfitReport2 from "./AccountReports/ProfitReport2";
 import CashFlowReport from "./AccountReports/CashFlowReport";
 import CashFlowReport2 from "./AccountReports/CashFlowReport2";
+import BalanceSheet from "./AccountReports/BalanceSheet";
+import AccountSummary from "./AccountReports/AccountSummary";
+import BusinessLiquidityReport from "./Report/BusinessLiquidityReport";
+import ClosingReport from "./Report/ClosingReport";
+import DueReports from "./Report/DueReports";
+import TodaysReport from "./Report/TodaysReport";
+import SalesReport from "./Report/SalesReport";
+import UserWiseSalesReport from "./Report/UserWiseSalesReport";
+import PurchaseReport from "./Report/PurchaseReport";
+import SalesReturn from "./Report/SalesReturn";
+import TodaysCustomerReceipt from "./Report/TodaysCustomerReceipt";
+import IncomeExReport from "./Report/IncomeExReport";
+import ReceiptPaymentReport from "./Report/ReceiptPaymentReport";
+import ServiceDetailReport from "./Report/ServiceDetailReport";
+import ServiceItemReport from "./Report/ServiceItemDetailes";
+import TopCustomerReport from "./Report/TopCustomerReport";
+import CreditCustomer from "./Customer/CreditCustomer";
+import CustomerAdvance from "./Customer/CustomerAdvance";
+import CustomerLedger from "./Customer/CustomerLedger";
+import CustomerLedgerSearch from "./Customer/CustomerLedgerSearch";
+import PaidCustomer from "./Customer/PaidCustomer";
+import ManageServiceProvider from "./Master/ManageServiceProvider";
+import AddCustomer from "./Customer/AddCustomer";
+import InvoiceList from "../Services/InvoiceList";
+import JobCardLedger from "../Services/JobCardLedger";
+import JobCardNew from "../Services/JobCardNew";
+import M_ATMServiceInvoice from "../Services/M_ATMServiceInvoice";
+import ManageServiceInvoice from "../Services/ManageServiceInvoice";
+import PaymentCollection from "../Services/PaymentCollection";
+import ServiceInvoice from "../Services/ServiceInvoice";
+import AddDesignation from "./HRM/HRM1/AddDesignation";
+import AddEmployee from "./HRM/HRM1/AddEmployee";
+import ManageDesignation from "./HRM/HRM1/ManageDesignation";
+import ManageEmployee from "./HRM/HRM1/ManageEmployee";
+import AddOfficeLoan from "./HRM/OfficeLoan/AddOfficeLoan";
+import AddPayment from "./HRM/OfficeLoan/AddPayment";
+import AddPerson from "./HRM/OfficeLoan/AddPerson";
+import ManagePerson from "./HRM/OfficeLoan/ManagePerson";
+import AddBenefits from "./HRM/Payroll/AddBenefits";
+import AddSalarySetup from "./HRM/Payroll/AddSalarySetup";
+import EmployeeSalaryPayment from "./HRM/Payroll/EmployeeSalaryPayment";
+import ManageBenefits from "./HRM/Payroll/ManageBenefits";
+import ManageSalaryGenerate from "./HRM/Payroll/ManageSalaryGenerate";
+import ManageSalarySetup from "./HRM/Payroll/ManageSalarySetup";
+import SalaryGenerate from "./HRM/Payroll/SalaryGenerate";
+import AddLedger from "./Master/AddLedger";
+import WebsiteLedger from "./Master/WebsiteLedger";
+import SetServiceProvider from "./Master/SetServiceProvider";
 
 
 const Routeing = () => {
@@ -97,19 +142,22 @@ const Routeing = () => {
               <Route path="/returnservice/walletreturn" element={<WalletReturn/>} />
 
               {/* Master */}
-            <Route path="/master/" element={<LedgerList/>}/>
+            <Route path="/master" element={<AddLedger/>}/>
             <Route path="/master/ManageLedger" element={<ManageLedger/>}/>
             <Route path="/master/AddAccountHead" element={<AddAccountHead/>}/>
             <Route path="/master/AccountList" element={<AccountList/>}/>
             <Route path="/master/AddWebsite" element={<AddWebsite/>}/>
-            <Route path="/master/Websitelist" element={<Websitelist />}/>
+            <Route path="/master/WebsiteLedger" element={<WebsiteLedger />}/>
             <Route path="/master/AddServiceBranch" element={<AddServiceBranch />}/>
             <Route path="/master/ManageServiceBranch" element={<ManageServiceBranch/>}/>
             <Route path="/master/AddServiceCategory" element={<AddServiceCategory />}/>
             <Route path="/master/ManageServiceCategory" element={<ManageServiceCategory/>}/>
             <Route path="/master/AddService" element={<AddService/>}/>
-            <Route path="/master/ServiceSlab" element={<ServiceSlab />}/>
+            
             <Route path="/master/ManageService" element={<ManageService />}/>
+            <Route path="/master/Manageserviceprovider" element={<ManageServiceProvider />}/>
+            <Route path="/master/setserviceprovider" element={< SetServiceProvider />}/>
+            
 
             {/* Accounts */}
             <Route path="/accounts/openingbalance" element={<OpeningBalance />}/>
@@ -146,12 +194,72 @@ const Routeing = () => {
           <Route path="/accountreport/profitreport2" element={<ProfitReport2/>}/>
           <Route path="/accountreport/cashflowreport" element={<CashFlowReport/>}/>
           <Route path="/accountreport/cashflowreport2" element={<CashFlowReport2/>}/>
+          <Route path="/accountreport/balancesheet" element={<BalanceSheet/>}/>
+          <Route path="/accountreport/accountsummary" element={<AccountSummary/>}/>
 
-            {/* Setting */}
-            {/* <Route path="/setting/smsconfigure" element={<SmsConfigure/>}/>
-            <Route path="/setting/userpermissionsetting/rolelist" element={<RoleList />}/>
-            {/* <Route path="/setting/userpermissionsetting/addrole" element={<AddRole />}/> */}
-            {/* <Route path="/setting/userpermissionsetting/userassignrole" element={<UserAsignRole />}/> */}
+          {/* Reports */}
+          < Route path= "/report/closingreport" element={ <ClosingReport />} />
+          < Route path= "/report/todaysreport" element={ <TodaysReport />} />
+          < Route path= "/report/servicesalesreport" element={ <SalesReport />} />
+          < Route path= "/report/userwisesalesreport" element={ <UserWiseSalesReport />} />
+          < Route path= "/report/duereport" element={ <DueReports />} />
+          < Route path= "/report/purchasereport" element={ <PurchaseReport />} />
+          < Route path= "/report/salesreturn" element={ <SalesReturn />} />
+          < Route path= "/report/todaycustomerreceipt" element={ <TodaysCustomerReceipt />} />
+          < Route path= "/report/incomenexpenditure" element={ <IncomeExReport />} />
+          < Route path= "/report/receiptpaymentreport" element={ <ReceiptPaymentReport />} />
+          < Route path= "/report/servicedetailreport" element={ <ServiceDetailReport />} />
+          < Route path= "/report/serviceitemreport" element={ <ServiceItemReport />} />
+          < Route path= "/report/topcustomerreport" element={ <TopCustomerReport />} />
+        
+          < Route path= "/report/businessliquidityreport" element={ <BusinessLiquidityReport />} />
+
+          {/* Customers */}
+          < Route path="/customer/addcustomer" element={ < AddCustomer /> } />
+          <Route path = "/customer/customerlist" element= { <CustomerList /> } />
+          < Route path= "/customer/creditcustomer" element={ <CreditCustomer />} />
+          < Route path= "/customer/customeradvance" element={ <CustomerAdvance />} />
+          < Route path= "/customer/customerledger" element={ <CustomerLedger />} />
+          < Route path= "/customer/customerledgersearch" element={ <CustomerLedgerSearch />} />
+          < Route path= "/customer/paidcustomer" element={ <PaidCustomer />} />
+
+
+          {/* Services */}
+          < Route path="/service/invoicelist" element={ < InvoiceList /> } />
+          < Route path="/service/jobcardledger" element={ < JobCardLedger /> } />
+          < Route path="/service/jobcardnew" element={ < JobCardNew /> } />
+          < Route path="/service/matmservice" element={ < M_ATMServiceInvoice /> } />
+          < Route path="/service/manageserviceinvoice" element={ < ManageServiceInvoice /> } />
+          < Route path="/service/paymentcollection" element={ < PaymentCollection /> } />
+          < Route path="/service/serviceinvoice" element={ < ServiceInvoice /> } />
+
+          {/* HRM */}
+          < Route path="/hrm/adddesignation" element={ < AddDesignation /> } />
+          < Route path="/hrm/addemployee" element={ < AddEmployee /> } />
+          < Route path="/hrm/managedesignation" element={ < ManageDesignation /> } />
+          < Route path="/hrm/manageemployee" element={ < ManageEmployee /> } />
+
+          {/* Attendence */}
+          < Route path="/attendence/addexpenseitem" element={ <Attendance  /> } />
+          < Route path="/attendence/addexpense" element={ <AttendanceReport  /> } />
+          < Route path="/attendence/manageexpenseitem" element={ <ManageAttendance  /> } />
+          
+
+          {/* Office Loan */}
+          < Route path="/officeloan/addofficeloan" element={ <AddOfficeLoan  /> } />
+          < Route path="/officeloan/addpayments" element={ <AddPayment  /> } />
+          < Route path="/officeloan/addperson" element={ <AddPerson  /> } />
+          < Route path="/officeloan/manageperson" element={ <ManagePerson  /> } />
+
+
+          {/* Pay ROll */}
+          < Route path="/payroll/addbenefits" element={ <AddBenefits /> } />
+          < Route path="/payroll/salarysetup" element={ < AddSalarySetup /> } />
+          < Route path="/payroll/employeesalarypayment" element={ < EmployeeSalaryPayment /> } />
+          < Route path="/payroll/managebenefits" element={ < ManageBenefits /> } />
+          < Route path="/payroll/managesalarygenerate" element={ < ManageSalaryGenerate /> } />
+          < Route path="/payroll/managesalarysetup" element={ < ManageSalarySetup /> } />
+          < Route path="/payroll/salarygenerate" element={ < SalaryGenerate /> } />
             </Routes>
           </div>
         </div>

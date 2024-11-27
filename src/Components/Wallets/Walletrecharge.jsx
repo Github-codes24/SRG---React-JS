@@ -1,12 +1,74 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaRegMoneyBill1 } from "react-icons/fa6";
 import { IoIosAddCircle } from "react-icons/io";
 import { MdOutlineHome } from "react-icons/md";
 import { SlNotebook } from "react-icons/sl";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
+import BASE_URL from "../../api";
 
 const Walletrecharge = () => {
-  const navigate = useNavigate()
+  const [formData, setFormData] = useState({
+    walletid: "",
+    amount: "",
+  });
+
+  const [walletData, setWalletData] = useState([]);
+  const navigate = useNavigate();
+
+  // Fetch wallet data from API
+  useEffect(() => {
+    const fetchWalletData = async () => {
+      try {
+        const response = await axios.get(`${BASE_URL}/api/wallets/all`); // Replace with your API endpoint
+        setWalletData(response.data);
+      } catch (error) {
+        console.error("Error fetching wallet data:", error);
+      }
+    };
+    fetchWalletData();
+  }, []);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const generateVoucherNumber = () => {
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    let voucherNumber = "";
+    for (let i = 0; i < 5; i++) {
+      voucherNumber += characters.charAt(
+        Math.floor(Math.random() * characters.length)
+      );
+    }
+    return voucherNumber;
+  };
+
+  const handleVoucherClick = () => {
+    const generatedVoucher = generateVoucherNumber();
+    setFormData((prevData) => ({
+      ...prevData,
+      voucherNumber: generatedVoucher,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post(`${BASE_URL}/api/wallets/recharge`, formData);
+      alert("Wallet recharged successfully!");
+      setFormData({ walletid: "", amount: "" });
+      navigate("/wallet/walletledger");
+    } catch (error) {
+      console.error("Error recharging wallet:", error);
+      alert("Failed to recharge wallet. Please try again.");
+    }
+  };
   return (
     <div>
       <div className="flex items-center justify-end">
@@ -56,7 +118,7 @@ const Walletrecharge = () => {
           </div>
         </div>
         <hr />
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="w-full md:flex items-center justify-between my-4 px-8">
             <label
               htmlFor="bankname"
@@ -66,8 +128,12 @@ const Walletrecharge = () => {
             </label>
             <input
               type="text"
-              placeholder="Voucher Number "
+              name="voucherNumber"
+              placeholder="Voucher Number"
+              value={formData.voucherNumber}
+              onClick={handleVoucherClick}
               className="w-full h-9 p-2 border border-[#D3D1D1] outline-none rounded"
+              readOnly
             />
           </div>
           <div className="w-full md:flex items-center justify-between my-4 px-8">
@@ -136,15 +202,15 @@ const Walletrecharge = () => {
               className="w-full h-9 p-2 border border-[#D3D1D1] outline-none rounded"
             />
           </div>
-        </form>
+        
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white border border-gray-300">
             <thead>
               <tr className="text-[#595995]">
-                <th className="border px-4 py-2">Ledger Name</th>
+                <th className="border px-4 py-2">Wallet Name</th>
                 <th className="border px-4 py-2">Ledger Balance</th>
                 <th className="border px-4 py-2">Account Head</th>
-                <th className="border px-4 py-2">Account</th>
+                <th className="border px-4 py-2">Amount</th>
               </tr>
             </thead>
             <tbody>
@@ -152,9 +218,12 @@ const Walletrecharge = () => {
               <tr className="hover:bg-gray-100">
                 <td className="border px-4 py-2 text-center">
                   <select className="w-full h-full" name="">
-                    <option value="CSC SRG" selected>
-                      CSC SRG
+                  {walletData.map((wallet,index) => (
+                  
+                    <option value="CSCSRG" selected key={index}>
+                      {wallet.walletName}
                     </option>
+                ))}
                   </select>
                 </td>
                 <td className="border px-4 py-2 text-center bg-gray-200">00</td>
@@ -162,12 +231,12 @@ const Walletrecharge = () => {
                   Wallet Balance
                 </td>
                 <td className="border px-4 py-2 text-center">
-                  <input className="w-full h-full outline-none" type="number" />
+                  <input className="w-full h-full outline-none" type="number" onChange={handleInputChange} name="amount"/>
                 </td>
               </tr>
               {/* Row 2 */}
               <tr className="hover:bg-gray-100 text-[#595995] font-medium">
-                <td className="border px-4 py-2 text-center">Account Head</td>
+                <td className="border px-4 py-2 text-center"></td>
                 <td className="border px-4 py-2 text-center"></td>
                 <td className="border px-4 py-2 text-center">Total</td>
                 <td className="border px-4 py-2 text-center bg-gray-200"></td>
@@ -181,6 +250,7 @@ const Walletrecharge = () => {
             </button>
           </div>
         </div>
+        </form>
       </div>
     </div>
   );

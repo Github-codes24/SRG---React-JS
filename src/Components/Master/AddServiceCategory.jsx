@@ -1,9 +1,17 @@
 import React from 'react';
 import { MdMiscellaneousServices } from "react-icons/md";
 import { MdOutlineFileUpload } from "react-icons/md";
+import { MdOutlineHome } from "react-icons/md";
 
 const AddServiceCategory = () => {
   return (
+    <>
+    <div className="flex items-center justify-end mr-5">
+        <MdOutlineHome className="text-3xl text-[#3A6D8C]" />
+        <span className="text-base md:text-xl text-[#5C5858]">
+        Home  /  Master  / Add Service Category
+        </span>
+      </div>
     <div className="max-w-6xl mx-auto mt-10 p-6 bg-white shadow-md rounded-md">
       {/* Header Section */}
       <div className="flex justify-between items-center mb-6">
@@ -52,6 +60,7 @@ const AddServiceCategory = () => {
           </div>
         </div>
     </div>
+    </>
   );
 };
 
