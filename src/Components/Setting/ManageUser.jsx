@@ -3,9 +3,9 @@ import { FaEdit } from 'react-icons/fa'
 import { FaMagnifyingGlass } from 'react-icons/fa6'
 import { MdOutlineHome } from 'react-icons/md'
 // import  dummyprofile  from '../../assets/Dummy/dummyprofile'
-import dummyprofile from '../../assets/Dummy/dummyprofile.png'
+// import dummyprofile from '../../assets/Dummy/dummyprofile.png'
  
-import { VscSaveAll } from 'react-icons/vsc'
+// import { VscSaveAll } from 'react-icons/vsc'
 
 
 const ManageUser = () => {
@@ -110,7 +110,7 @@ const ManageUser = () => {
       <tr>
       <td className="py-2 px-4 border text-center align-middle">1</td>
       <td className="py-2 px-4 border text-center align-middle">
-  <img src={dummyprofile} alt="Profile" width="100" height="100" />
+  <img alt="Profile" width="100" height="100" />
      </td>
         <td className="py-2 px-4 border text-center align-middle">08-Aug-24</td>
         <td className="py-2 px-4 border text-center align-middle">Aman</td>
@@ -125,7 +125,7 @@ const ManageUser = () => {
       </tr>
       <tr>
       <td className="py-2 px-4 border text-center align-middle">2</td>
-        <td className="py-2 px-4 border text-center align-middle"><img src={dummyprofile} alt="Profile" width="100" height="100" /></td>
+        <td className="py-2 px-4 border text-center align-middle"><img  alt="Profile" width="100" height="100" /></td>
         <td className="py-2 px-4 border text-center align-middle">08-Aug-24</td>
         <td className="py-2 px-4 border text-center align-middle">Aman</td>
         <td className="py-2 px-4 border text-center align-middle">25478</td>
@@ -167,7 +167,7 @@ const ManageUser = () => {
       </tr>
       <tr>
       <td className="py-2 px-4 border text-center align-middle">5</td>
-        <td className="py-2 px-4 border text-center align-middle"><img src={dummyprofile} alt="Profile" width="100" height="100" /></td>
+        <td className="py-2 px-4 border text-center align-middle"><img  alt="Profile" width="100" height="100" /></td>
         <td className="py-2 px-4 border text-center align-middle">08-Aug-24</td>
         <td className="py-2 px-4 border text-center align-middle">Aman</td>
         <td className="py-2 px-4 border text-center align-middle">25478</td>
@@ -181,7 +181,7 @@ const ManageUser = () => {
       </tr>
       <tr>
       <td className="py-2 px-4 border text-center align-middle">6</td>
-        <td className="py-2 px-4 border text-center align-middle"><img src={dummyprofile} alt="Profile" width="100" height="100" /></td>
+        <td className="py-2 px-4 border text-center align-middle"><img  alt="Profile" width="100" height="100" /></td>
         <td className="py-2 px-4 border text-center align-middle">08-Aug-24</td>
         <td className="py-2 px-4 border text-center align-middle">Aman</td>
         <td className="py-2 px-4 border text-center align-middle">25478</td>

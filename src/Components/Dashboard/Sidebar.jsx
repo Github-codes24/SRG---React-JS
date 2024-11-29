@@ -33,7 +33,7 @@ import { useNavigate } from "react-router-dom";
 const Sidebar = () => {
   const [isExpanded, setIsExpanded] = useState(true);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   // Individual states for dropdowns
   const [dashboardOpen, setDashboardOpen] = useState(false);
   const [masterOpen, setMasterOpen] = useState(false);
@@ -58,9 +58,6 @@ const Sidebar = () => {
 
   return (
     <div className="h-full bg-[#2E2E48] ">
-      <div className="p-4">
-        {/* <img src={Logo} alt="logo" /> */}
-      </div>
       <aside
         className={`bg-[#2E2E48] text-white h-screen mb-10 p-4 transition-width duration-300 ${
           isExpanded ? "w-64" : "w-16"
@@ -79,7 +76,7 @@ const Sidebar = () => {
           </button>
         </div>
 
-        <ul className="space-y-1 overflow-auto h-auto ">
+        <ul className="space-y-1 overflow-y-auto h-auto no-scrollbar">
           {/* Dashboard */}
           <li
             className="flex items-center justify-between cursor-pointer rounded-2xl border-2 border-[#7A7A97] px-2 py-1"
@@ -87,7 +84,11 @@ const Sidebar = () => {
           >
             <div className="flex items-center gap-2">
               <AiOutlineDashboard className="text-2xl text-[#62D0F1]" />
-              {isExpanded && <p className="text-lg" onClick={()=> navigate("/")}>Dashboard</p>}
+              {isExpanded && (
+                <p className="text-lg" onClick={() => navigate("/")}>
+                  Dashboard
+                </p>
+              )}
             </div>
             {isExpanded && (
               <IoIosArrowDown
@@ -99,59 +100,99 @@ const Sidebar = () => {
           {/* Master */}
           <li
             className="flex items-center justify-between cursor-pointer rounded-2xl border-2 border-[#7A7A97] px-2 py-1"
-            onClick={()=>navigate('/master')}
+            onClick={() => navigate("/master")}
           >
             <div className="flex items-center gap-2">
               <PiNotebookLight className="text-2xl text-[#62D0F1]" />
-              {isExpanded && <p className="text-lg"   >Master</p>}
+              {isExpanded && <p className="text-lg">Master</p>}
             </div>
             {isExpanded && (
               <IoIosArrowDown
-                className={`text-xl ${masterOpen ? "rotate-180" : ""}`} onClick={() => setMasterOpen(!masterOpen)}
+                className={`text-xl ${masterOpen ? "rotate-180" : ""}`}
+                onClick={() => setMasterOpen(!masterOpen)}
               />
             )}
           </li>
           {masterOpen && isExpanded && (
-            <div className=" bg-[#6F6C90] rounded-2xl text-white text-sm text-center ">
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate('/master')}>
+            <div className=" bg-[#6F6C90] rounded-2xl text-white text-sm text-center">
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/master")}
+              >
                 Add Ledger
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate('/master/manageledger')}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/master/manageledger")}
+              >
                 Manage Ledger
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate('/master/AddAccountHead')}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/master/AddAccountHead")}
+              >
                 Add Account Head
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/master/AccountList")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/master/AccountList")}
+              >
                 Account List
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/master/AddWebsite")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/master/AddWebsite")}
+              >
                 Add Website
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/master/websiteledger")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/master/Websitelist")}
+              >
                 Website Ledger
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/master/AddServiceBranch")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/master/AddServiceBranch")}
+              >
                 Add Service Branch
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/master/ManageServiceBranch")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/master/ManageServiceBranch")}
+              >
                 Manage Service Branch
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/master/AddServiceCategory")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/master/AddServiceCategory")}
+              >
                 Add Service Category
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/master/AddService")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/master/AddService")}
+              >
                 Add Service
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/master/ManageService")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/master/ManageService")}
+              >
                 Manage Service
               </p>
 
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/master/setserviceprovider")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/master/setserviceprovider")}
+              >
                 Set Service Provider
               </p>
 
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/master/manageserviceprovider")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/master/manageserviceprovider")}
+              >
                 Manage Service
               </p>
             </div>
@@ -177,22 +218,40 @@ const Sidebar = () => {
 
           {customerOpen && isExpanded && (
             <div className=" bg-[#6F6C90] rounded-2xl text-white text-sm text-center ">
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/customer/addcustomer")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/customer/addcustomer")}
+              >
                 Add Customer
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/customer/customerlist")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/customer/customerlist")}
+              >
                 Customer List
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/customer/creditcustomer")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/customer/creditcustomer")}
+              >
                 Credit Customer
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/customer/paidcustomer")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/customer/paidcustomer")}
+              >
                 Paid Customer
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/customer/customerledger")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/customer/customerledger")}
+              >
                 Customer Ledger
               </p>
-              <p className=" py-3 px-4 rounded-lg cursor-pointer" onClick={()=>navigate("/customer/customeradvance")}>
+              <p
+                className=" py-3 px-4 rounded-lg cursor-pointer"
+                onClick={() => navigate("/customer/customeradvance")}
+              >
                 Customer Advance
               </p>
             </div>
@@ -205,7 +264,11 @@ const Sidebar = () => {
           >
             <div className="flex items-center gap-2">
               <RiBankLine className="text-2xl text-[#62D0F1]" />
-              {isExpanded && <p className="text-lg" onClick={()=>navigate("/bank")}>Bank</p>}
+              {isExpanded && (
+                <p className="text-lg" onClick={() => navigate("/bank")}>
+                  Bank
+                </p>
+              )}
             </div>
             {isExpanded && (
               <IoIosArrowDown
@@ -215,16 +278,28 @@ const Sidebar = () => {
           </li>
           {bankOpen && isExpanded && (
             <div className=" bg-[#6F6C90] rounded-2xl text-white text-sm text-center ">
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={() => navigate("/bank")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/bank")}
+              >
                 Add New Bank
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=> navigate("/bank/managebank")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/bank/managebank")}
+              >
                 Manage Bank
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=> navigate("/bank/banktransaction")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/bank/banktransaction")}
+              >
                 Bank Transaction
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=> navigate("/bank/bankledger")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/bank/bankledger")}
+              >
                 Bank Ledger
               </p>
             </div>
@@ -235,33 +310,49 @@ const Sidebar = () => {
             className="flex items-center justify-between cursor-pointer rounded-2xl border-2 border-[#7A7A97] px-2 py-1 bg-[#2E2E48] hover:bg-[#6B688D]"
             onClick={() => setWalletsOpen(!walletsOpen)}
           >
-            <div className="flex items-center gap-2 " onClick={()=>navigate("/wallet")}>
-              <MdAccountBalanceWallet className="text-2xl text-[#62D0F1]"  />
+            <div
+              className="flex items-center gap-2 "
+              onClick={() => navigate("/wallet")}
+            >
+              <MdAccountBalanceWallet className="text-2xl text-[#62D0F1]" />
               {isExpanded && <p className="text-lg">Wallets</p>}
             </div>
             {isExpanded && (
               <IoIosArrowDown
                 className={`text-xl ${walletsOpen ? "rotate-180" : ""}`}
-
               />
-
             )}
           </li>
           {walletsOpen && isExpanded && (
             <div className=" bg-[#6F6C90] rounded-2xl text-white text-sm text-center ">
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/wallet")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/wallet")}
+              >
                 Add Wallets
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/wallet/managewallet")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/wallet/managewallet")}
+              >
                 Manage Wallets
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/wallet/walletrecharge")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/wallet/walletrecharge")}
+              >
                 Wallet Recharge
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/wallet/walletrefund")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/wallet/walletrefund")}
+              >
                 Wallet Refund
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/wallet/walletledger")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/wallet/walletledger")}
+              >
                 Wallet Ledger
               </p>
             </div>
@@ -273,7 +364,10 @@ const Sidebar = () => {
             className="flex items-center justify-between cursor-pointer rounded-2xl border-2 border-[#7A7A97] px-2 py-1 bg-[#2E2E48] hover:bg-[#6B688D]"
             onClick={() => setPurchaseOpen(!purchaseOpen)}
           >
-            <div className="flex items-center gap-2 " onClick={()=>navigate("/purchase/purchaseservice")}>
+            <div
+              className="flex items-center gap-2 "
+              onClick={() => navigate("/purchase/purchaseservice")}
+            >
               <BiPurchaseTag className="text-2xl text-[#62D0F1]" />
               {isExpanded && <p className="text-lg">Purchase</p>}
             </div>
@@ -285,13 +379,22 @@ const Sidebar = () => {
           </li>
           {purchaseOpen && isExpanded && (
             <div className=" bg-[#6F6C90] rounded-2xl text-white text-sm text-center ">
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/purchase/purchaseservice")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/purchase/purchaseservice")}
+              >
                 Purchase Invoice Services
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/purchase/purchasematm")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/purchase/purchasematm")}
+              >
                 Purchase Invoice MATM
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/purchase/purchasemanage")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/purchase/purchasemanage")}
+              >
                 Manage Purchase
               </p>
             </div>
@@ -304,7 +407,10 @@ const Sidebar = () => {
             onClick={() => setServiceOpen(!serviceOpen)}
           >
             <div className="flex items-center gap-2 ">
-              <FcServices className="text-2xl text-[#62D0F1]" onClick={()=>navigate("")} />
+              <FcServices
+                className="text-2xl text-[#62D0F1]"
+                onClick={() => navigate("")}
+              />
               {isExpanded && <p className="text-lg">Service</p>}
             </div>
             {isExpanded && (
@@ -315,25 +421,46 @@ const Sidebar = () => {
           </li>
           {serviceOpen && isExpanded && (
             <div className=" bg-[#6F6C90] rounded-2xl text-white text-sm text-center ">
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"  onClick={()=>navigate("/service/jobcardnew")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/service/jobcardnew")}
+              >
                 Job Card New
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/service/jobcardledger")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/service/jobcardledger")}
+              >
                 Job Card Ledger
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/service/serviceinvoice")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/service/serviceinvoice")}
+              >
                 Service Invoice
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/service/matmservice")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/service/matmservice")}
+              >
                 MATM Service Invoice
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/service/manageserviceinvoice")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/service/manageserviceinvoice")}
+              >
                 Manage Service Invoice
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/service/paymentcollection")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/service/paymentcollection")}
+              >
                 Payment Collection
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/service/invoicelist")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/service/invoicelist")}
+              >
                 Invoice List All
               </p>
             </div>
@@ -345,7 +472,10 @@ const Sidebar = () => {
             className="flex items-center justify-between cursor-pointer rounded-2xl border-2 border-[#7A7A97] px-2 py-1 bg-[#2E2E48] hover:bg-[#6B688D]"
             onClick={() => setAccountsOpen(!accountsOpen)}
           >
-            <div className="flex items-center gap-2 " onClick={()=>navigate("/accounts/chartaccount")}>
+            <div
+              className="flex items-center gap-2 "
+              onClick={() => navigate("/accounts/chartaccount")}
+            >
               <BiSolidUserAccount className="text-2xl text-[#62D0F1]" />
               {isExpanded && <p className="text-lg">Accounts</p>}
             </div>
@@ -357,41 +487,70 @@ const Sidebar = () => {
           </li>
           {accountsOpen && isExpanded && (
             <div className=" bg-[#6F6C90] rounded-2xl text-white text-sm text-center ">
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/accounts/chartaccount")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/accounts/chartaccount")}
+              >
                 Chart of Account
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/accounts/openingbalance")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/accounts/openingbalance")}
+              >
                 Opening Balance{" "}
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/accounts/customerreceive")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/accounts/customerreceive")}
+              >
                 Customer Receive
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/accounts/cashtransfer")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/accounts/cashtransfer")}
+              >
                 Cash To Cash Transfer
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/accounts/receiptsvoucher")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/accounts/receiptsvoucher")}
+              >
                 Receipt Voucher
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/accounts/paymentvoucher")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/accounts/paymentvoucher")}
+              >
                 Payment Voucher
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/accounts/contravoucher")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/accounts/contravoucher")}
+              >
                 Contra Voucher
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/accounts/journalvoucher")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/accounts/journalvoucher")}
+              >
                 Journal Voucher
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/accounts/voucherapproval")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/accounts/voucherapproval")}
+              >
                 Voucher Approved
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/accounts/closingaccount")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/accounts/closingaccount")}
+              >
                 Daily Closing Account
               </p>
             </div>
           )}
 
           {/* Reports */}
-
           <li
             className="flex items-center justify-between cursor-pointer rounded-2xl border-2 border-[#7A7A97] px-2 py-1 bg-[#2E2E48] hover:bg-[#6B688D] no-scrollbar"
             onClick={() => setReportOpen(!reportOpen)}
@@ -407,116 +566,160 @@ const Sidebar = () => {
             )}
           </li>
           {reportOpen && isExpanded && (
-            <div className=" bg-[#6F6C90] rounded-2xl text-white text-sm text-center ">
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/report/closingreport")} >
-                Closing Report
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/report/todaysreport")}>
-                Todays Report
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/report/servicesalesreport")}>
-                Service Sales Report
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/report/userwisesalesreport")}>
-                User Wise Sales Report
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/report/duereport")}>
-                Due Report
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/report/purchasereport")}>
-                Purchase Report
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/report/")}>
-                Sales Return
-              </p>
+            <div>
+              <div className="bg-[#6F6C90] rounded-2xl text-white text-sm text-center">
+                {/* General Reports */}
+                <p
+                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                  onClick={() => navigate("/report/closingreport")}
+                >
+                  Closing Report
+                </p>
+                <p
+                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                  onClick={() => navigate("/report/todaysreport")}
+                >
+                  Today's Report
+                </p>
+                <p
+                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                  onClick={() => navigate("/report/servicesalesreport")}
+                >
+                  Service Sales Report
+                </p>
+                <p
+                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                  onClick={() => navigate("/report/userwisesalesreport")}
+                >
+                  User Wise Sales Report
+                </p>
+                <p
+                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                  onClick={() => navigate("/report/duereport")}
+                >
+                  Due Report
+                </p>
+                <p
+                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                  onClick={() => navigate("/report/purchasereport")}
+                >
+                  Purchase Report
+                </p>
 
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/report/")}>
-                Todays Customer Reciept
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/report/")}>
-                Income & Expenditure Report
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/report/")}>
-                Receipts & Payment Report
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/report/")}>
-                Service Detailed Report
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/report/")}>
-                Service Item Details Report
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/report/")}>
-                Top Customer
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/report/")}>
-                Business Liquidity
-              </p>
+                <p
+                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                  onClick={() => navigate("/report/salesreturn")}
+                >
+                  Sales Return
+                </p>
+                <p
+                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                  onClick={() => navigate("/report/salesreturn")}
+                >
+                  Today's Customer Receipt
+                </p>
+                <p
+                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                  onClick={() => navigate("/report/salesreturn")}
+                >
+                  Income & Expenditure Report
+                </p>
+                <p
+                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                  onClick={() => navigate("/report/salesreturn")}
+                >
+                  Receipt & Payment Report
+                </p>
+                <p
+                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                  onClick={() => navigate("/report/salesreturn")}
+                >
+                  Service Detailed Report
+                </p>
+                <p
+                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                  onClick={() => navigate("/report/salesreturn")}
+                >
+                  Service Item Details Report
+                </p>
+                <p
+                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                  onClick={() => navigate("/report/salesreturn")}
+                >
+                  Top Customer
+                </p>
+                <p
+                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                  onClick={() => navigate("/report/salesreturn")}
+                >
+                  Business Liquidity
+                </p>
+              </div>
+
+              {/* Account Reports */}
+
+              <li
+                className="flex items-center justify-between cursor-pointer mt-1 rounded-2xl border-2 border-[#7A7A97] px-2 py-1 bg-[#2E2E48] hover:bg-[#7A7A97] no-scrollbar"
+                onClick={() => setAccountReportOpen(!accountReportOpen)}
+              >
+                <div className="flex items-center gap-2 ">
+                  <TbReportAnalytics className="text-2xl text-[#62D0F1]" />
+                  {isExpanded && <p className="text-lg">Account Reports</p>}
+                </div>
+              </li>
+              <div className="bg-[#6F6C90] rounded-2xl text-white text-sm text-center mt-1">
+                <p
+                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                  onClick={() => navigate("/accountreport/cashbook")}
+                >
+                  Cash Book
+                </p>
+                <p
+                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                  onClick={() => navigate("/accountreport/bankbook")}
+                >
+                  Bank Book
+                </p>
+                <p
+                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                  onClick={() => navigate("/accountreport/generalledger")}
+                >
+                  General Ledger
+                </p>
+                <p
+                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                  onClick={() => navigate("/accountreport/trialbalance")}
+                >
+                  Trial Balance
+                </p>
+                <p
+                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                  onClick={() => navigate("/accountreport/profitreport")}
+                >
+                  Profit Loss
+                </p>
+                <p
+                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                  onClick={() => navigate("/accountreport/cashflowreport")}
+                >
+                  Cash Flow Report
+                </p>
+                <p
+                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                  onClick={() => navigate("/accountreport")}
+                >
+                  Balance Sheet
+                </p>
+                <p
+                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                  onClick={() => navigate("/accountreport")}
+                >
+                  Account Summary
+                </p>
+              </div>
             </div>
           )}
 
-          {/*Account Reports */}
-
-          <li
-            className="flex items-center justify-between cursor-pointer rounded-2xl border-2 border-[#7A7A97] px-2 py-1 bg-[#2E2E48] hover:bg-[#6B688D] no-scrollbar"
-            onClick={() => setAccountReportOpen(!accountReportOpen)}
-          >
-            <div className="flex items-center gap-2 ">
-              <TbReportAnalytics className="text-2xl text-[#62D0F1]" />
-              {isExpanded && <p className="text-lg">Account Reports</p>}
-            </div>
-            {isExpanded && (
-              <IoIosArrowDown
-                className={`text-xl ${reportOpen ? "rotate-180" : ""}`}
-              />
-            )}
-          </li>
-          {accountReportOpen && isExpanded && (
-            <div className=" bg-[#6F6C90] rounded-2xl text-white text-sm text-center ">
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"  onClick={()=>navigate("/accountreport/cashbook")}>
-                Cash Book 
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"  onClick={()=>navigate("/accountreport/bankbook")}>
-                Bank Book
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/accountreport/generalledger")}>
-                General Ledger
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/accountreport/trialbalance")}>
-                Trail Balance
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/accountreport/profitreport")}>
-                Profit Loss
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/accountreport/cashflowreport")}>
-                Cash Flow Report
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/accountreport/")}>
-                Balance Sheet
-              </p>
-
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/accountreport")}>
-                Account Summery
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/accountreport")}>
-                Income & Expenditure Report
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/accountreport")}>
-                Receipts & Payment Report
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/accountreport")}>
-                Service Detailed Report
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/accountreport")}>
-                Service Item Details Report
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/accountreport")}>
-                Top Customer
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/accountreport")}>
-                Business Liquidity
-              </p>
-            </div>
-          )}
           {/* Human REsource */}
 
           <li
@@ -534,131 +737,155 @@ const Sidebar = () => {
             )}
           </li>
           {hrmOpen && isExpanded && (
-            <div className=" bg-[#6F6C90] rounded-2xl text-white text-sm text-center ">
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={ () => navigate("/hrm/adddesignation") }>
-                Add Designation
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={ () => navigate("/hrm/managedesignation") }>
-                Manage Designation
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={ () => navigate("/hrm/addemployee") }>
-                Add Employee
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={ () => navigate("/hrm/manageemployee") }>
-                Manage Employee
-              </p>
-            </div>
-          )}
+            <div>
+              <div className=" bg-[#6F6C90] rounded-2xl text-white text-sm text-center ">
+                <p
+                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                  onClick={() => navigate("/hrm/adddesignation")}
+                >
+                  Add Designation
+                </p>
+                <p
+                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                  onClick={() => navigate("/hrm/managedesignation")}
+                >
+                  Manage Designation
+                </p>
+                <p
+                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                  onClick={() => navigate("/hrm/addemployee")}
+                >
+                  Add Employee
+                </p>
+                <p
+                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                  onClick={() => navigate("/hrm/manageemployee")}
+                >
+                  Manage Employee
+                </p>
+              </div>
 
-          {/* Attendance */}
+              {/* Attendance */}
 
-          <li
-            className="flex items-center justify-between cursor-pointer rounded-2xl border-2 border-[#7A7A97] px-2 py-1 bg-[#2E2E48] hover:bg-[#6B688D] no-scrollbar"
-            onClick={() => setAttendenceOpen(!attendenceOpen)}
-          >
-            <div className="flex items-center gap-2 ">
-              <CgProfile className="text-2xl text-[#62D0F1]" />
-              {isExpanded && <p className="text-lg">Attendence</p>}
-            </div>
-            {isExpanded && (
-              <IoIosArrowDown
-                className={`text-xl ${attendenceOpen ? "rotate-180" : ""}`}
-              />
-            )}
-          </li>
-          {attendenceOpen && isExpanded && (
-            <div className=" bg-[#6F6C90] rounded-2xl text-white text-sm text-center ">
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/attendence/addexpenseitem")}>
-                Attendence
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/attendence/manageexpenseitem")}>
-                Manage Attendence
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/attendence/addexpense")}>
-                Attendence Report
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/attendence/datewiseattendence")}>
-                Date Wise Attendence Report
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/attendence/employyewiseattendence")}>
-                Employee Wise Attendence
-              </p>
-            </div>
-          )}
+              <div className=" flex items-center justify-center cursor-pointer mt-[2px] rounded-2xl border-2 border-[#7A7A97] px-2 py-2 bg-[#2E2E48] hover:bg-[#6F6C90] no-scrollbar">
+                <p className=" text-center">Attendence</p>
+              </div>
+              <div className=" bg-[#6F6C90] rounded-2xl mt-[2px] text-white text-sm text-center ">
+                <p
+                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                  onClick={() => navigate("/attendence/addexpenseitem")}
+                >
+                  Attendence
+                </p>
+                <p
+                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                  onClick={() => navigate("/attendence/manageexpenseitem")}
+                >
+                  Manage Attendence
+                </p>
+                <p
+                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                  onClick={() => navigate("/attendence/addexpense")}
+                >
+                  Attendence Report
+                </p>
+                <p
+                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                  onClick={() => navigate("/attendence/datewiseattendence")}
+                >
+                  Date Wise Attendence Report
+                </p>
+                <p
+                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                  onClick={() => navigate("/attendence/employyewiseattendence")}
+                >
+                  Employee Wise Attendence
+                </p>
+              </div>
 
-          {/* Payroll */}
+              {/* Payroll */}
 
-          <li
-            className="flex items-center justify-between cursor-pointer rounded-2xl border-2 border-[#7A7A97] px-2 py-1 bg-[#2E2E48] hover:bg-[#6B688D] no-scrollbar"
-            onClick={() => setPayrollOpen(!payrollOpen)}
-          >
-            <div className="flex items-center gap-2 ">
-              <GiExpense className="text-2xl text-[#62D0F1]" />
-              {isExpanded && <p className="text-lg">Payroll</p>}
-            </div>
-            {isExpanded && (
-              <IoIosArrowDown
-                className={`text-xl ${payrollOpen ? "rotate-180" : ""}`}
-              />
-            )}
-          </li>
-          {payrollOpen && isExpanded && (
-            <div className=" bg-[#6F6C90] rounded-2xl text-white text-sm text-center ">
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/payroll/addbenefits")}>
-                Add Benefits
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/payroll/managebenefits")}>
-                Manage Benefits
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/payroll/salarysetup")}>
-                Salary Setup
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/payroll/managesalarysetup")}>
-                Manage Salary Setup
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/payroll/salarygenerate")}>
-                Salary Generate
-              </p>
+              <div className=" flex items-center justify-center cursor-pointer mt-[2px] rounded-2xl border-2 border-[#7A7A97] px-2 py-2 bg-[#2E2E48] hover:bg-[#6F6C90] no-scrollbar">
+                <p className=" text-center">Payroll</p>
+              </div>
+              <div className=" bg-[#6F6C90] rounded-2xl mt-[2px] text-white text-sm text-center ">
+                <p
+                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                  onClick={() => navigate("/payroll/addbenefits")}
+                >
+                  Add Benefits
+                </p>
+                <p
+                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                  onClick={() => navigate("/payroll/managebenefits")}
+                >
+                  Manage Benefits
+                </p>
+                <p
+                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                  onClick={() => navigate("/payroll/salarysetup")}
+                >
+                  Salary Setup
+                </p>
+                <p
+                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                  onClick={() => navigate("/payroll/managesalarysetup")}
+                >
+                  Manage Salary Setup
+                </p>
+                <p
+                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                  onClick={() => navigate("/payroll/salarygenerate")}
+                >
+                  Salary Generate
+                </p>
 
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/payroll/employeesalarypayment")}>
-                Employee Salary Payment
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/payroll/managesalarygenerate")}>
-                Manage Salary Generate
-              </p>
-            </div>
-          )}
+                <p
+                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                  onClick={() => navigate("/payroll/employeesalarypayment")}
+                >
+                  Employee Salary Payment
+                </p>
+                <p
+                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                  onClick={() => navigate("/payroll/managesalarygenerate")}
+                >
+                  Manage Salary Generate
+                </p>
+              </div>
 
-          {/* Office Loan */}
+              {/* Office Loan */}
 
-          <li
-            className="flex items-center justify-between cursor-pointer rounded-2xl border-2 border-[#7A7A97] px-2 py-1 bg-[#2E2E48] hover:bg-[#6B688D] no-scrollbar"
-            onClick={() => setOfficeLoanOpen(!officeLoanOpen)}
-          >
-            <div className="flex items-center gap-2 ">
-              <ImOffice className="text-2xl text-[#62D0F1]" />
-              {isExpanded && <p className="text-lg">Office Loan</p>}
-            </div>
-            {isExpanded && (
-              <IoIosArrowDown
-                className={`text-xl ${officeLoanOpen ? "rotate-180" : ""}`}
-              />
-            )}
-          </li>
-          {officeLoanOpen && isExpanded && (
-            <div className=" bg-[#6F6C90] rounded-2xl text-white text-sm text-center ">
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/officeloan/addperson")}>
-                Add Person
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/officeloan/manageperson")}>
-                Manage Person
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/officeloan/addofficeloan")}>
-                Add Office Loan
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/officeloan/addpayments")}>
-                Add Payments
-              </p>
+              <div className=" flex items-center justify-center cursor-pointer mt-[2px] rounded-2xl border-2 border-[#7A7A97] px-2 py-2 bg-[#2E2E48] hover:bg-[#6F6C90] no-scrollbar">
+                <p className=" text-center">Office Loan</p>
+              </div>
+
+              <div className=" bg-[#6F6C90] rounded-2xl text-white text-sm text-center ">
+                <p
+                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                  onClick={() => navigate("/officeloan/addperson")}
+                >
+                  Add Person
+                </p>
+                <p
+                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                  onClick={() => navigate("/officeloan/manageperson")}
+                >
+                  Manage Person
+                </p>
+                <p
+                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                  onClick={() => navigate("/officeloan/addofficeloan")}
+                >
+                  Add Office Loan
+                </p>
+                <p
+                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                  onClick={() => navigate("/officeloan/addpayments")}
+                >
+                  Add Payments
+                </p>
+              </div>
             </div>
           )}
 
@@ -668,7 +895,10 @@ const Sidebar = () => {
             className="flex items-center justify-between cursor-pointer rounded-2xl border-2 border-[#7A7A97] px-2 py-1 bg-[#2E2E48] hover:bg-[#6B688D] no-scrollbar"
             onClick={() => setReturnServiceOpen(!returnServiceOpen)}
           >
-            <div className="flex items-center gap-2 " onClick={() =>navigate("/returnservice")}>
+            <div
+              className="flex items-center gap-2 "
+              onClick={() => navigate("/returnservice")}
+            >
               <FaServicestack className="text-2xl text-[#62D0F1]" />
               {isExpanded && <p className="text-lg">Return Service</p>}
             </div>
@@ -680,16 +910,25 @@ const Sidebar = () => {
           </li>
           {returnServiceOpen && isExpanded && (
             <div className=" bg-[#6F6C90] rounded-2xl text-white text-sm text-center ">
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={() => navigate("/returnservice/servicereturn")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/returnservice/servicereturn")}
+              >
                 Service Return
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={() =>navigate("/returnservice/")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/returnservice/")}
+              >
                 Customer Return List
               </p>
               <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
                 Add Employee
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={() =>navigate("/returnservice/walletreturn")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/returnservice/walletreturn")}
+              >
                 Wallet Return List
               </p>
             </div>
@@ -702,7 +941,10 @@ const Sidebar = () => {
             onClick={() => setExpenseOpen(!expenseOpen)}
           >
             <div className="flex items-center gap-2 ">
-              <MdMoneyOff className="text-2xl text-[#62D0F1]"  onClick={()=>navigate("/expense/addexpenseitem")} />
+              <MdMoneyOff
+                className="text-2xl text-[#62D0F1]"
+                onClick={() => navigate("/expense/addexpenseitem")}
+              />
               {isExpanded && <p className="text-lg">Expense</p>}
             </div>
             {isExpanded && (
@@ -713,19 +955,34 @@ const Sidebar = () => {
           </li>
           {expenseOpen && isExpanded && (
             <div className=" bg-[#6F6C90] rounded-2xl text-white text-sm text-center ">
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/expense/addexpenseitem")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/expense/addexpenseitem")}
+              >
                 Add Expense Item
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/expense/manageexpenseitem")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/expense/manageexpenseitem")}
+              >
                 Manage Expense Item
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/expense/addexpense")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/expense/addexpense")}
+              >
                 Add Expense
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/expense/manageexpense")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/expense/manageexpense")}
+              >
                 Manage Expense
               </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer" onClick={()=>navigate("/expense/expensestatment")}>
+              <p
+                className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                onClick={() => navigate("/expense/expensestatment")}
+              >
                 Expense Statement
               </p>
             </div>
@@ -748,59 +1005,110 @@ const Sidebar = () => {
             )}
           </li>
           {settingOpen && isExpanded && (
-            <div className=" bg-[#6F6C90] rounded-2xl text-white text-sm text-center ">
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
-                SMS Configure
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
-                User Permission Setting
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
-                Add Roll
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
-                Roll List
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
-                User Assign Roll
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
-                Manage Company
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
-                Add User
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
-                Manage Users
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
-                Language
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
-                Add Currency
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
-                Update Setting
-              </p>
+            <div>
+              <div className=" bg-[#6F6C90] rounded-2xl text-white text-sm text-center ">
+                <p
+                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                  onClick={() => navigate("/setting/smsconfigure")}
+                >
+                  SMS Configure
+                </p>
+              </div>
+              <div className=" flex items-center justify-center cursor-pointer mt-[2px] rounded-2xl border-2 border-[#7A7A97] px-2 py-2 bg-[#2E2E48] hover:bg-[#6F6C90] no-scrollbar">
+                <p className=" text-center">User Permission Setting</p>
+              </div>
+              <div className=" bg-[#6F6C90] rounded-2xl mt-[2px] text-white text-sm text-center ">
+                <p
+                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                  onClick={() =>
+                    navigate("/setting/userpermissionsetting/addrole")
+                  }
+                >
+                  Add Roll
+                </p>
+                <p
+                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                  onClick={() =>
+                    navigate("/setting/userpermissionsetting/rolelist")
+                  }
+                >
+                  Roll List
+                </p>
+                <p
+                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                  onClick={() =>
+                    navigate("/setting/userpermissionsetting/userasignrole")
+                  }
+                >
+                  User Assign Roll
+                </p>
+              </div>
 
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
-                Print Setting
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
-                Mail Setting
-              </p>
-              <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer">
-                App Setting
-              </p>
+              <div className=" flex items-center justify-center cursor-pointer mt-[2px] rounded-2xl border-2 border-[#7A7A97] px-2 py-2 bg-[#2E2E48] hover:bg-[#6F6C90] no-scrollbar">
+                <p className=" text-center">Software Setting</p>
+              </div>
+              <div className=" bg-[#6F6C90] rounded-2xl text-white text-sm text-center mt-[2px] ">
+                <p
+                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                  onClick={() =>
+                    navigate("/setting/softwaresetting/managecompany")
+                  }
+                >
+                  Manage Company
+                </p>
+                <p
+                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                  onClick={() => navigate("/setting/softwaresetting/adduser")}
+                >
+                  Add User
+                </p>
+                <p
+                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
+                  onClick={() =>
+                    navigate("/setting/softwaresetting/manageuser")
+                  }
+                >
+                  Manage Users
+                </p>
+                <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"  onClick={() =>
+                    navigate("/setting/softwaresetting/language")
+                  }>
+                  Language
+                </p>
+                <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"  onClick={() =>
+                    navigate("/setting/softwaresetting/addcurrency")
+                  }>
+                  Add Currency
+                </p>
+                <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"  onClick={() =>
+                    navigate("/setting/softwaresetting/updatesetting")
+                  }>
+                  Update Setting
+                </p>
+
+                <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"  onClick={() =>
+                    navigate("/setting/softwaresetting/printsetting")
+                  }>
+                  Print Setting
+                </p>
+                <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"  onClick={() =>
+                    navigate("/setting/softwaresetting/mailsetting")
+                  }>
+                  Mail Setting
+                </p>
+                <p className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"  onClick={() =>
+                    navigate("/setting/softwaresetting/appsetting")
+                  }>
+                  App Setting
+                </p>
+              </div>
             </div>
           )}
         </ul>
 
         <div>
           <div className="flex justify-center">
-            <div>
-              {/* <img src={Profile} alt="proflie" /> */}
-            </div>
+            <div>{/* <img src={Profile} alt="proflie" /> */}</div>
             <div></div>
           </div>
         </div>
@@ -810,4 +1118,3 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
-

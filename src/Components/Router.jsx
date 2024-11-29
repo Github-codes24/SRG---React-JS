@@ -104,6 +104,20 @@ import SalaryGenerate from "./HRM/Payroll/SalaryGenerate";
 import AddLedger from "./Master/AddLedger";
 import WebsiteLedger from "./Master/WebsiteLedger";
 import SetServiceProvider from "./Master/SetServiceProvider";
+import AddRole from "./Setting/AddRole";
+import RoleList from "./Setting/RoleList";
+import UserAsignRole from "./Setting/UserAsignRole";
+import MailSetting from "./Setting/MailSetting";
+import PrintSetting from "./Setting/PrintSetting";
+import PhraseList from "./Setting/PhraseList";
+import UpdateSetting from "./Setting/UpdateSetting";
+import AddUser from "./Setting/AddUser";
+import AppSetting from "./Setting/AppSetting";
+import Language from "./Setting/Language";
+import ManageCompany from "./Setting/ManageCompany";
+import ManageUser from "./Setting/ManageUser";
+import SmsConfigure from "./Setting/SmsConfigure";
+import Currency from "./Setting/AddCurrency";
 
 
 const Routeing = () => {
@@ -147,7 +161,7 @@ const Routeing = () => {
             <Route path="/master/AddAccountHead" element={<AddAccountHead/>}/>
             <Route path="/master/AccountList" element={<AccountList/>}/>
             <Route path="/master/AddWebsite" element={<AddWebsite/>}/>
-            <Route path="/master/WebsiteLedger" element={<WebsiteLedger />}/>
+            <Route path="/master/Websitelist" element={<WebsiteLedger />}/>
             <Route path="/master/AddServiceBranch" element={<AddServiceBranch />}/>
             <Route path="/master/ManageServiceBranch" element={<ManageServiceBranch/>}/>
             <Route path="/master/AddServiceCategory" element={<AddServiceCategory />}/>
@@ -260,6 +274,24 @@ const Routeing = () => {
           < Route path="/payroll/managesalarygenerate" element={ < ManageSalaryGenerate /> } />
           < Route path="/payroll/managesalarysetup" element={ < ManageSalarySetup /> } />
           < Route path="/payroll/salarygenerate" element={ < SalaryGenerate /> } />
+
+
+          {/* User Permission Setting */}
+          < Route path="/setting/userpermissionsetting/addrole" element={ <AddRole /> } />
+          < Route path="/setting/userpermissionsetting/roleList" element={ <RoleList /> } />
+          < Route path="/setting/userpermissionsetting/userasignrole" element={ <UserAsignRole /> } />
+          {/* User Permission Setting */}
+          < Route path="/setting/softwaresetting/addcurrency" element={ <Currency /> } />
+          < Route path="/setting/softwaresetting/mailsetting" element={ <MailSetting /> } />
+          < Route path="/setting/softwaresetting/printsetting" element={ <PrintSetting /> } />
+          < Route path="/setting/softwaresetting/phraseList" element={ <PhraseList /> } />
+          < Route path="/setting/softwaresetting/updatesetting" element={ <UpdateSetting /> } />
+          < Route path="/setting/softwaresetting/addUser" element={ <AddUser /> } />
+          < Route path="/setting/softwaresetting/appsetting" element={ <AppSetting /> } />
+          < Route path="/setting/softwaresetting/language" element={ <Language /> } />
+          < Route path="/setting/softwaresetting/managecompany" element={ <ManageCompany /> } />
+          < Route path="/setting/softwaresetting/manageuser" element={ <ManageUser /> } />
+          < Route path="/setting/smsconfigure" element={ <SmsConfigure /> } />
             </Routes>
           </div>
         </div>
