@@ -2,8 +2,10 @@ import React from 'react'
 import { FaMagnifyingGlass } from 'react-icons/fa6';
 import { HiOutlineArrowsUpDown } from 'react-icons/hi2';
 import { PiFiles } from "react-icons/pi";
+import { Link, useNavigate } from 'react-router-dom';
 
 const AttendanceReport = () => {
+  const navigate = useNavigate()
   return (
     <div>
      <>
@@ -11,11 +13,11 @@ const AttendanceReport = () => {
 <div className="flex justify-between items-center space-x-4">
   <h3 className="text-xl font-extralight">Check -In</h3>
   <div className="flex space-x-4">
-  <button type="button" className="flex items-center px-4 py-2 bg-purple-500 text-white rounded-lg">
+  <button type="button" className="flex items-center px-4 py-2 bg-purple-500 text-white rounded-lg" >
     <PiFiles  className="mr-2"/> Date Wise Report
 </button>
 
-  <button type="button" className="flex items-center px-4 py-2 bg-purple-500 text-white rounded-lg">
+  <button type="button" className="flex items-center px-4 py-2 bg-purple-500 text-white rounded-lg" onClick={()=>navigate('/attendence/employeewiseattendencereport')}>
   <PiFiles  className="mr-2"/> Employee Wise Report 
   </button>
 </div>

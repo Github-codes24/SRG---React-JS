@@ -1,13 +1,85 @@
-import React from 'react'
-import { IoHomeOutline } from 'react-icons/io5'
+import React, { useEffect, useState } from 'react';
+import { IoHomeOutline } from 'react-icons/io5';
 import { BsPencil } from "react-icons/bs";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { LuArrowUpDown } from "react-icons/lu";
+import axios from 'axios';
+import BASE_URL from '../../../api';
 
 export default function ManageDesignation() {
-    
+  const [designations, setDesignations] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentDesignation, setCurrentDesignation] = useState(null);
+
+  // State for form input in the modal
+  const [updatedDesignation, setUpdatedDesignation] = useState('');
+
+  // Fetch data from API on component mount
+  useEffect(() => {
+    const fetchDesignations = async () => {
+      try {
+        const response = await axios.get(`${BASE_URL}/api/hrm/designation/getDesignation`);
+        setDesignations(response.data.data.designations); 
+        // console.log(response.data.data.designations)// Assuming API returns a list of designations
+      } catch (error) {
+        console.error('Error fetching designations:', error);
+      }
+    };
+    fetchDesignations();
+  }, [designations] );
+
+
+  // Delete API Call
+  const handleDelete = async (id) => {
+    if (window.confirm("Are you sure you want to delete this designation?")) {
+      try {
+        await axios.put(`${BASE_URL}/api/hrm/designation/deleteDesignation/${id}`);
+        // Update state after successful deletion
+        setDesignations((prev) => prev.filter((designation) => designation.id !== id));
+        alert("Designation deleted successfully.");
+      } catch (error) {
+        console.error('Error deleting designation:', error);
+        alert("Failed to delete designation. Please try again.");
+      }
+    }
+  };
+
+  // Open Modal and Set Current Designation
+  const handleEdit = (designation) => {
+    setCurrentDesignation(designation);
+    setUpdatedDesignation(designation.designation);
+    setIsModalOpen(true);
+  };
+
+  // Update API Call
+  const handleUpdate = async () => {
+    if (!updatedDesignation.trim()) {
+      alert('Designation cannot be empty.');
+      return;
+    }
+    try {
+      const response = await axios.put(`${BASE_URL}/api/hrm/designation/updateDesignation/${currentDesignation._id}`, {
+        designation: updatedDesignation,
+      });
+      setDesignations((prev) =>
+        prev.map((designation) =>
+          designation._id === currentDesignation._id ? response.data.data.designation : designation
+        )
+      );
+      alert('Designation updated successfully.');
+      setIsModalOpen(false);
+    } catch (error) {
+      console.error('Error updating designation:', error);
+      alert('Failed to update designation. Please try again.');
+    }
+  };
+
+
   return (
     <div>
+      
+
       <div className='mb-[11%]'>
         <div className=" w-full xl:h-[59px] sm:h-[37px] flex justify-end items-center xl:mb-[14px] sm:mb-[6px] tracking-[2px] xl:text-[21px] pr-[15px] ">
           <IoHomeOutline className="xl:w-[30px] xl:h-[34px] sm:w-[21px] sm:h-[21px] text-[#3A6D8C]" />
@@ -84,78 +156,68 @@ export default function ManageDesignation() {
               </div>
             </div>
           </div>
-          <div className="  w-full p-[10px] ">
-          <table className="border-collapse border-slate-400 border-2 w-full h-full font-bodyPop text-left">
+          <div className="w-full p-[10px] ">
+            <table className="border-collapse border-slate-400 border-2 w-full h-full font-bodyPop text-left">
               <thead>
                 <tr className="  text-[#595995]  font-medium  h-[60px]">
                   <th className="border border-slate-300 ..."><div className="flex justify-between">SL.<LuArrowUpDown className="w-auto h-[18px]" /></div></th>
                   <th className="border border-slate-300 ..."><div className="flex justify-between">Designation<LuArrowUpDown className="w-auto h-[18px]" /></div></th>
-                  <th className="border border-slate-300 ..."><div className="flex justify-between">Details<LuArrowUpDown className="w-auto h-[18px]" /></div></th>
-                  <th className="border border-slate-300 ...">Action</th>
+                  <th className="border border-slate-300 ..."><div className="flex justify-between">Action<LuArrowUpDown className="w-auto h-[18px]" /></div></th>
                 </tr>
               </thead>
-              <tbody className="text-left text-[#636465BD]">
-                <tr className="  h-[60px]">
-                  <td className="border border-slate-300 ...">1</td>
-                  <td className="border border-slate-300 ...">Staff</td>
-                  <td className="border border-slate-300 ...">Developement Team</td>
-                  <td className="border border-slate-300 ..."><div className="flex gap-[4px] w-full justify-left pl-[5px]">
-                    <BsPencil className="bg-[#96CEB4] p-[2px] h-[30px] w-[30px] rounded-[2px] border-[1px] border-[#75A68F]" color="white"/>
-                    <FaRegTrashAlt className="bg-[#CB6040] p-[2px] h-[30px] w-[30px] rounded-[2px] border-[#BF2D35] border-[1px]" color="white"/>
-                    
-                    </div>
+              <tbody>
+                {designations.map((designation, index) => (
+                  <tr key={index} className="hover:bg-[#F2F2F2] h-[50px]">
+                    <td className="border border-slate-300 ...">{index + 1}</td>
+                    <td className="border border-slate-300 ...">{designation.designation}</td>
+                    <td className="border border-slate-300 ...">
+                      <div className="flex justify-center">
+                        <button className="mr-3 text-[#636465]">
+                          <BsPencil onClick={() => handleEdit(designation)}/>
+                        </button>
+                        <button className="mr-3 text-[#636465]">
+                          <FaRegTrashAlt onClick={() => handleDelete(designation._id)}/>
+                        </button>
+                      </div>
                     </td>
-                </tr>
-                <tr className="  h-[60px]">
-                  <td className="border border-slate-300 ...">2</td>
-                  <td className="border border-slate-300 ...">New</td>
-                  <td className="border border-slate-300 ..."></td>
-                  <td className="border border-slate-300 ..."><div className="flex gap-[4px] w-full justify-left pl-[5px]">
-                    <BsPencil className="bg-[#96CEB4] p-[2px] h-[30px] w-[30px] rounded-[2px] border-[1px] border-[#75A68F]" color="white"/>
-                    <FaRegTrashAlt className="bg-[#CB6040] p-[2px] h-[30px] w-[30px] rounded-[2px] border-[#BF2D35] border-[1px]" color="white"/>
-                    
-                    </div>
-                    </td>
-                </tr>
-                <tr className="  h-[60px]">
-                  <td className="border border-slate-300 ...">3</td>
-                  <td className="border border-slate-300 ...">Accountant</td>
-                  <td className="border border-slate-300 ...">sulfikkarr</td>
-                  <td className="border border-slate-300 ..."><div className="flex gap-[4px] w-full justify-left pl-[5px]">
-                    <BsPencil className="bg-[#96CEB4] p-[2px] h-[30px] w-[30px] rounded-[2px] border-[1px] border-[#75A68F]" color="white"/>
-                    <FaRegTrashAlt className="bg-[#CB6040] p-[2px] h-[30px] w-[30px] rounded-[2px] border-[#BF2D35] border-[1px]" color="white"/>
-                    
-                    </div>
-                    </td>
-                </tr>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
-          <div className="h-[100px] flex justify-end items-center pr-[20px]">
-          <button className=" border-[2px] xl:w-[100px] sm:w-[80px] rounded-[50px] xl:h-[50px] sm:h-[40px] mr-[4px] border-[#746BD9]">
-            <p className="text-[#746BD9]">Previous</p>
-          </button>
-          <button className="  border-[2px] rounded-full xl:h-[50px] sm:h-[40px] xl:w-[50px] sm:w-[40px] mr-[4px] border-[#746BD9]">
-            <p className=" text-[#746BD9]">1</p>
-          </button>
-          <button className="  border-[2px] rounded-full xl:h-[50px] sm:h-[40px] xl:w-[50px] sm:w-[40px] mr-[4px] border-[#746BD9]">
-            <p className=" text-[#746BD9]">2</p>
-          </button>
-          <button className="  border-[2px] rounded-full xl:h-[50px] sm:h-[40px] xl:w-[50px] sm:w-[40px] mr-[4px] border-[#746BD9]">
-            <p className=" text-[#746BD9]">3</p>
-          </button>
-          <button className="  border-[2px] rounded-full xl:h-[50px] sm:h-[40px] xl:w-[50px] sm:w-[40px] mr-[4px] border-[#746BD9]">
-            <p className=" text-[#746BD9]">4</p>
-          </button>
-          <button className="  border-[2px] rounded-full xl:h-[50px] sm:h-[40px] xl:w-[50px] sm:w-[40px] mr-[4px] border-[#746BD9]">
-            <p className=" text-[#746BD9]">5</p>
-          </button>
-          <button className=" border-[2px] xl:w-[100px] sm:w-[80px] rounded-[50px] xl:h-[50px] sm:h-[40px] border-[#746BD9]">
-            <p className=" text-[#746BD9]">Next</p>
-          </button>
-        </div>
         </div>
       </div>
+      {/* Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-md shadow-lg w-[400px]">
+            <h2 className="text-xl font-bold mb-4">Update Designation</h2>
+            <div className="mb-4">
+              <label className="block text-gray-700 font-medium mb-2">Designation</label>
+              <input
+                type="text"
+                value={updatedDesignation}
+                onChange={(e) => setUpdatedDesignation(e.target.value)}
+                className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div className="flex justify-end">
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="bg-gray-500 text-white px-4 py-2 rounded-md mr-2"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleUpdate}
+                className="bg-blue-500 text-white px-4 py-2 rounded-md"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
-  )
+  );
 }

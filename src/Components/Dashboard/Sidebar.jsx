@@ -785,22 +785,11 @@ const Sidebar = () => {
                 </p>
                 <p
                   className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
-                  onClick={() => navigate("/attendence/addexpense")}
+                  onClick={() => navigate("/attendence/attendencereport")}
                 >
                   Attendence Report
                 </p>
-                <p
-                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
-                  onClick={() => navigate("/attendence/datewiseattendence")}
-                >
-                  Date Wise Attendence Report
-                </p>
-                <p
-                  className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
-                  onClick={() => navigate("/attendence/employyewiseattendence")}
-                >
-                  Employee Wise Attendence
-                </p>
+                
               </div>
 
               {/* Payroll */}

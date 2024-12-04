@@ -118,6 +118,8 @@ import ManageCompany from "./Setting/ManageCompany";
 import ManageUser from "./Setting/ManageUser";
 import SmsConfigure from "./Setting/SmsConfigure";
 import Currency from "./Setting/AddCurrency";
+import DateWiseAttendanceReport from "./HRM/Attendence/DataWiseAttendenceReport";
+import EmployeeWiseAttendanceReport from "./HRM/Attendence/EmployeeWiseAttendenceReport";
 
 
 const Routeing = () => {
@@ -149,6 +151,7 @@ const Routeing = () => {
               <Route path="/attendance" element={<Attendance />} />
               <Route path="/attendance/attendancereport" element={<AttendanceReport />} />
               <Route path="/attendance/manageattendance" element={<ManageAttendance />} />
+              <Route path="/attendance/employeewiseattendencereport" element={<EmployeeWiseAttendanceReport />} />
 
               {/* Return Service */}
               <Route path="/returnservice" element={<CustomerList/>} />
@@ -255,8 +258,9 @@ const Routeing = () => {
 
           {/* Attendence */}
           < Route path="/attendence/addexpenseitem" element={ <Attendance  /> } />
-          < Route path="/attendence/addexpense" element={ <AttendanceReport  /> } />
+          < Route path="/attendence/attendencereport" element={ <AttendanceReport  /> } />
           < Route path="/attendence/manageexpenseitem" element={ <ManageAttendance  /> } />
+          < Route path="/attendence/datewiseattendence" element={ <DateWiseAttendanceReport  /> } />
           
 
           {/* Office Loan */}
