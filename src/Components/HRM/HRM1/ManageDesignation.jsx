@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { IoHomeOutline } from 'react-icons/io5';
+import React, { useEffect, useState } from "react";
+import { IoHomeOutline } from "react-icons/io5";
 import { BsPencil } from "react-icons/bs";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { LuArrowUpDown } from "react-icons/lu";
-import axios from 'axios';
-import BASE_URL from '../../../api';
+import axios from "axios";
+import BASE_URL from "../../../api";
+import * as XLSX from "xlsx";
+import jsPDF from "jspdf";
+import "jspdf-autotable"; // For creating tables in the PDF
 
 export default function ManageDesignation() {
   const [designations, setDesignations] = useState([]);
@@ -13,33 +16,133 @@ export default function ManageDesignation() {
   const [currentDesignation, setCurrentDesignation] = useState(null);
 
   // State for form input in the modal
-  const [updatedDesignation, setUpdatedDesignation] = useState('');
+  const [updatedDesignation, setUpdatedDesignation] = useState("");
 
   // Fetch data from API on component mount
   useEffect(() => {
     const fetchDesignations = async () => {
       try {
-        const response = await axios.get(`${BASE_URL}/api/hrm/designation/getDesignation`);
-        setDesignations(response.data.data.designations); 
-        // console.log(response.data.data.designations)// Assuming API returns a list of designations
+        const response = await axios.get(
+          `${BASE_URL}/api/hrm/designation/getDesignation`
+        );
+        setDesignations(response.data.data.designations);
+        console.log(response.data.data.designations); // Assuming API returns a list of designations
       } catch (error) {
-        console.error('Error fetching designations:', error);
+        console.error("Error fetching designations:", error);
       }
     };
     fetchDesignations();
-  }, [designations] );
+  });
+
+  // Handle Copy Button
+  const handleCopy = () => {
+    const dataToCopy = designations
+      .map((designation, index) => `${index + 1}. ${designation.designation}`)
+      .join("\n"); // Prepare data to copy as a newline-separated string
+    navigator.clipboard
+      .writeText(dataToCopy)
+      .then(() => {
+        alert("Designations copied to clipboard!");
+      })
+      .catch((error) => {
+        console.error("Error copying text: ", error);
+        alert("Failed to copy. Please try again.");
+      });
+  };
+  const handleExportToExcel = () => {
+    if (designations.length === 0) {
+      alert("No data to export.");
+      return;
+    }
+
+    // Create a worksheet from the data
+    const ws = XLSX.utils.json_to_sheet(
+      designations.map((designation, index) => ({
+        "SL No": index + 1,
+        Designation: designation.designation,
+      }))
+    );
+
+    // Create a new workbook and append the worksheet
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Designations");
+
+    // Write the workbook and trigger download
+    XLSX.writeFile(wb, "Designations.xlsx");
+  };
+
+  const handleExportToPDF = () => {
+    if (designations.length === 0) {
+      alert("No data to export.");
+      return;
+    }
+
+    // Initialize a new PDF document
+    const doc = new jsPDF();
+
+    // Add a title to the PDF
+    doc.setFontSize(18);
+    doc.text("Designations List", 14, 15);
+
+    // Prepare data for the table
+    const tableData = designations.map((designation, index) => [
+      index + 1, // SL No
+      designation.designation,
+    ]);
+
+    // Add a table to the PDF
+    doc.autoTable({
+      head: [["SL No", "Designation"]],
+      body: tableData,
+      startY: 20,
+    });
+
+    // Save the PDF
+    doc.save("Designations.pdf");
+  };
+
+  //print method
+ const handlePrint = () => {
+  const printContent = document.getElementById("table");
+
+  if (printContent) {
+    const printWindow = window.open("", "_blank");
+    printWindow.document.open();
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>Expense Statement</title>
+          <style>
+            table { border-collapse: collapse; width: 100%; }
+            th, td { border: 1px solid black; padding: 8px; text-align: left; }
+            th { background-color: #f2f2f2; }
+          </style>
+        </head>
+        <body>${printContent.outerHTML}</body>
+      </html>
+    `);
+    printWindow.document.close();
+    printWindow.onload = () => printWindow.print();
+  } else {
+    console.error("Table with ID 'table' not found.");
+  }
+};
 
 
   // Delete API Call
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this designation?")) {
       try {
-        await axios.put(`${BASE_URL}/api/hrm/designation/deleteDesignation/${id}`);
+        await axios.put(
+          `${BASE_URL}/api/hrm/designation/deleteDesignation/${id}`
+        );
         // Update state after successful deletion
-        setDesignations((prev) => prev.filter((designation) => designation.id !== id));
+        setDesignations((prev) =>
+          prev.filter((designation) => designation.id !== id)
+        );
         alert("Designation deleted successfully.");
       } catch (error) {
-        console.error('Error deleting designation:', error);
+        console.error("Error deleting designation:", error);
         alert("Failed to delete designation. Please try again.");
       }
     }
@@ -55,32 +158,34 @@ export default function ManageDesignation() {
   // Update API Call
   const handleUpdate = async () => {
     if (!updatedDesignation.trim()) {
-      alert('Designation cannot be empty.');
+      alert("Designation cannot be empty.");
       return;
     }
     try {
-      const response = await axios.put(`${BASE_URL}/api/hrm/designation/updateDesignation/${currentDesignation._id}`, {
-        designation: updatedDesignation,
-      });
+      const response = await axios.put(
+        `${BASE_URL}/api/hrm/designation/updateDesignation/${currentDesignation._id}`,
+        {
+          designation: updatedDesignation,
+        }
+      );
       setDesignations((prev) =>
         prev.map((designation) =>
-          designation._id === currentDesignation._id ? response.data.data.designation : designation
+          designation._id === currentDesignation._id
+            ? response.data.data.designation
+            : designation
         )
       );
-      alert('Designation updated successfully.');
+      alert("Designation updated successfully.");
       setIsModalOpen(false);
     } catch (error) {
-      console.error('Error updating designation:', error);
-      alert('Failed to update designation. Please try again.');
+      console.error("Error updating designation:", error);
+      alert("Failed to update designation. Please try again.");
     }
   };
 
-
   return (
     <div>
-      
-
-      <div className='mb-[11%]'>
+      <div className="mb-[11%]">
         <div className=" w-full xl:h-[59px] sm:h-[37px] flex justify-end items-center xl:mb-[14px] sm:mb-[6px] tracking-[2px] xl:text-[21px] pr-[15px] ">
           <IoHomeOutline className="xl:w-[30px] xl:h-[34px] sm:w-[21px] sm:h-[21px] text-[#3A6D8C]" />
           <a className="mt-[4px]" href="">
@@ -117,19 +222,36 @@ export default function ManageDesignation() {
               </p>
             </div>
             <div className="flex">
-              <button className=" bg-[#2E2E48] text-white xl:w-[80px] xl:px-[5px] xl:py-[10px] xl:mr-[15px] lg:w-[56px] lg:px-[2px] lg:py-[3px] lg:mr-[9px] sm:w-[56px] sm:px-[2px] sm:py-[3px] sm:mr-[9px] rounded-[5px]">
+              <button
+                onClick={handleCopy}
+                className="bg-[#2E2E48] text-white xl:w-[80px] xl:px-[5px] xl:py-[10px] xl:mr-[15px] lg:w-[56px] lg:px-[2px] lg:py-[3px] lg:mr-[9px] sm:w-[56px] sm:px-[2px] sm:py-[3px] sm:mr-[9px] rounded-[5px]"
+              >
                 Copy
               </button>
+
               <button className=" bg-[#2E2E48] text-white xl:w-[80px] xl:px-[5px] xl:py-[10px] xl:mr-[15px] lg:w-[56px] lg:px-[2px] lg:py-[3px] lg:mr-[9px] sm:w-[56px] sm:px-[2px] sm:py-[3px] sm:mr-[9px] rounded-[5px]">
-                CSV
+                CVG
               </button>
-              <button className=" bg-[#2E2E48] text-white xl:w-[80px] xl:px-[5px] xl:py-[10px] xl:mr-[15px] lg:w-[56px] lg:px-[2px] lg:py-[3px] lg:mr-[9px] sm:w-[56px] sm:px-[2px] sm:py-[3px] sm:mr-[9px] rounded-[5px]">
+
+              <button
+                className=" bg-[#2E2E48] text-white xl:w-[80px] xl:px-[5px] xl:py-[10px] xl:mr-[15px] lg:w-[56px] lg:px-[2px] lg:py-[3px] lg:mr-[9px] sm:w-[56px] sm:px-[2px] sm:py-[3px] sm:mr-[9px] rounded-[5px]"
+                type="button"
+                onClick={handleExportToExcel}
+              >
                 Excel
               </button>
-              <button className=" bg-[#2E2E48] text-white xl:w-[80px] xl:px-[5px] xl:py-[10px] xl:mr-[15px] lg:w-[56px] lg:px-[2px] lg:py-[3px] lg:mr-[9px] sm:w-[56px] sm:px-[2px] sm:py-[3px] sm:mr-[9px] rounded-[5px]">
+              <button
+                className=" bg-[#2E2E48] text-white xl:w-[80px] xl:px-[5px] xl:py-[10px] xl:mr-[15px] lg:w-[56px] lg:px-[2px] lg:py-[3px] lg:mr-[9px] sm:w-[56px] sm:px-[2px] sm:py-[3px] sm:mr-[9px] rounded-[5px]"
+                type="button"
+                onClick={handleExportToPDF}
+              >
                 PDF
               </button>
-              <button className=" bg-[#2E2E48] text-white xl:w-[80px] xl:px-[5px] xl:py-[10px] xl:mr-[15px] lg:w-[56px] lg:px-[2px] lg:py-[3px] lg:mr-[9px] sm:w-[56px] sm:px-[2px] sm:py-[3px] sm:mr-[9px] rounded-[5px]">
+              <button
+                className=" bg-[#2E2E48] text-white xl:w-[80px] xl:px-[5px] xl:py-[10px] xl:mr-[15px] lg:w-[56px] lg:px-[2px] lg:py-[3px] lg:mr-[9px] sm:w-[56px] sm:px-[2px] sm:py-[3px] sm:mr-[9px] rounded-[5px]"
+                onClick={handlePrint}
+                type="button"
+              >
                 Print
               </button>
             </div>
@@ -157,26 +279,45 @@ export default function ManageDesignation() {
             </div>
           </div>
           <div className="w-full p-[10px] ">
-            <table className="border-collapse border-slate-400 border-2 w-full h-full font-bodyPop text-left">
+            <table  id="table" className="border-collapse border-slate-400 border-2 w-full h-full font-bodyPop text-left">
               <thead>
                 <tr className="  text-[#595995]  font-medium  h-[60px]">
-                  <th className="border border-slate-300 ..."><div className="flex justify-between">SL.<LuArrowUpDown className="w-auto h-[18px]" /></div></th>
-                  <th className="border border-slate-300 ..."><div className="flex justify-between">Designation<LuArrowUpDown className="w-auto h-[18px]" /></div></th>
-                  <th className="border border-slate-300 ..."><div className="flex justify-between">Action<LuArrowUpDown className="w-auto h-[18px]" /></div></th>
+                  <th className="border border-slate-300 ...">
+                    <div className="flex justify-between">
+                      SL.
+                      <LuArrowUpDown className="w-auto h-[18px]" />
+                    </div>
+                  </th>
+                  <th className="border border-slate-300 ...">
+                    <div className="flex justify-between">
+                      Designation
+                      <LuArrowUpDown className="w-auto h-[18px]" />
+                    </div>
+                  </th>
+                  <th className="border border-slate-300 ...">
+                    <div className="flex justify-between">
+                      Action
+                      <LuArrowUpDown className="w-auto h-[18px]" />
+                    </div>
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {designations.map((designation, index) => (
                   <tr key={index} className="hover:bg-[#F2F2F2] h-[50px]">
                     <td className="border border-slate-300 ...">{index + 1}</td>
-                    <td className="border border-slate-300 ...">{designation.designation}</td>
+                    <td className="border border-slate-300 ...">
+                      {designation.designation}
+                    </td>
                     <td className="border border-slate-300 ...">
                       <div className="flex justify-center">
                         <button className="mr-3 text-[#636465]">
-                          <BsPencil onClick={() => handleEdit(designation)}/>
+                          <BsPencil onClick={() => handleEdit(designation)} />
                         </button>
                         <button className="mr-3 text-[#636465]">
-                          <FaRegTrashAlt onClick={() => handleDelete(designation._id)}/>
+                          <FaRegTrashAlt
+                            onClick={() => handleDelete(designation._id)}
+                          />
                         </button>
                       </div>
                     </td>
@@ -193,7 +334,9 @@ export default function ManageDesignation() {
           <div className="bg-white p-6 rounded-md shadow-lg w-[400px]">
             <h2 className="text-xl font-bold mb-4">Update Designation</h2>
             <div className="mb-4">
-              <label className="block text-gray-700 font-medium mb-2">Designation</label>
+              <label className="block text-gray-700 font-medium mb-2">
+                Designation
+              </label>
               <input
                 type="text"
                 value={updatedDesignation}
