@@ -11,7 +11,13 @@ import BASE_URL from "../../../api";
 export default function ManageEmployee() {
   const [manageEmployee, setManageEmployee] = useState([]);
   const [currentEmployee, setCurrentEmployee] = useState(null);
-  const [updatedEmployeeDesignation, setUpdatedEmployeeDesignation] = useState("");
+  const [updatedEmployeeData, setUpdatedEmployeeData] = useState({
+    name: "",
+    designation: "",
+    phone: "",
+    email: "",
+    picture: null,
+  });
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
@@ -19,21 +25,18 @@ export default function ManageEmployee() {
       try {
         const response = await axios.get(`${BASE_URL}/api/employee/getAllEmployee`);
         setManageEmployee(response.data.data);
-        // console.log(response.data.data);
       } catch (error) {
         console.error("Error fetching employees:", error);
       }
     };
-    fetchEmployees();
 
-  }, );
+    fetchEmployees();
+  }, []);
 
   // Delete API Call
   const handleDelete = async (id) => {
-    
     if (window.confirm("Are you sure you want to delete this employee?")) {
       try {
-     
         await axios.put(`${BASE_URL}/api/employee/deleteEmployee/${id}`);
         setManageEmployee((prev) => prev.filter((employee) => employee.id !== id));
         alert("Employee deleted successfully.");
@@ -47,32 +50,67 @@ export default function ManageEmployee() {
   // Open Modal and Set Current Employee
   const handleEdit = (employee) => {
     setCurrentEmployee(employee);
-    setUpdatedEmployeeDesignation(employee.designation || "");
+    setUpdatedEmployeeData({
+      name: `${employee.firstName} ${employee.lastName}`,
+      designation: employee.designation || "",
+      phone: employee.mobileNumber || "",
+      email: employee.email || "",
+      picture: employee.picture || Avatar1,
+    });
     setIsModalOpen(true);
   };
 
   // Update API Call
   const handleUpdate = async () => {
-    if (!updatedEmployeeDesignation.trim()) {
+    if (!updatedEmployeeData.designation.trim()) {
       alert("Designation cannot be empty.");
       return;
     }
+
+    const formData = new FormData();
+    formData.append("name", updatedEmployeeData.name);
+    formData.append("designation", updatedEmployeeData.designation);
+    formData.append("phone", updatedEmployeeData.phone);
+    formData.append("email", updatedEmployeeData.email);
+    if (updatedEmployeeData.picture !== Avatar1) {
+      formData.append("picture", updatedEmployeeData.picture);
+    }
+
     try {
-      const response = await axios.put(
-        `${BASE_URL}/api/employee/updateEmployee/${currentEmployee.id}`,
-        {
-          manageEmployee: updatedEmployeeDesignation,
-        }
+      await axios.put(
+        `${BASE_URL}/api/employee/updateEmployee/${currentEmployee._id}`,
+        formData
       );
+
+      // Update the employee in the state
       setManageEmployee((prev) =>
         prev.map((employee) =>
           employee.id === currentEmployee.id
-            ? { ...employee, designation: updatedEmployeeDesignation }
+            ? {
+                ...employee,
+                firstName: updatedEmployeeData.name.split(" ")[0],
+                lastName: updatedEmployeeData.name.split(" ")[1],
+                designation: updatedEmployeeData.designation,
+                mobileNumber: updatedEmployeeData.phone,
+                email: updatedEmployeeData.email,
+                picture: updatedEmployeeData.picture !== Avatar1
+                  ? URL.createObjectURL(updatedEmployeeData.picture)
+                  : employee.picture,
+              }
             : employee
         )
       );
+
       alert("Employee updated successfully.");
       setIsModalOpen(false);
+      setCurrentEmployee(null);
+      setUpdatedEmployeeData({
+        name: "",
+        designation: "",
+        phone: "",
+        email: "",
+        picture: null,
+      });
     } catch (error) {
       console.error("Error updating employee:", error);
       alert("Failed to update employee. Please try again.");
@@ -108,70 +146,103 @@ export default function ManageEmployee() {
               </tr>
             </thead>
             <tbody>
-  {manageEmployee.length > 0 ? (
-    manageEmployee.map((employee, index) => (
-      <tr key={employee.id} className="border">
-        <td className="border p-2">{index + 1}</td>
-        <td className="border p-2">{employee.firstName + ' ' +employee.lastName || "NA"}</td>
-        <td className="border p-2">{employee.designation || "NA"}</td>
-        <td className="border p-2">{employee.phone || "NA"}</td>
-        <td className="border p-2">{employee.email || "NA"}</td>
-        <td className="border p-2">
-          <img
-            src={employee.picture || Avatar1}
-            alt="Avatar"
-            className="h-12 w-12 mx-auto"
-          />
-        </td>
-        <td className="border p-2 flex justify-center gap-2">
-          <BsPencil
-            className="text-green-600 cursor-pointer"
-            onClick={() => handleEdit(employee)}
-          />
-          <FaRegTrashAlt
-            className="text-red-600 cursor-pointer"
-            onClick={() => handleDelete(employee._id)}
-          />
-          <IoPerson className="text-blue-600" />
-        </td>
-      </tr>
-    ))
-  ) : (
-    <tr>
-      <td colSpan="7" className="text-center font-semibold text-xl">
-        No data to show
-      </td>
-    </tr>
-  )}
-</tbody>
-
+              {manageEmployee.length > 0 ? (
+                manageEmployee.map((employee, index) => (
+                  <tr key={employee.id} className="border">
+                    <td className="border p-2 text-lg">{index + 1}</td>
+                    <td className="border p-2 text-lg">
+                      {employee.firstName + " " + employee.lastName || "NA"}
+                    </td>
+                    <td className="border p-2 text-lg">{employee.designation || "NA"}</td>
+                    <td className="border p-2 text-lg">{employee.mobileNumber || "NA"}</td>
+                    <td className="border p-2 text-lg">{employee.email || "NA"}</td>
+                    <td className="border p-2 text-lg">
+                      <img
+                        src={employee.picture || Avatar1}
+                        alt="Avatar"
+                        className="h-12 w-12 mx-auto"
+                      />
+                    </td>
+                    <td className="border p-2 flex justify-center gap-2">
+                      <BsPencil
+                        className="text-green-600 cursor-pointer"
+                        onClick={() => handleEdit(employee)}
+                      />
+                      <FaRegTrashAlt
+                        className="text-red-600 cursor-pointer"
+                        onClick={() => handleDelete(employee.id)}
+                      />
+                      <IoPerson className="text-blue-600" />
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="7" className="text-center font-semibold text-xl">
+                    No data to show
+                  </td>
+                </tr>
+              )}
+            </tbody>
           </table>
         </div>
       </div>
 
       {/* Modal for Editing */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-4 rounded">
-            <h3 className="text-xl mb-4">Edit Employee</h3>
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-1/3">
+            <h3 className="text-xl font-semibold mb-4">Edit Employee</h3>
+            <label>Name:</label>
             <input
               type="text"
-              className="border p-2 w-full mb-4"
-              value={updatedEmployeeDesignation}
-              onChange={(e) => setUpdatedEmployeeDesignation(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 mb-4"
+              value={updatedEmployeeData.name}
+              onChange={(e) =>
+                setUpdatedEmployeeData({ ...updatedEmployeeData, name: e.target.value })
+              }
             />
-            <button
-              className="bg-green-600 text-white px-4 py-2 mr-2"
-              onClick={handleUpdate}
-            >
-              Update
-            </button>
-            <button
-              className="bg-red-600 text-white px-4 py-2"
-              onClick={() => setIsModalOpen(false)}
-            >
-              Cancel
-            </button>
+            
+            <label>Phone:</label>
+            <input
+              type="text"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 mb-4"
+              value={updatedEmployeeData.phone}
+              onChange={(e) =>
+                setUpdatedEmployeeData({ ...updatedEmployeeData, phone: e.target.value })
+              }
+            />
+            <label>Email:</label>
+            <input
+              type="email"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 mb-4"
+              value={updatedEmployeeData.email}
+              onChange={(e) =>
+                setUpdatedEmployeeData({ ...updatedEmployeeData, email: e.target.value })
+              }
+            />
+            <label>Picture:</label>
+            <input
+              type="file"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 mb-4"
+              onChange={(e) =>
+                setUpdatedEmployeeData({ ...updatedEmployeeData, picture: e.target.files[0] })
+              }
+            />
+            <div className="flex justify-end gap-2">
+              <button
+                className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg"
+                onClick={() => setIsModalOpen(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="px-4 py-2 bg-purple-500 text-white rounded-lg"
+                onClick={handleUpdate}
+              >
+                Update
+              </button>
+            </div>
           </div>
         </div>
       )}
