@@ -55,6 +55,7 @@ export default function AddEmployee() {
       const result = await response.json();
       console.log("Form submitted successfully:", result);
       alert("Employee added successfully!");
+      setFormData('')
     } catch (error) {
       console.error("Error submitting form:", error);
       alert("Failed to add employee");
@@ -344,13 +345,20 @@ export default function AddEmployee() {
                 </div>
               </div>
             </div>
-            <div className="w-full p-[10px] flex justify-center">
+            <div className="w-full p-[10px] flex justify-center gap-x-5">
             <button
               type="submit"
               form="form1"
               className="bg-[#3A6D8C] text-white w-[106px] h-[46px] rounded-[11px]"
             >
               Submit
+            </button>
+            <button
+              type="reset"
+              
+              className="bg-[#3A6D8C] text-white w-[106px] h-[46px] rounded-[11px]"
+            >
+              Reset
             </button>
           </div>
           </form>
