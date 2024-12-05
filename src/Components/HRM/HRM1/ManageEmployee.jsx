@@ -112,7 +112,7 @@ export default function ManageEmployee() {
     manageEmployee.map((employee, index) => (
       <tr key={employee.id} className="border">
         <td className="border p-2">{index + 1}</td>
-        <td className="border p-2">{employee.name || "NA"}</td>
+        <td className="border p-2">{employee.firstName + ' ' +employee.lastName || "NA"}</td>
         <td className="border p-2">{employee.designation || "NA"}</td>
         <td className="border p-2">{employee.phone || "NA"}</td>
         <td className="border p-2">{employee.email || "NA"}</td>
