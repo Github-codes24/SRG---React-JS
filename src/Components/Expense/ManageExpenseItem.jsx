@@ -138,7 +138,7 @@ const ManageExpenseItem = () => {
   // Fetch Expense Items
   useEffect(() => {
     fetchExpenseItems();
-  }, []);
+  },);
 
   const fetchExpenseItems = async () => {
     try {

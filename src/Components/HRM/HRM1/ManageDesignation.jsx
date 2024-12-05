@@ -1,22 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { IoHomeOutline } from "react-icons/io5";
 import { BsPencil } from "react-icons/bs";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { LuArrowUpDown } from "react-icons/lu";
 import axios from "axios";
 import BASE_URL from "../../../api";
-import * as XLSX from "xlsx";
-import jsPDF from "jspdf";
-import "jspdf-autotable"; // For creating tables in the PDF
+import html2pdf from 'html2pdf.js';
+import * as XLSX from 'xlsx';
+import { FaPen } from "react-icons/fa6";
 
 export default function ManageDesignation() {
   const [designations, setDesignations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentDesignation, setCurrentDesignation] = useState(null);
-
-  // State for form input in the modal
   const [updatedDesignation, setUpdatedDesignation] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(10); // Default number of rows per page
+  const tableRef = useRef();
 
   // Fetch data from API on component mount
   useEffect(() => {
@@ -26,108 +27,12 @@ export default function ManageDesignation() {
           `${BASE_URL}/api/hrm/designation/getDesignation`
         );
         setDesignations(response.data.data.designations);
-        console.log(response.data.data.designations); // Assuming API returns a list of designations
       } catch (error) {
         console.error("Error fetching designations:", error);
       }
     };
     fetchDesignations();
-  });
-
-  // Handle Copy Button
-  const handleCopy = () => {
-    const dataToCopy = designations
-      .map((designation, index) => `${index + 1}. ${designation.designation}`)
-      .join("\n"); // Prepare data to copy as a newline-separated string
-    navigator.clipboard
-      .writeText(dataToCopy)
-      .then(() => {
-        alert("Designations copied to clipboard!");
-      })
-      .catch((error) => {
-        console.error("Error copying text: ", error);
-        alert("Failed to copy. Please try again.");
-      });
-  };
-  const handleExportToExcel = () => {
-    if (designations.length === 0) {
-      alert("No data to export.");
-      return;
-    }
-
-    // Create a worksheet from the data
-    const ws = XLSX.utils.json_to_sheet(
-      designations.map((designation, index) => ({
-        "SL No": index + 1,
-        Designation: designation.designation,
-      }))
-    );
-
-    // Create a new workbook and append the worksheet
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Designations");
-
-    // Write the workbook and trigger download
-    XLSX.writeFile(wb, "Designations.xlsx");
-  };
-
-  const handleExportToPDF = () => {
-    if (designations.length === 0) {
-      alert("No data to export.");
-      return;
-    }
-
-    // Initialize a new PDF document
-    const doc = new jsPDF();
-
-    // Add a title to the PDF
-    doc.setFontSize(18);
-    doc.text("Designations List", 14, 15);
-
-    // Prepare data for the table
-    const tableData = designations.map((designation, index) => [
-      index + 1, // SL No
-      designation.designation,
-    ]);
-
-    // Add a table to the PDF
-    doc.autoTable({
-      head: [["SL No", "Designation"]],
-      body: tableData,
-      startY: 20,
-    });
-
-    // Save the PDF
-    doc.save("Designations.pdf");
-  };
-
-  //print method
- const handlePrint = () => {
-  const printContent = document.getElementById("table");
-
-  if (printContent) {
-    const printWindow = window.open("", "_blank");
-    printWindow.document.open();
-    printWindow.document.write(`
-      <html>
-        <head>
-          <title>Expense Statement</title>
-          <style>
-            table { border-collapse: collapse; width: 100%; }
-            th, td { border: 1px solid black; padding: 8px; text-align: left; }
-            th { background-color: #f2f2f2; }
-          </style>
-        </head>
-        <body>${printContent.outerHTML}</body>
-      </html>
-    `);
-    printWindow.document.close();
-    printWindow.onload = () => printWindow.print();
-  } else {
-    console.error("Table with ID 'table' not found.");
-  }
-};
-
+  }, []);
 
   // Delete API Call
   const handleDelete = async (id) => {
@@ -136,9 +41,8 @@ export default function ManageDesignation() {
         await axios.put(
           `${BASE_URL}/api/hrm/designation/deleteDesignation/${id}`
         );
-        // Update state after successful deletion
         setDesignations((prev) =>
-          prev.filter((designation) => designation.id !== id)
+          prev.filter((designation) => designation._id !== id)
         );
         alert("Designation deleted successfully.");
       } catch (error) {
@@ -183,6 +87,140 @@ export default function ManageDesignation() {
     }
   };
 
+  // Pagination logic
+  const indexOfLastRow = currentPage * rowsPerPage;
+  const indexOfFirstRow = indexOfLastRow - rowsPerPage;
+  const currentRows = designations.slice(indexOfFirstRow, indexOfLastRow);
+  const totalPages = Math.ceil(designations.length / rowsPerPage);
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
+  // Handle "Show Entries" change
+  const handleRowsPerPageChange = (e) => {
+    setRowsPerPage(Number(e.target.value));
+    setCurrentPage(1); // Reset to the first page
+  };
+
+  //print method
+  const handlePrint = () => {
+    const printContent = document.getElementById('table').outerHTML;
+    const newWindow = window.open('', '_blank');
+    newWindow.document.open();
+    newWindow.document.write(`
+      <html>
+        <head>
+          <title>Expense Statement</title>
+          <style>
+            table { border-collapse: collapse; width: 100%; }
+            th, td { border: 1px solid black; padding: 8px; text-align: left; }
+            th { background-color: #f2f2f2; }
+          </style>
+        </head>
+        <body>${printContent}</body>
+      </html>
+    `);
+    newWindow.document.close();
+    newWindow.print();
+  };
+
+  //copy button
+  const copyTableToClipboard = () => {
+    const table = tableRef.current;
+    
+    // Create a range and select the content
+    const range = document.createRange();
+    range.selectNode(table);
+    
+    // Select the content in the table
+    window.getSelection().removeAllRanges();  // Clear previous selections
+    window.getSelection().addRange(range);   // Add the range to the selection
+
+    try {
+      // Execute the copy command
+      document.execCommand('copy');
+      alert('Table content copied to clipboard!');
+    } catch (err) {
+      console.error('Error copying table content: ', err);
+    }
+
+    // Clear the selection (optional)
+    window.getSelection().removeAllRanges();
+  };
+
+  //csv button
+  const exportToCSV = () => {
+    const table = tableRef.current;
+    let csvContent = "";
+
+    // Get table headers
+    const headers = [];
+    for (let i = 0; i < table.rows[0].cells.length; i++) {
+      headers.push(table.rows[0].cells[i].innerText); // Get header text
+    }
+    csvContent += headers.join(",") + "\n"; // Add header row to CSV
+
+    // Get table rows (excluding the header)
+    for (let i = 1; i < table.rows.length; i++) {
+      const row = table.rows[i];
+      const rowData = [];
+      for (let j = 0; j < row.cells.length; j++) {
+        rowData.push(row.cells[j].innerText); // Get each cell's text
+      }
+      csvContent += rowData.join(",") + "\n"; // Add row to CSV
+    }
+
+    // Create a Blob from the CSV content
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+
+    // Create a link element to trigger the file download
+    const link = document.createElement("a");
+    if (link.download !== undefined) {
+      // Create a URL for the Blob and set the download attribute
+      const url = URL.createObjectURL(blob);
+      link.setAttribute("href", url);
+      link.setAttribute("download", "Manage_Expense.csv"); // Filename for the CSV
+      link.style.visibility = "hidden"; // Hide the link
+      document.body.appendChild(link); // Append the link to the body
+      link.click(); // Trigger the download
+      document.body.removeChild(link); // Remove the link after the download
+    }
+  };
+
+  //pdfviewer
+  const handleDownloadPDF = () => {
+    // Get the HTML content of the table
+    const element = tableRef.current;
+
+    // Options for html2pdf
+    const options = {
+      filename: 'Manage_Expense.pdf', // Name of the output PDF file
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 }, // Higher scale for better quality
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }, // PDF paper size and orientation
+    };
+
+    // Convert the table to PDF
+    html2pdf().from(element).set(options).save();
+  };
+  
+  
+  //excel button
+  const exportToExcel = () => {
+    const table = tableRef.current;
+
+    // Create a workbook and add a worksheet
+    const wb = XLSX.utils.table_to_book(table, { sheet: "Sheet1" });
+
+    // Write the workbook to an Excel file and trigger the download
+    XLSX.writeFile(wb, "Manage_Expense.xlsx");
+  };
+
   return (
     <div>
       <div className="mb-[11%]">
@@ -210,48 +248,34 @@ export default function ManageDesignation() {
                 Show
               </p>
               <select
-                id="countries"
-                className="border-gray-400 border-[1px] rounded-[5px] w-[50px]  dark:placeholder-gray-400 bg-white  px-[12px] p-[5px] text-gray-400 xl:h-[34px] sm:h-[27px] mr-[5px]"
+                id="entries"
+                value={rowsPerPage}
+                onChange={handleRowsPerPageChange}
+                className="border-gray-400 border-[1px] rounded-[5px]   dark:placeholder-gray-400 bg-white  px-[12px] p-[5px] text-black xl:h-[34px] sm:h-[27px] mr-[5px]"
               >
-                <option selected>10</option>
-                <option value="US">Staff</option>
-                <option value="US">Staff</option>
+                <option className="text-gray-500" value={5}>5</option>
+                <option className="text-gray-500" value={10}>10</option>
+                <option className="text-gray-500" value={15}>15</option>
+                <option className="text-gray-500" value={20}>20</option>
               </select>
               <p className="xl:text-[20px] lg:text-[17px] sm:text-[17px] text-[#636465] font-bodyPop">
                 Entries
               </p>
             </div>
             <div className="flex">
-              <button
-                onClick={handleCopy}
-                className="bg-[#2E2E48] text-white xl:w-[80px] xl:px-[5px] xl:py-[10px] xl:mr-[15px] lg:w-[56px] lg:px-[2px] lg:py-[3px] lg:mr-[9px] sm:w-[56px] sm:px-[2px] sm:py-[3px] sm:mr-[9px] rounded-[5px]"
-              >
+              <button onClick={copyTableToClipboard} className=" bg-[#2E2E48] text-white xl:w-[80px] xl:px-[5px] xl:py-[10px] xl:mr-[15px] lg:w-[56px] lg:px-[2px] lg:py-[3px] lg:mr-[9px] sm:w-[56px] sm:px-[2px] sm:py-[3px] sm:mr-[9px] rounded-[5px]">
                 Copy
               </button>
-
-              <button className=" bg-[#2E2E48] text-white xl:w-[80px] xl:px-[5px] xl:py-[10px] xl:mr-[15px] lg:w-[56px] lg:px-[2px] lg:py-[3px] lg:mr-[9px] sm:w-[56px] sm:px-[2px] sm:py-[3px] sm:mr-[9px] rounded-[5px]">
-                CVG
+              <button onClick={exportToCSV} className=" bg-[#2E2E48] text-white xl:w-[80px] xl:px-[5px] xl:py-[10px] xl:mr-[15px] lg:w-[56px] lg:px-[2px] lg:py-[3px] lg:mr-[9px] sm:w-[56px] sm:px-[2px] sm:py-[3px] sm:mr-[9px] rounded-[5px]">
+                CSV
               </button>
-
-              <button
-                className=" bg-[#2E2E48] text-white xl:w-[80px] xl:px-[5px] xl:py-[10px] xl:mr-[15px] lg:w-[56px] lg:px-[2px] lg:py-[3px] lg:mr-[9px] sm:w-[56px] sm:px-[2px] sm:py-[3px] sm:mr-[9px] rounded-[5px]"
-                type="button"
-                onClick={handleExportToExcel}
-              >
+              <button  onClick={exportToExcel} className=" bg-[#2E2E48] text-white xl:w-[80px] xl:px-[5px] xl:py-[10px] xl:mr-[15px] lg:w-[56px] lg:px-[2px] lg:py-[3px] lg:mr-[9px] sm:w-[56px] sm:px-[2px] sm:py-[3px] sm:mr-[9px] rounded-[5px]">
                 Excel
               </button>
-              <button
-                className=" bg-[#2E2E48] text-white xl:w-[80px] xl:px-[5px] xl:py-[10px] xl:mr-[15px] lg:w-[56px] lg:px-[2px] lg:py-[3px] lg:mr-[9px] sm:w-[56px] sm:px-[2px] sm:py-[3px] sm:mr-[9px] rounded-[5px]"
-                type="button"
-                onClick={handleExportToPDF}
-              >
+              <button onClick={handleDownloadPDF} className=" bg-[#2E2E48] text-white xl:w-[80px] xl:px-[5px] xl:py-[10px] xl:mr-[15px] lg:w-[56px] lg:px-[2px] lg:py-[3px] lg:mr-[9px] sm:w-[56px] sm:px-[2px] sm:py-[3px] sm:mr-[9px] rounded-[5px]">
                 PDF
               </button>
-              <button
-                className=" bg-[#2E2E48] text-white xl:w-[80px] xl:px-[5px] xl:py-[10px] xl:mr-[15px] lg:w-[56px] lg:px-[2px] lg:py-[3px] lg:mr-[9px] sm:w-[56px] sm:px-[2px] sm:py-[3px] sm:mr-[9px] rounded-[5px]"
-                onClick={handlePrint}
-                type="button"
-              >
+              <button onClick={handlePrint} className=" bg-[#2E2E48] text-white xl:w-[80px] xl:px-[5px] xl:py-[10px] xl:mr-[15px] lg:w-[56px] lg:px-[2px] lg:py-[3px] lg:mr-[9px] sm:w-[56px] sm:px-[2px] sm:py-[3px] sm:mr-[9px] rounded-[5px]">
                 Print
               </button>
             </div>
@@ -278,24 +302,24 @@ export default function ManageDesignation() {
               </div>
             </div>
           </div>
-          <div className="w-full p-[10px] ">
-            <table  id="table" className="border-collapse border-slate-400 border-2 w-full h-full font-bodyPop text-left">
+          <div className="table w-full p-[10px] " >
+            <table id="table" ref={tableRef} className="table border-collapse border-slate-400 border-2 w-full h-full font-bodyPop text-left" >
               <thead>
                 <tr className="  text-[#595995]  font-medium  h-[60px]">
                   <th className="border border-slate-300 ...">
-                    <div className="flex justify-between">
+                    <div className="flex justify-between text-xl text-center">
                       SL.
                       <LuArrowUpDown className="w-auto h-[18px]" />
                     </div>
                   </th>
                   <th className="border border-slate-300 ...">
-                    <div className="flex justify-between">
+                    <div className="flex justify-between  text-xl text-center">
                       Designation
                       <LuArrowUpDown className="w-auto h-[18px]" />
                     </div>
                   </th>
                   <th className="border border-slate-300 ...">
-                    <div className="flex justify-between">
+                    <div className="flex justify-between  text-xl  px-3">
                       Action
                       <LuArrowUpDown className="w-auto h-[18px]" />
                     </div>
@@ -303,21 +327,27 @@ export default function ManageDesignation() {
                 </tr>
               </thead>
               <tbody>
-                {designations.map((designation, index) => (
+                {currentRows.map((designation, index) => (
                   <tr key={index} className="hover:bg-[#F2F2F2] h-[50px]">
-                    <td className="border border-slate-300 ...">{index + 1}</td>
-                    <td className="border border-slate-300 ...">
+                    <td className="border border-slate-300 px-3">
+                      {indexOfFirstRow + index + 1}
+                    </td>
+                    <td className="border border-slate-300 text-lg px-3">
                       {designation.designation}
                     </td>
-                    <td className="border border-slate-300 ...">
-                      <div className="flex justify-center">
-                        <button className="mr-3 text-[#636465]">
-                          <BsPencil onClick={() => handleEdit(designation)} />
+                    <td className="border border-slate-300">
+                      <div className="flex justify-start">
+                        <button
+                          className="mr-3 bg-[#75A68F] px-2 py-1"
+                          onClick={() => handleEdit(designation)}
+                        >
+                          <FaPen className="text-white" />
                         </button>
-                        <button className="mr-3 text-[#636465]">
-                          <FaRegTrashAlt
-                            onClick={() => handleDelete(designation._id)}
-                          />
+                        <button
+                          className="mr-3 text-[#636465] px-2 py-1 bg-red-500"
+                          onClick={() => handleDelete(designation._id)}
+                        >
+                          <FaRegTrashAlt className="text-white" />
                         </button>
                       </div>
                     </td>
@@ -325,6 +355,35 @@ export default function ManageDesignation() {
                 ))}
               </tbody>
             </table>
+          </div>
+          <div className="h-[100px] flex justify-end items-center pr-[20px]">
+            <button
+              onClick={handlePreviousPage}
+              disabled={currentPage === 1}
+              className=" border-[2px] xl:w-[100px] sm:w-[80px] rounded-[50px] xl:h-[50px] sm:h-[40px] mr-[4px] border-[#746BD9]"
+            >
+              <p className="text-[#746BD9]">Previous</p>
+            </button>
+            {Array.from({ length: totalPages }, (_, index) => (
+              <button
+                key={index + 1}
+                onClick={() => setCurrentPage(index + 1)}
+                className={`border-[2px] rounded-full xl:h-[50px] sm:h-[40px] xl:w-[50px] sm:w-[40px] mr-[4px] ${
+                  currentPage === index + 1
+                    ? "bg-[#746BD9] text-white"
+                    : "border-[#746BD9] text-[#746BD9]"
+                }`}
+              >
+                <p>{index + 1}</p>
+              </button>
+            ))}
+            <button
+              onClick={handleNextPage}
+              disabled={currentPage === totalPages}
+              className=" border-[2px] xl:w-[100px] sm:w-[80px] rounded-[50px] xl:h-[50px] sm:h-[40px] border-[#746BD9]"
+            >
+              <p className=" text-[#746BD9]">Next</p>
+            </button>
           </div>
         </div>
       </div>

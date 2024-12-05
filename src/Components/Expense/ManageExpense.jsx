@@ -137,7 +137,7 @@ const ManageExpense = () => {
       .get(`${BASE_URL}/api/expenses`) // Replace with your API endpoint
       .then((response) => setExpenses(response.data))
       .catch((error) => console.error(error));
-  }, []);
+  }, );
 
   const deleteItem = async (id) => {
   
