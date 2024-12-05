@@ -83,7 +83,7 @@ const ManageServiceList = () => {
           Home / Master / Manage Service Branch
         </span>
       </div>
-      <div className="container mx-auto p-4">
+      <div className="container mx-auto mt-3 p-4 bg-white">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-[#878484] text-xl md:text-2xl font-normal mb-2">
             Manage Service Branch
@@ -172,6 +172,33 @@ const ManageServiceList = () => {
             </div>
           </div>
         )}
+
+        {/* Pagination */}
+        <div className="flex justify-end items-center space-x-2 mt-10 text-[#9E95FF]">
+          <button className="px-2 py-1 border rounded-full border-[#9E95FF]">
+            Previous
+          </button>
+
+          <button className="w-8 h-8 border  rounded-full border-[#9E95FF]">
+            1
+          </button>
+          <button className="w-8 h-8 border  rounded-full border-[#9E95FF]">
+            2
+          </button>
+          <button className="w-8 h-8 border  rounded-full border-[#9E95FF]">
+            3
+          </button>
+          <button className="w-8 h-8 border  rounded-full border-[#9E95FF]">
+            4
+          </button>
+          <button className="w-8 h-8 border  rounded-full border-[#9E95FF]">
+            5
+          </button>
+
+          <button className="px-2 py-1 border  rounded-full border-[#9E95FF]">
+            Next
+          </button>
+        </div>
       </div>
     </>
   );
