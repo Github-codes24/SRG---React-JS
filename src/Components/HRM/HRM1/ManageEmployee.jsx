@@ -365,15 +365,16 @@ export default function ManageEmployee() {
                       />
                     </td>
                     <td className="border p-2 flex justify-center gap-2">
+            
+                      <button className="bg-[#75a68f] px-2 py-2 text-white cursor-pointer" onClick={() => handleEdit(employee)} >
+                        
                       <BsPencil
-                        className="text-green-600 cursor-pointer"
-                        onClick={() => handleEdit(employee)}
                       />
-                      <FaRegTrashAlt
-                        className="text-red-600 cursor-pointer"
-                        onClick={() => handleDelete(employee.id)}
-                      />
-                      <IoPerson className="text-blue-600" />
+                      </button>
+                     <button  className="text-white cursor-pointer px-2 py-2 bg-red-400" onClick={() => handleDelete(employee._id)}>
+                     <FaRegTrashAlt />
+                     </button>
+                     
                     </td>
                   </tr>
                 ))
@@ -388,6 +389,7 @@ export default function ManageEmployee() {
                 </tr>
               )}
             </tbody>
+
           </table>
         </div>
       </div>
