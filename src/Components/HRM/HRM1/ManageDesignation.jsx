@@ -1,22 +1,21 @@
 import React, { useEffect, useRef, useState } from "react";
 import { IoHomeOutline } from "react-icons/io5";
-import { BsPencil } from "react-icons/bs";
-import { FaRegTrashAlt } from "react-icons/fa";
 import { LuArrowUpDown } from "react-icons/lu";
 import axios from "axios";
 import BASE_URL from "../../../api";
 import html2pdf from 'html2pdf.js';
 import * as XLSX from 'xlsx';
-import { FaPen } from "react-icons/fa6";
+import { GoPencil } from "react-icons/go";
+import { CiTrash } from "react-icons/ci";
 
 export default function ManageDesignation() {
   const [designations, setDesignations] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentDesignation, setCurrentDesignation] = useState(null);
   const [updatedDesignation, setUpdatedDesignation] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState(10); // Default number of rows per page
   const tableRef = useRef();
 
   // Fetch data from API on component mount
@@ -33,6 +32,63 @@ export default function ManageDesignation() {
     };
     fetchDesignations();
   }, []);
+
+  // Handle Update API Call
+  const handleUpdate = async () => {
+    try {
+      const response = await axios.put(
+        `${BASE_URL}/api/hrm/designation/updateDesignation/${currentDesignation._id}`,
+        { designation: updatedDesignation }
+      );
+
+      // Update the local state with the updated designation
+      setDesignations((prev) =>
+        prev.map((designation) =>
+          designation._id === currentDesignation._id
+            ? { ...designation, designation: updatedDesignation }
+            : designation
+        )
+      );
+
+      alert("Designation updated successfully.");
+      closeUpdateModal(); // Close the modal
+    } catch (error) {
+      console.error("Error updating designation:", error);
+      alert("Failed to update designation. Please try again.");
+    }
+  };
+
+  // Open modal for updating
+  const openUpdateModal = (designation) => {
+    setCurrentDesignation(designation);
+    setUpdatedDesignation(designation.designation);
+    setIsModalOpen(true);
+  };
+
+  const closeUpdateModal = () => {
+    setIsModalOpen(false);
+    setCurrentDesignation(null);
+    setUpdatedDesignation("");
+  };
+
+  // Pagination logic
+  const indexOfLastRow = currentPage * rowsPerPage;
+  const indexOfFirstRow = indexOfLastRow - rowsPerPage;
+  const currentRows = designations.slice(indexOfFirstRow, indexOfLastRow);
+  const totalPages = Math.ceil(designations.length / rowsPerPage);
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
+  const handleRowsPerPageChange = (e) => {
+    setRowsPerPage(Number(e.target.value));
+    setCurrentPage(1);
+  };
 
   // Delete API Call
   const handleDelete = async (id) => {
@@ -52,60 +108,6 @@ export default function ManageDesignation() {
     }
   };
 
-  // Open Modal and Set Current Designation
-  const handleEdit = (designation) => {
-    setCurrentDesignation(designation);
-    setUpdatedDesignation(designation.designation);
-    setIsModalOpen(true);
-  };
-
-  // Update API Call
-  const handleUpdate = async () => {
-    if (!updatedDesignation.trim()) {
-      alert("Designation cannot be empty.");
-      return;
-    }
-    try {
-      const response = await axios.put(
-        `${BASE_URL}/api/hrm/designation/updateDesignation/${currentDesignation._id}`,
-        {
-          designation: updatedDesignation,
-        }
-      );
-      setDesignations((prev) =>
-        prev.map((designation) =>
-          designation._id === currentDesignation._id
-            ? response.data.data.designation
-            : designation
-        )
-      );
-      alert("Designation updated successfully.");
-      setIsModalOpen(false);
-    } catch (error) {
-      console.error("Error updating designation:", error);
-      alert("Failed to update designation. Please try again.");
-    }
-  };
-
-  // Pagination logic
-  const indexOfLastRow = currentPage * rowsPerPage;
-  const indexOfFirstRow = indexOfLastRow - rowsPerPage;
-  const currentRows = designations.slice(indexOfFirstRow, indexOfLastRow);
-  const totalPages = Math.ceil(designations.length / rowsPerPage);
-
-  const handleNextPage = () => {
-    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
-  };
-
-  const handlePreviousPage = () => {
-    if (currentPage > 1) setCurrentPage(currentPage - 1);
-  };
-
-  // Handle "Show Entries" change
-  const handleRowsPerPageChange = (e) => {
-    setRowsPerPage(Number(e.target.value));
-    setCurrentPage(1); // Reset to the first page
-  };
 
   //print method
   const handlePrint = () => {
@@ -220,7 +222,7 @@ export default function ManageDesignation() {
     // Write the workbook to an Excel file and trigger the download
     XLSX.writeFile(wb, "Manage_Expense.xlsx");
   };
-
+  
   return (
     <div>
       <div className="mb-[11%]">
@@ -263,7 +265,7 @@ export default function ManageDesignation() {
               </p>
             </div>
             <div className="flex">
-              <button onClick={copyTableToClipboard} className=" bg-[#2E2E48] text-white xl:w-[80px] xl:px-[5px] xl:py-[10px] xl:mr-[15px] lg:w-[56px] lg:px-[2px] lg:py-[3px] lg:mr-[9px] sm:w-[56px] sm:px-[2px] sm:py-[3px] sm:mr-[9px] rounded-[5px]">
+            <button onClick={copyTableToClipboard} className=" bg-[#2E2E48] text-white xl:w-[80px] xl:px-[5px] xl:py-[10px] xl:mr-[15px] lg:w-[56px] lg:px-[2px] lg:py-[3px] lg:mr-[9px] sm:w-[56px] sm:px-[2px] sm:py-[3px] sm:mr-[9px] rounded-[5px]">
                 Copy
               </button>
               <button onClick={exportToCSV} className=" bg-[#2E2E48] text-white xl:w-[80px] xl:px-[5px] xl:py-[10px] xl:mr-[15px] lg:w-[56px] lg:px-[2px] lg:py-[3px] lg:mr-[9px] sm:w-[56px] sm:px-[2px] sm:py-[3px] sm:mr-[9px] rounded-[5px]">
@@ -303,23 +305,23 @@ export default function ManageDesignation() {
             </div>
           </div>
           <div className="table w-full p-[10px] " >
-            <table id="table" ref={tableRef} className="table border-collapse border-slate-400 border-2 w-full h-full font-bodyPop text-left" >
+            <table id="table" ref={tableRef} className="table border-collapse border-gray-300 border-2 w-full h-full font-bodyPop text-left" >
               <thead>
                 <tr className="  text-[#595995]  font-medium  h-[60px]">
-                  <th className="border border-slate-300 ...">
-                    <div className="flex justify-between text-xl text-center">
+                  <th className="border border-slate-300 ... pl-[1rem]">
+                    <div className="flex justify-between">
                       SL.
                       <LuArrowUpDown className="w-auto h-[18px]" />
                     </div>
                   </th>
-                  <th className="border border-slate-300 ...">
-                    <div className="flex justify-between  text-xl text-center">
+                  <th className="border border-slate-300 ... pl-[1rem]">
+                    <div className="flex justify-between">
                       Designation
                       <LuArrowUpDown className="w-auto h-[18px]" />
                     </div>
                   </th>
-                  <th className="border border-slate-300 ...">
-                    <div className="flex justify-between  text-xl  px-3">
+                  <th className="border border-slate-300 ... pl-[1rem]">
+                    <div className="flex justify-between">
                       Action
                       <LuArrowUpDown className="w-auto h-[18px]" />
                     </div>
@@ -327,32 +329,32 @@ export default function ManageDesignation() {
                 </tr>
               </thead>
               <tbody>
-                {currentRows.map((designation, index) => (
-                  <tr key={index} className="hover:bg-[#F2F2F2] h-[50px]">
-                    <td className="border border-slate-300 px-3">
-                      {indexOfFirstRow + index + 1}
-                    </td>
-                    <td className="border border-slate-300 text-lg px-3">
-                      {designation.designation}
-                    </td>
-                    <td className="border border-slate-300">
-                      <div className="flex justify-start">
+              {currentRows.map((designation, index) => (
+                <tr key={index} className="hover:bg-[#F2F2F2] text-lg h-[50px]">
+                  <td className="border border-slate-300 pl-[1rem]">
+                    {indexOfFirstRow + index + 1}
+                  </td>
+                  <td className="border border-slate-300 pl-[1rem]">
+                    {designation.designation}
+                  </td>
+                  <td className="border border-slate-300 pl-[1rem]">
+                    <div className="flex justify-center">
                         <button
-                          className="mr-3 bg-[#75A68F] px-2 py-1"
-                          onClick={() => handleEdit(designation)}
-                        >
-                          <FaPen className="text-white" />
-                        </button>
-                        <button
-                          className="mr-3 text-[#636465] px-2 py-1 bg-red-500"
-                          onClick={() => handleDelete(designation._id)}
-                        >
-                          <FaRegTrashAlt className="text-white" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
+                        className="bg-green-400 px-2 py-2 mx-1"
+                        onClick={() => openUpdateModal(designation)}
+                      >
+                        <GoPencil />
+                      </button>
+                      <button
+                        className="bg-red-400 px-2 py-2"
+                        onClick={() => handleDelete(designation._id)}
+                      >
+                        <CiTrash />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
               </tbody>
             </table>
           </div>
@@ -387,34 +389,30 @@ export default function ManageDesignation() {
           </div>
         </div>
       </div>
-      {/* Modal */}
+      {/* Update Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded-md shadow-lg w-[400px]">
-            <h2 className="text-xl font-bold mb-4">Update Designation</h2>
-            <div className="mb-4">
-              <label className="block text-gray-700 font-medium mb-2">
-                Designation
-              </label>
-              <input
-                type="text"
-                value={updatedDesignation}
-                onChange={(e) => setUpdatedDesignation(e.target.value)}
-                className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white p-6 rounded-lg w-1/3">
+            <h2 className="text-xl font-semibold mb-4">Update Designation</h2>
+            <input
+              type="text"
+              value={updatedDesignation}
+              onChange={(e) => setUpdatedDesignation(e.target.value)}
+              className="border p-2 w-full mb-4"
+              placeholder="Enter new designation"
+            />
             <div className="flex justify-end">
               <button
-                onClick={() => setIsModalOpen(false)}
-                className="bg-gray-500 text-white px-4 py-2 rounded-md mr-2"
-              >
-                Cancel
-              </button>
-              <button
+                className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
                 onClick={handleUpdate}
-                className="bg-blue-500 text-white px-4 py-2 rounded-md"
               >
                 Save
+              </button>
+              <button
+                className="bg-gray-500 text-white px-4 py-2 rounded"
+                onClick={closeUpdateModal}
+              >
+                Cancel
               </button>
             </div>
           </div>
