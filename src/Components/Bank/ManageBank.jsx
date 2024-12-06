@@ -84,23 +84,6 @@ const ManageBank = () => {
     }
   };
 
-<<<<<<< HEAD
-  // Delete bank function
-  const deleteBank = async (id) => {
-    if (window.confirm("Are you sure you want to delete this bank?")) {
-      try {
-        await axios.delete(`${BASE_URL}/api/banks/delete/${id}`, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        // Update state after successful deletion
-        setBanks((prevBanks) => prevBanks.filter((bank) => bank.id !== id));
-      } catch (error) {
-        console.error("Error deleting bank:", error);
-        alert("Failed to delete the bank. Please try again.");
-      }
-=======
   // Handle delete button click
   const handleDeleteClick = async (id) => {
 
@@ -115,7 +98,6 @@ const ManageBank = () => {
     } catch (error) {
       
       console.error("Error deleting bank:", error);
->>>>>>> a24e6bd89120213d8744c25f06df3988d0b3ba9c
     }
   };
 
@@ -295,11 +277,7 @@ const ManageBank = () => {
                     </button>
                     <button
                       className="bg-red-600 p-1"
-<<<<<<< HEAD
-                      onClick={() => deleteBank(bank.id)}
-=======
                       onClick={() => handleDeleteClick(bank._id)}
->>>>>>> a24e6bd89120213d8744c25f06df3988d0b3ba9c
                     >
                       <FaTrash className="text-white" />
                     </button>
