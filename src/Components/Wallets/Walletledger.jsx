@@ -73,7 +73,7 @@ const Walletledger = () => {
         </span>
       </div>
 
-      <div className="flex items-center justify-between mt-3 bg-white py-3 px-2">
+      <div className="flex items-center justify-between my-5 bg-white py-3 px-2">
         <div className="">
           <label
             htmlFor="walletname"
