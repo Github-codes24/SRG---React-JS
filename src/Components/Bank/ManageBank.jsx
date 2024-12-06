@@ -55,7 +55,7 @@ const ManageBank = () => {
 
   // Handle edit button click
   const handleEditClick = (bank) => {
-    setEditRowId(bank.id);
+    setEditRowId(bank._id);
     setEditedData({ ...bank });
     setNewExpenseItem(bank.bankName || "");
     setEditModalOpen(true);
@@ -83,17 +83,21 @@ const ManageBank = () => {
     }
   };
 
-  // Handle delete button click
-  const handleDeleteClick = async (id) => {
-    try {
-      await axios.delete(`${BASE_URL}/api/banks/delete/${id}`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      fetchBanks(); // Refresh the table
-    } catch (error) {
-      console.error("Error deleting bank:", error);
+  // Delete bank function
+  const deleteBank = async (id) => {
+    if (window.confirm("Are you sure you want to delete this bank?")) {
+      try {
+        await axios.delete(`${BASE_URL}/api/banks/delete/${id}`, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        // Update state after successful deletion
+        setBanks((prevBanks) => prevBanks.filter((bank) => bank.id !== id));
+      } catch (error) {
+        console.error("Error deleting bank:", error);
+        alert("Failed to delete the bank. Please try again.");
+      }
     }
   };
 
@@ -273,7 +277,7 @@ const ManageBank = () => {
                     </button>
                     <button
                       className="bg-red-600 p-1"
-                      onClick={() => handleDeleteClick(bank.id)}
+                      onClick={() => deleteBank(bank.id)}
                     >
                       <FaTrash className="text-white" />
                     </button>
