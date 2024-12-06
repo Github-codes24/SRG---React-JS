@@ -131,7 +131,18 @@ export default function ManageBenefits() {
   const [benefits, setBenefits] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [currentBenefit, setCurrentBenefit] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10); // Items per page
 
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentBenefits = benefits.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(benefits.length / itemsPerPage);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
   // Fetch all benefits
   const fetchBenefits = async () => {
     try {
@@ -293,28 +304,35 @@ export default function ManageBenefits() {
             </table>
           </div>
           <div className="h-[100px] flex justify-end items-center pr-[20px]">
-            <button className=" border-[2px] xl:w-[100px] sm:w-[80px] rounded-[50px] xl:h-[50px] sm:h-[40px] mr-[4px] border-[#746BD9]">
-              <p className="text-[#746BD9]">Previous</p>
-            </button>
-            <button className="  border-[2px] rounded-full xl:h-[50px] sm:h-[40px] xl:w-[50px] sm:w-[40px] mr-[4px] border-[#746BD9]">
-              <p className=" text-[#746BD9]">1</p>
-            </button>
-            <button className="  border-[2px] rounded-full xl:h-[50px] sm:h-[40px] xl:w-[50px] sm:w-[40px] mr-[4px] border-[#746BD9]">
-              <p className=" text-[#746BD9]">2</p>
-            </button>
-            <button className="  border-[2px] rounded-full xl:h-[50px] sm:h-[40px] xl:w-[50px] sm:w-[40px] mr-[4px] border-[#746BD9]">
-              <p className=" text-[#746BD9]">3</p>
-            </button>
-            <button className="  border-[2px] rounded-full xl:h-[50px] sm:h-[40px] xl:w-[50px] sm:w-[40px] mr-[4px] border-[#746BD9]">
-              <p className=" text-[#746BD9]">4</p>
-            </button>
-            <button className="  border-[2px] rounded-full xl:h-[50px] sm:h-[40px] xl:w-[50px] sm:w-[40px] mr-[4px] border-[#746BD9]">
-              <p className=" text-[#746BD9]">5</p>
-            </button>
-            <button className=" border-[2px] xl:w-[100px] sm:w-[80px] rounded-[50px] xl:h-[50px] sm:h-[40px] border-[#746BD9]">
-              <p className=" text-[#746BD9]">Next</p>
-            </button>
-          </div>
+  <button
+    className={`border-[2px] xl:w-[100px] sm:w-[80px] rounded-[50px] xl:h-[50px] sm:h-[40px] mr-[4px] border-[#746BD9] ${currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""}`}
+    onClick={() => handlePageChange(currentPage - 1)}
+    disabled={currentPage === 1}
+  >
+    <p className="text-[#746BD9]">Previous</p>
+  </button>
+
+  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+    <button
+      key={page}
+      className={`border-[2px] rounded-full xl:h-[50px] sm:h-[40px] xl:w-[50px] sm:w-[40px] mr-[4px] border-[#746BD9] ${
+        currentPage === page ? "bg-[#746BD9] text-white" : "text-[#746BD9]"
+      }`}
+      onClick={() => handlePageChange(page)}
+    >
+      <p>{page}</p>
+    </button>
+  ))}
+
+  <button
+    className={`border-[2px] xl:w-[100px] sm:w-[80px] rounded-[50px] xl:h-[50px] sm:h-[40px] border-[#746BD9] ${currentPage === totalPages ? "opacity-50 cursor-not-allowed" : ""}`}
+    onClick={() => handlePageChange(currentPage + 1)}
+    disabled={currentPage === totalPages}
+  >
+    <p className="text-[#746BD9]">Next</p>
+  </button>
+</div>
+
         </div>
       </div>
       {/* Update Modal */}
