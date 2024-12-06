@@ -271,13 +271,13 @@ const ManageBank = () => {
                   <td className="px-4 py-2 border border-gray-300">
                     <button
                       className="bg-green-600 p-1"
-                      onClick={() => handleEditClick(bank._id)}
+                      onClick={() => handleEditClick(bank.id)}
                     >
                       <FaPencil className="text-white" />
                     </button>
                     <button
                       className="bg-red-600 p-1"
-                      onClick={() => handleDeleteClick(bank._id)}
+                      onClick={() => handleDeleteClick(bank.id)}
                     >
                       <FaTrash className="text-white" />
                     </button>

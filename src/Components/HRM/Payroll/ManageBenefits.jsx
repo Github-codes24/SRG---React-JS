@@ -1,10 +1,67 @@
-import React from 'react'
-import { IoHomeOutline } from 'react-icons/io5'
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { IoHomeOutline } from "react-icons/io5";
 import { BsPencil } from "react-icons/bs";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { LuArrowUpDown } from "react-icons/lu";
+import BASE_URL from "../../../api";
 
 export default function ManageBenefits() {
+  const [benefits, setBenefits] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [currentBenefit, setCurrentBenefit] = useState(null);
+
+  // Fetch all benefits
+  const fetchBenefits = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/api/benefits/getAllBenefits`);
+      setBenefits(response.data.data);
+    } catch (error) {
+      console.error("Error fetching benefits data:", error);
+    }
+  };
+
+  // Delete a benefit
+  const deleteBenefit = async (id) => {
+    try {
+      const confirmed = window.confirm("Are you sure you want to delete this benefit?");
+      if (confirmed) {
+        await axios.put(`${BASE_URL}/api/benefits/deleteBenefits/${id}`);
+        alert("Benefit deleted successfully!");
+        fetchBenefits();
+      }
+    } catch (error) {
+      console.error("Error deleting benefit:", error);
+      alert("Failed to delete benefit. Please try again.");
+    }
+  };
+
+  // Open modal and set current benefit for editing
+  const openUpdateModal = (benefit) => {
+    setCurrentBenefit(benefit);
+    setShowModal(true);
+  };
+
+  // Update a benefit
+  const updateBenefit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.put(`${BASE_URL}/api/benefits/updateBenefits/${currentBenefit._id}`, {
+        salaryBenefits: currentBenefit.salaryBenefits,
+        benefitsType: currentBenefit.benefitsType,
+      });
+      alert("Benefit updated successfully!");
+      setShowModal(false);
+      fetchBenefits();
+    } catch (error) {
+      console.error("Error updating benefit:", error);
+      alert("Failed to update benefit. Please try again.");
+    }
+  };
+
+  useEffect(() => {
+    fetchBenefits();
+  }, []);
   return (
     <div>
       <div className='mb-[11%]'>
@@ -97,39 +154,19 @@ export default function ManageBenefits() {
                 </tr>
               </thead>
               <tbody className="text-left text-[#636465BD]">
-                <tr className="  h-[60px]">
-                  <td className="border border-slate-300 pl-[8px]">1</td>
-                  <td className="border border-slate-300 pl-[8px]">Mobile Recharge</td>
-                  <td className="border border-slate-300 pl-[8px]">Add</td>
+              {benefits.map((benefit, index) => (
+                <tr key={index} className="  h-[60px]">
+                  <td className="border border-slate-300 pl-[8px]">{index + 1}</td>
+                  <td className="border border-slate-300 pl-[8px]">{benefit.salaryBenefits}</td>
+                  <td className="border border-slate-300 pl-[8px]">{benefit.benefitsType}</td>
                   <td className="border border-slate-300 pl-[8px]"><div className="flex gap-[4px] w-full justify-left pl-[5px]">
-                    <BsPencil className="bg-[#96CEB4] p-[2px] h-[30px] w-[30px] rounded-[2px] border-[1px] border-[#75A68F]" color="white"/>
-                    <FaRegTrashAlt className="bg-[#CB6040] p-[2px] h-[30px] w-[30px] rounded-[2px] border-[#BF2D35] border-[1px]" color="white"/>
+                    <BsPencil onClick={() => openUpdateModal(benefit)} className="bg-[#96CEB4] p-[2px] h-[30px] w-[30px] rounded-[2px] border-[1px] border-[#75A68F]" color="white"/>
+                    <FaRegTrashAlt onClick={() => deleteBenefit(benefit._id)} className="bg-[#CB6040] p-[2px] h-[30px] w-[30px] rounded-[2px] border-[#BF2D35] border-[1px]" color="white"/>
                     
                     </div>
                     </td>
                 </tr>
-                <tr className="  h-[60px]">
-                  <td className="border border-slate-300 pl-[8px]">2</td>
-                  <td className="border border-slate-300 pl-[8px]">HRA</td>
-                  <td className="border border-slate-300 pl-[8px]">Add</td>
-                  <td className="border border-slate-300 pl-[8px]"><div className="flex gap-[4px] w-full justify-left pl-[5px]">
-                    <BsPencil className="bg-[#96CEB4] p-[2px] h-[30px] w-[30px] rounded-[2px] border-[1px] border-[#75A68F]" color="white"/>
-                    <FaRegTrashAlt className="bg-[#CB6040] p-[2px] h-[30px] w-[30px] rounded-[2px] border-[#BF2D35] border-[1px]" color="white"/>
-                    
-                    </div>
-                    </td>
-                </tr>
-                <tr className="  h-[60px]">
-                  <td className="border border-slate-300 pl-[8px]">3</td>
-                  <td className="border border-slate-300 pl-[8px]">100</td>
-                  <td className="border border-slate-300 pl-[8px]">Add</td>
-                  <td className="border border-slate-300 pl-[8px]"><div className="flex gap-[4px] w-full justify-left pl-[5px]">
-                    <BsPencil className="bg-[#96CEB4] p-[2px] h-[30px] w-[30px] rounded-[2px] border-[1px] border-[#75A68F]" color="white"/>
-                    <FaRegTrashAlt className="bg-[#CB6040] p-[2px] h-[30px] w-[30px] rounded-[2px] border-[#BF2D35] border-[1px]" color="white"/>
-                    
-                    </div>
-                    </td>
-                </tr>
+                ))}
               </tbody>
             </table>
           </div>
@@ -158,6 +195,51 @@ export default function ManageBenefits() {
           </div>
         </div>
       </div>
+      {/* Update Modal */}
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-6 rounded shadow-lg w-[400px]">
+            <h2 className="text-lg font-bold mb-4">Update Benefit</h2>
+            <form onSubmit={updateBenefit}>
+              <div className="mb-4">
+                <label className="block text-gray-700 mb-2">Benefit</label>
+                <input
+                  type="text"
+                  value={currentBenefit.salaryBenefits}
+                  onChange={(e) => setCurrentBenefit({ ...currentBenefit, salaryBenefits: e.target.value })}
+                  className="w-full border px-4 py-2 rounded"
+                  required
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700 mb-2">Benefit Type</label>
+                <input
+                  type="text"
+                  value={currentBenefit.benefitsType}
+                  onChange={(e) => setCurrentBenefit({ ...currentBenefit, benefitsType: e.target.value })}
+                  className="w-full border px-4 py-2 rounded"
+                  required
+                />
+              </div>
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  onClick={() => setShowModal(false)}
+                  className="px-4 py-2 mr-2 border rounded text-gray-700"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-blue-500 text-white rounded"
+                >
+                  Update
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
