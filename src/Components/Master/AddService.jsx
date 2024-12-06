@@ -7,8 +7,10 @@ import {
 } from "react-icons/md";
 
 import BASE_URL from "../../api";
+import ServiceSlab from "./ServiceSlab";
 
 const AddService = () => {
+  const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
     serviceNumber: "",
     serviceName: "",
@@ -19,6 +21,13 @@ const AddService = () => {
     profit: "",
     documentsRequired: "",
   });
+
+  function Showtoggle(){
+    setShowModal(true)
+  }
+  function Hidetoggle(){
+    setShowModal(false)
+  }
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -86,7 +95,7 @@ const AddService = () => {
           Home / Master / Add Service
         </span>
       </div>
-      <div className="max-w-6xl mx-auto mt-10 p-6 bg-white shadow-md rounded-md w-[100%]">
+      <div className="w-full mx-auto mt-10 p-6 bg-white shadow-md rounded-md ">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-[#878484] text-xl md:text-2xl font-normal">
             Add Services
@@ -165,8 +174,9 @@ const AddService = () => {
               />
 
               <button
-                className="px-4 py-2 bg-[#AAD3CE] rounded-md text-[#2F605A] w-full md:w-auto"
-                
+                className="ml-2 px-2 py-2 bg-[#AAD3CE] rounded-md text-[#2F605A] w-full md:w-auto h-[60px]"
+                onClick={Showtoggle}
+                type="reset"
               >
                 Service Slap
               </button>
@@ -202,6 +212,12 @@ const AddService = () => {
           </form>
         </div>
       </div>
+      {/* Modal */}
+      {showModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <ServiceSlab hideModal={Hidetoggle}/>
+        </div>
+      )}
     </>
   );
 };

@@ -152,7 +152,34 @@ const ManageLedger = () => {
               ))}
             </tbody>
           </table>
+          {/* Pagination UI */}
+      <div className="flex justify-center items-center space-x-2 mt-10 float-right">
+        <button className="px-2 py-1 text-[#9E95FF] border rounded-full border-[#9E95FF]">
+          Previous
+        </button>
+
+        <button className="w-8 h-8 text-[#9E95FF] border rounded-full border-[#9E95FF]">
+          1
+        </button>
+        <button className="w-8 h-8 text-[#9E95FF] border rounded-full border-[#9E95FF]">
+          2
+        </button>
+        <button className="w-8 h-8 text-[#9E95FF] border rounded-full border-[#9E95FF]">
+          3
+        </button>
+        <button className="w-8 h-8 text-[#9E95FF] border rounded-full border-[#9E95FF]">
+          4
+        </button>
+        <button className="w-8 h-8 text-[#9E95FF] border rounded-full border-[#9E95FF]">
+          5
+        </button>
+
+        <button className="px-2 py-1 text-[#9E95FF] border rounded-full border-[#9E95FF]">
+          Next
+        </button>
+      </div>
         </div>
+        
       </div>
 
       {/* Edit Modal */}
@@ -254,32 +281,7 @@ const ManageLedger = () => {
           </div>
         </div>
       )}
-      {/* Pagination UI */}
-      <div className="flex justify-center items-center space-x-2 mt-10 float-right">
-        <button className="px-2 py-1 border rounded-full border-[#9E95FF]">
-          Previous
-        </button>
-
-        <button className="w-8 h-8 border rounded-full border-[#9E95FF]">
-          1
-        </button>
-        <button className="w-8 h-8 border rounded-full border-[#9E95FF]">
-          2
-        </button>
-        <button className="w-8 h-8 border rounded-full border-[#9E95FF]">
-          3
-        </button>
-        <button className="w-8 h-8 border rounded-full border-[#9E95FF]">
-          4
-        </button>
-        <button className="w-8 h-8 border rounded-full border-[#9E95FF]">
-          5
-        </button>
-
-        <button className="px-2 py-1 border rounded-full border-[#9E95FF]">
-          Next
-        </button>
-      </div>
+      
     </>
   );
 };

@@ -55,7 +55,7 @@ const AddAccountHead = () => {
       </div>
 
       {/* Form Container */}
-      <div className="max-w-6xl mx-auto mt-10 p-6 bg-white shadow-md rounded-md">
+      <div className="w-full mx-auto mt-10 p-6 bg-white shadow-md rounded-md">
         {/* Header Section */}
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-[#878484] text-xl md:text-2xl font-normal">

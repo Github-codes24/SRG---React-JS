@@ -79,8 +79,8 @@ const ManageService = () => {
       </div>
 
       {/* Main Content */}
-      <div className="container mx-auto p-4">
-        <div className="flex justify-between items-center mb-6">
+      <div className="container mx-auto rounded-md  bg-white py-4">
+        <div className="flex justify-between items-center mb-2 p-4 border-b-[1px] border-gray-200 ">
           <h2 className="text-[#878484] text-xl md:text-2xl font-normal mb-2">
             Manage Service
           </h2>
@@ -91,19 +91,80 @@ const ManageService = () => {
             Add Service
           </button>
         </div>
+        <div>
+          <div className="bg-white p-4 rounded-lg justify-between mt-2 flex items-center space-x-4">
+            {/* Name Input */}
+            <div className="flex gap-3">
+              <h4>Show</h4>
+
+              {/* Dropdown Menu */}
+              <select className="border border-gray-300 rounded  focus:outline-none focus:ring-2 ">
+                <option value="Option 1"> 10</option>
+                <option value="Option 2"> 2</option>
+                <option value="Option 3"> 3</option>
+              </select>
+              <h4>Entries</h4>
+            </div>
+
+            {/* Buttons */}
+            <div className="flex space-x-2">
+              <button className="bg-zinc-800 text-white px-4 py-2 rounded ">
+                Copy
+              </button>
+              <button className="bg-zinc-800 text-white px-4 py-2 rounded ">
+                CSV
+              </button>
+              <button className="bg-zinc-800 text-white px-4 py-2 rounded ">
+                Excel
+              </button>
+              <button className="bg-zinc-800 text-white px-4 py-2 rounded ">
+                PDF
+              </button>
+              <button className="bg-zinc-800 text-white px-4 py-2 rounded ">
+                Print
+              </button>
+            </div>
+
+            {/* Search Box */}
+            <div className="relative ml-auto">
+              <input
+                type="text"
+                placeholder="Search..."
+                className="border border-gray-300 rounded-l px-3 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-purple-600"
+              />
+              <div className="absolute right-0 top-0 h-full w-10 bg-black flex items-center justify-center rounded-r">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5 text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M11 5a7 7 0 100 14 7 7 0 000-14zM21 21l-4.35-4.35"
+                  />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
 
         {/* Table */}
+        <div className=" overflow-x-auto p-4 w-full">
         <table className="w-full border-collapse border border-gray-300">
           <thead>
             <tr className="bg-gray-100">
-              <th className="border p-2 text-left">#</th>
-              <th className="border p-2 text-left">Branch</th>
-              <th className="border p-2 text-left">Name</th>
-              <th className="border p-2 text-left">Category</th>
-              <th className="border p-2 text-left">Buy</th>
-              <th className="border p-2 text-left">Sell</th>
-              <th className="border p-2 text-left">Profit</th>
-              <th className="border p-2 text-left">Actions</th>
+              <th className="border p-2 text-left text-[#595995]">#</th>
+              <th className="border p-2 text-left text-[#595995]">Branch</th>
+              <th className="border p-2 text-left text-[#595995]">Name</th>
+              <th className="border p-2 text-left text-[#595995]">Category</th>
+              <th className="border p-2 text-left text-[#595995]">Buy</th>
+              <th className="border p-2 text-left text-[#595995]">Sell</th>
+              <th className="border p-2 text-left text-[#595995]">Profit</th>
+              <th className="border p-2 text-left text-[#595995]">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -144,6 +205,33 @@ const ManageService = () => {
             )}
           </tbody>
         </table>
+        </div>
+        {/* Pagination */}
+        <div className="flex justify-end items-center space-x-2 mt-10 text-[#9E95FF]">
+          <button className="px-2 py-1 border rounded-full border-[#9E95FF]">
+            Previous
+          </button>
+
+          <button className="w-8 h-8 border  rounded-full border-[#9E95FF]">
+            1
+          </button>
+          <button className="w-8 h-8 border  rounded-full border-[#9E95FF]">
+            2
+          </button>
+          <button className="w-8 h-8 border  rounded-full border-[#9E95FF]">
+            3
+          </button>
+          <button className="w-8 h-8 border  rounded-full border-[#9E95FF]">
+            4
+          </button>
+          <button className="w-8 h-8 border  rounded-full border-[#9E95FF]">
+            5
+          </button>
+
+          <button className="px-2 py-1 border  rounded-full border-[#9E95FF]">
+            Next
+          </button>
+        </div>
       </div>
 
       {/* Edit Modal */}

@@ -2,7 +2,7 @@ import React from "react";
 import { CiEdit } from "react-icons/ci";
  
 
-const ServiceSlab = () => {
+const ServiceSlab = ({ hideModal }) => {
   return (
     <div className="max-w-4xl mx-auto bg-white p-6 shadow-md rounded-md">
       {/* Title */}
@@ -89,6 +89,14 @@ const ServiceSlab = () => {
           type="submit"
         >
           OK
+        </button>
+        <button
+          className="px-6 py-1 bg-red-600 rounded-md text-white"
+          type="submit"
+          onClick={hideModal}
+          
+        >
+          Cancel
         </button>
       </div>
     </div>

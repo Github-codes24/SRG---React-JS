@@ -46,6 +46,7 @@ const ManageBank = () => {
         }
       );
       setBanks(response.data || []);
+      console.log(response.data)
       setLoading(false);
     } catch (error) {
       console.error("Fetching data is unsuccessful:", error);
@@ -85,6 +86,8 @@ const ManageBank = () => {
 
   // Handle delete button click
   const handleDeleteClick = async (id) => {
+
+    alert(id)
     try {
       await axios.delete(`${BASE_URL}/api/banks/delete/${id}`, {
         headers: {
@@ -93,6 +96,7 @@ const ManageBank = () => {
       });
       fetchBanks(); // Refresh the table
     } catch (error) {
+      
       console.error("Error deleting bank:", error);
     }
   };
@@ -267,13 +271,13 @@ const ManageBank = () => {
                   <td className="px-4 py-2 border border-gray-300">
                     <button
                       className="bg-green-600 p-1"
-                      onClick={() => handleEditClick(bank)}
+                      onClick={() => handleEditClick(bank._id)}
                     >
                       <FaPencil className="text-white" />
                     </button>
                     <button
                       className="bg-red-600 p-1"
-                      onClick={() => handleDeleteClick(bank.id)}
+                      onClick={() => handleDeleteClick(bank._id)}
                     >
                       <FaTrash className="text-white" />
                     </button>
