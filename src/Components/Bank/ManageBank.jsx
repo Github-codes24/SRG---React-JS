@@ -56,7 +56,7 @@ const ManageBank = () => {
 
   // Handle edit button click
   const handleEditClick = (bank) => {
-    setEditRowId(bank.id);
+    setEditRowId(bank._id);
     setEditedData({ ...bank });
     setNewExpenseItem(bank.bankName || "");
     setEditModalOpen(true);
@@ -271,13 +271,13 @@ const ManageBank = () => {
                   <td className="px-4 py-2 border border-gray-300">
                     <button
                       className="bg-green-600 p-1"
-                      onClick={() => handleEditClick(bank.id)}
+                      onClick={() => handleEditClick(bank._id)}
                     >
                       <FaPencil className="text-white" />
                     </button>
                     <button
                       className="bg-red-600 p-1"
-                      onClick={() => handleDeleteClick(bank.id)}
+                      onClick={() => handleDeleteClick(bank._id)}
                     >
                       <FaTrash className="text-white" />
                     </button>

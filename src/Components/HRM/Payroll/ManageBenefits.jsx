@@ -155,7 +155,11 @@ export default function ManageBenefits() {
               </thead>
               <tbody className="text-left text-[#636465BD]">
               {benefits.map((benefit, index) => (
+<<<<<<< HEAD
                 <tr key={index} className="  h-[60px]">
+=======
+                <tr className="  h-[60px]">
+>>>>>>> 4125e96ca6ad18741a9a3478e51425fd1f26b76b
                   <td className="border border-slate-300 pl-[8px]">{index + 1}</td>
                   <td className="border border-slate-300 pl-[8px]">{benefit.salaryBenefits}</td>
                   <td className="border border-slate-300 pl-[8px]">{benefit.benefitsType}</td>
