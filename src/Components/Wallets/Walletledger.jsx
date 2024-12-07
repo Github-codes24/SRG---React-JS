@@ -17,17 +17,19 @@ const Walletledger = () => {
   const [walletName, setWalletName] = useState("");
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
+  const [loading, setLoading] = useState(false);
 
   // Fetch data from API
   const fetchData = async () => {
+    setLoading(true); // Start loading
     try {
-      const response = await axios.get(
-        `${BASE_URL}/api/wallets/all`
-      ); // Replace with your API URL
+      const response = await axios.get(`${BASE_URL}/api/wallets/all`);
       setData(response.data);
       setFilteredData(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
@@ -162,6 +164,11 @@ const Walletledger = () => {
           </div>
         </div>
         <div className="overflow-x-auto ">
+        {loading ? (
+            <div className="flex justify-center items-center py-10">
+            <div className="loader border-t-4 border-b-4 border-purple-700 w-10 h-10 rounded-full animate-spin"></div>
+          </div>
+          ) : (
           <table className="min-w-full bg-white border border-gray-300">
             <thead>
               <tr className="bg-white border text-[#595995]">
@@ -209,6 +216,7 @@ const Walletledger = () => {
               </tr>
             </tbody>
           </table>
+          )}
         </div>
       </div>
     </div>

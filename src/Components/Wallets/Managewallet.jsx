@@ -17,6 +17,7 @@ import BASE_URL from "../../api";
 
 const ManageWallet = () => {
  const navigate = useNavigate();
+ const [loading, setLoading] = useState(false);
   const [wallets, setWallets] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [editModalOpen, setEditModalOpen] = useState(false);
@@ -25,11 +26,14 @@ const ManageWallet = () => {
 
   // Fetch wallets from API
   const fetchWallets = async () => {
+    setLoading(true); // Start loading
     try {
       const response = await axios.get(`${BASE_URL}/api/wallets/all`);
       setWallets(response.data);
     } catch (error) {
       console.error("Error fetching wallets:", error);
+    }finally {
+      setLoading(false); // Stop loading
     }
   };
 
@@ -346,6 +350,12 @@ const ManageWallet = () => {
         </div>
       {/* table */}
       <div className="overflow-x-auto" id="table-to-print">
+      {loading ? (
+            <div className="flex justify-center items-center py-10">
+            <div className="loader border-t-4 border-b-4 border-purple-700 w-10 h-10 rounded-full animate-spin"></div>
+          </div>
+          ) : (
+
      <table className="table-auto w-full border" id="table" ref={tableRef}>
               <thead>
                 <tr className="bg-white">
@@ -381,9 +391,11 @@ const ManageWallet = () => {
                 ))}
               </tbody>
             </table>
+            )}
             {filteredWallets.length === 0 && (
               <p className="text-center my-4">No wallets found.</p>
             )}
+            
                   </div>
             <div>
             {editModalOpen && (
