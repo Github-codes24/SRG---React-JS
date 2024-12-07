@@ -36,6 +36,7 @@ const ManageBank = () => {
   }, []);
 
   const fetchBanks = async () => {
+    setLoading(true)
     try {
       const response = await axios.get(
         `${BASE_URL}/api/banks`,
