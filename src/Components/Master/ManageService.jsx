@@ -7,6 +7,7 @@ import axios from "axios";
 import BASE_URL from "../../api";
 
 const ManageService = () => {
+  const [loading, setLoading] = useState(true);
   const [services, setServices] = useState([]);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [currentService, setCurrentService] = useState(null);
@@ -154,6 +155,11 @@ const ManageService = () => {
 
         {/* Table */}
         <div className=" overflow-x-auto p-4 w-full">
+        {loading ? (
+            <div className="flex justify-center items-center py-10">
+              <div className="loader border-t-4 border-b-4 border-purple-700 w-10 h-10 rounded-full animate-spin"></div>
+            </div>
+          ) : (
         <table className="w-full border-collapse border border-gray-300">
           <thead>
             <tr className="bg-gray-100">
@@ -205,6 +211,7 @@ const ManageService = () => {
             )}
           </tbody>
         </table>
+          )}
         </div>
         {/* Pagination */}
         <div className="flex justify-end items-center space-x-2 mt-10 text-[#9E95FF]">
