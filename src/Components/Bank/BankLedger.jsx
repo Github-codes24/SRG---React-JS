@@ -9,6 +9,7 @@ import Logo from "../../assets/DashboardImages/logo1 1.png"
 
 const BankLedger = () => {
   const navigate = useNavigate()
+  
   return (
     <div>
        <div className="flex items-center justify-end">
