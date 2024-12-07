@@ -98,7 +98,9 @@ const WebsiteLedger = () => {
         </div>
         <hr className="mb-4" />
         {loading ? (
-          <p>Loading...</p>
+          <div className="flex justify-center items-center py-10">
+          <div className="loader border-t-4 border-b-4 border-purple-700 w-10 h-10 rounded-full animate-spin"></div>
+        </div>
         ) : (
           <table className="w-full border-collapse border border-gray-300">
             <thead>
