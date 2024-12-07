@@ -10,6 +10,7 @@ import BASE_URL from "../../api";
 import ServiceSlab from "./ServiceSlab";
 
 const AddService = () => {
+  const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
     serviceNumber: "",
