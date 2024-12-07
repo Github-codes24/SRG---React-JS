@@ -28,7 +28,6 @@ const ManageServiceList = () => {
     } catch (error) {
       console.error("Error fetching service branches:", error);
       alert("Failed to fetch service branches.");
-    } 
   };
 
   const deleteService = async (serviceId) => {
@@ -208,7 +207,7 @@ const ManageServiceList = () => {
     </>
   );
 };
-
+}
 export default ManageServiceList;
 
 

@@ -3,14 +3,14 @@ import { IoHomeOutline } from "react-icons/io5";
 import { LuArrowUpDown } from "react-icons/lu";
 import axios from "axios";
 import BASE_URL from "../../../api";
-import html2pdf from 'html2pdf.js';
-import * as XLSX from 'xlsx';
+import html2pdf from "html2pdf.js";
+import * as XLSX from "xlsx";
 import { GoPencil } from "react-icons/go";
 import { CiTrash } from "react-icons/ci";
 
 export default function ManageDesignation() {
   const [designations, setDesignations] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -21,6 +21,7 @@ export default function ManageDesignation() {
   // Fetch data from API on component mount
   useEffect(() => {
     const fetchDesignations = async () => {
+      setLoading(true);
       try {
         const response = await axios.get(
           `${BASE_URL}/api/hrm/designation/getDesignation`
@@ -28,6 +29,8 @@ export default function ManageDesignation() {
         setDesignations(response.data.data.designations);
       } catch (error) {
         console.error("Error fetching designations:", error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchDesignations();
@@ -108,11 +111,10 @@ export default function ManageDesignation() {
     }
   };
 
-
   //print method
   const handlePrint = () => {
-    const printContent = document.getElementById('table').outerHTML;
-    const newWindow = window.open('', '_blank');
+    const printContent = document.getElementById("table").outerHTML;
+    const newWindow = window.open("", "_blank");
     newWindow.document.open();
     newWindow.document.write(`
       <html>
@@ -134,21 +136,21 @@ export default function ManageDesignation() {
   //copy button
   const copyTableToClipboard = () => {
     const table = tableRef.current;
-    
+
     // Create a range and select the content
     const range = document.createRange();
     range.selectNode(table);
-    
+
     // Select the content in the table
-    window.getSelection().removeAllRanges();  // Clear previous selections
-    window.getSelection().addRange(range);   // Add the range to the selection
+    window.getSelection().removeAllRanges(); // Clear previous selections
+    window.getSelection().addRange(range); // Add the range to the selection
 
     try {
       // Execute the copy command
-      document.execCommand('copy');
-      alert('Table content copied to clipboard!');
+      document.execCommand("copy");
+      alert("Table content copied to clipboard!");
     } catch (err) {
-      console.error('Error copying table content: ', err);
+      console.error("Error copying table content: ", err);
     }
 
     // Clear the selection (optional)
@@ -201,17 +203,16 @@ export default function ManageDesignation() {
 
     // Options for html2pdf
     const options = {
-      filename: 'Manage_Expense.pdf', // Name of the output PDF file
-      image: { type: 'jpeg', quality: 0.98 },
+      filename: "Manage_Expense.pdf", // Name of the output PDF file
+      image: { type: "jpeg", quality: 0.98 },
       html2canvas: { scale: 2 }, // Higher scale for better quality
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }, // PDF paper size and orientation
+      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }, // PDF paper size and orientation
     };
 
     // Convert the table to PDF
     html2pdf().from(element).set(options).save();
   };
-  
-  
+
   //excel button
   const exportToExcel = () => {
     const table = tableRef.current;
@@ -222,7 +223,7 @@ export default function ManageDesignation() {
     // Write the workbook to an Excel file and trigger the download
     XLSX.writeFile(wb, "Manage_Expense.xlsx");
   };
-  
+
   return (
     <div>
       <div className="mb-[11%]">
@@ -255,29 +256,52 @@ export default function ManageDesignation() {
                 onChange={handleRowsPerPageChange}
                 className="border-gray-400 border-[1px] rounded-[5px]   dark:placeholder-gray-400 bg-white  px-[12px] p-[5px] text-black xl:h-[34px] sm:h-[27px] mr-[5px]"
               >
-                <option className="text-gray-500" value={5}>5</option>
-                <option className="text-gray-500" value={10}>10</option>
-                <option className="text-gray-500" value={15}>15</option>
-                <option className="text-gray-500" value={20}>20</option>
+                <option className="text-gray-500" value={5}>
+                  5
+                </option>
+                <option className="text-gray-500" value={10}>
+                  10
+                </option>
+                <option className="text-gray-500" value={15}>
+                  15
+                </option>
+                <option className="text-gray-500" value={20}>
+                  20
+                </option>
               </select>
               <p className="xl:text-[20px] lg:text-[17px] sm:text-[17px] text-[#636465] font-bodyPop">
                 Entries
               </p>
             </div>
             <div className="flex">
-            <button onClick={copyTableToClipboard} className=" bg-[#2E2E48] text-white xl:w-[80px] xl:px-[5px] xl:py-[10px] xl:mr-[15px] lg:w-[56px] lg:px-[2px] lg:py-[3px] lg:mr-[9px] sm:w-[56px] sm:px-[2px] sm:py-[3px] sm:mr-[9px] rounded-[5px]">
+              <button
+                onClick={copyTableToClipboard}
+                className=" bg-[#2E2E48] text-white xl:w-[80px] xl:px-[5px] xl:py-[10px] xl:mr-[15px] lg:w-[56px] lg:px-[2px] lg:py-[3px] lg:mr-[9px] sm:w-[56px] sm:px-[2px] sm:py-[3px] sm:mr-[9px] rounded-[5px]"
+              >
                 Copy
               </button>
-              <button onClick={exportToCSV} className=" bg-[#2E2E48] text-white xl:w-[80px] xl:px-[5px] xl:py-[10px] xl:mr-[15px] lg:w-[56px] lg:px-[2px] lg:py-[3px] lg:mr-[9px] sm:w-[56px] sm:px-[2px] sm:py-[3px] sm:mr-[9px] rounded-[5px]">
+              <button
+                onClick={exportToCSV}
+                className=" bg-[#2E2E48] text-white xl:w-[80px] xl:px-[5px] xl:py-[10px] xl:mr-[15px] lg:w-[56px] lg:px-[2px] lg:py-[3px] lg:mr-[9px] sm:w-[56px] sm:px-[2px] sm:py-[3px] sm:mr-[9px] rounded-[5px]"
+              >
                 CSV
               </button>
-              <button  onClick={exportToExcel} className=" bg-[#2E2E48] text-white xl:w-[80px] xl:px-[5px] xl:py-[10px] xl:mr-[15px] lg:w-[56px] lg:px-[2px] lg:py-[3px] lg:mr-[9px] sm:w-[56px] sm:px-[2px] sm:py-[3px] sm:mr-[9px] rounded-[5px]">
+              <button
+                onClick={exportToExcel}
+                className=" bg-[#2E2E48] text-white xl:w-[80px] xl:px-[5px] xl:py-[10px] xl:mr-[15px] lg:w-[56px] lg:px-[2px] lg:py-[3px] lg:mr-[9px] sm:w-[56px] sm:px-[2px] sm:py-[3px] sm:mr-[9px] rounded-[5px]"
+              >
                 Excel
               </button>
-              <button onClick={handleDownloadPDF} className=" bg-[#2E2E48] text-white xl:w-[80px] xl:px-[5px] xl:py-[10px] xl:mr-[15px] lg:w-[56px] lg:px-[2px] lg:py-[3px] lg:mr-[9px] sm:w-[56px] sm:px-[2px] sm:py-[3px] sm:mr-[9px] rounded-[5px]">
+              <button
+                onClick={handleDownloadPDF}
+                className=" bg-[#2E2E48] text-white xl:w-[80px] xl:px-[5px] xl:py-[10px] xl:mr-[15px] lg:w-[56px] lg:px-[2px] lg:py-[3px] lg:mr-[9px] sm:w-[56px] sm:px-[2px] sm:py-[3px] sm:mr-[9px] rounded-[5px]"
+              >
                 PDF
               </button>
-              <button onClick={handlePrint} className=" bg-[#2E2E48] text-white xl:w-[80px] xl:px-[5px] xl:py-[10px] xl:mr-[15px] lg:w-[56px] lg:px-[2px] lg:py-[3px] lg:mr-[9px] sm:w-[56px] sm:px-[2px] sm:py-[3px] sm:mr-[9px] rounded-[5px]">
+              <button
+                onClick={handlePrint}
+                className=" bg-[#2E2E48] text-white xl:w-[80px] xl:px-[5px] xl:py-[10px] xl:mr-[15px] lg:w-[56px] lg:px-[2px] lg:py-[3px] lg:mr-[9px] sm:w-[56px] sm:px-[2px] sm:py-[3px] sm:mr-[9px] rounded-[5px]"
+              >
                 Print
               </button>
             </div>
@@ -304,59 +328,72 @@ export default function ManageDesignation() {
               </div>
             </div>
           </div>
-          <div className="table w-full p-[10px] " >
-            <table id="table" ref={tableRef} className="table border-collapse border-gray-300 border-2 w-full h-full font-bodyPop text-left" >
-              <thead>
-                <tr className="  text-[#595995]  font-medium  h-[60px]">
-                  <th className="border border-slate-300 ... pl-[1rem]">
-                    <div className="flex justify-between">
-                      SL.
-                      <LuArrowUpDown className="w-auto h-[18px]" />
-                    </div>
-                  </th>
-                  <th className="border border-slate-300 ... pl-[1rem]">
-                    <div className="flex justify-between">
-                      Designation
-                      <LuArrowUpDown className="w-auto h-[18px]" />
-                    </div>
-                  </th>
-                  <th className="border border-slate-300 ... pl-[1rem]">
-                    <div className="flex justify-between">
-                      Action
-                      <LuArrowUpDown className="w-auto h-[18px]" />
-                    </div>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-              {currentRows.map((designation, index) => (
-                <tr key={index} className="hover:bg-[#F2F2F2] text-lg h-[50px]">
-                  <td className="border border-slate-300 pl-[1rem]">
-                    {indexOfFirstRow + index + 1}
-                  </td>
-                  <td className="border border-slate-300 pl-[1rem]">
-                    {designation.designation}
-                  </td>
-                  <td className="border border-slate-300 pl-[1rem]">
-                    <div className="flex justify-center">
-                        <button
-                        className="bg-green-400 px-2 py-2 mx-1"
-                        onClick={() => openUpdateModal(designation)}
-                      >
-                        <GoPencil />
-                      </button>
-                      <button
-                        className="bg-red-400 px-2 py-2"
-                        onClick={() => handleDelete(designation._id)}
-                      >
-                        <CiTrash />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-              </tbody>
-            </table>
+          <div className="table w-full p-[10px] ">
+            {loading ? (
+              <div className="flex justify-center items-center py-10">
+                <div className="loader border-t-4 border-b-4 border-purple-700 w-10 h-10 rounded-full animate-spin"></div>
+              </div>
+            ) : (
+              <table
+                id="table"
+                ref={tableRef}
+                className="table border-collapse border-gray-300 border-2 w-full h-full font-bodyPop text-left"
+              >
+                <thead>
+                  <tr className="  text-[#595995]  font-medium  h-[60px]">
+                    <th className="border border-slate-300 ... pl-[1rem]">
+                      <div className="flex justify-between">
+                        SL.
+                        <LuArrowUpDown className="w-auto h-[18px]" />
+                      </div>
+                    </th>
+                    <th className="border border-slate-300 ... pl-[1rem]">
+                      <div className="flex justify-between">
+                        Designation
+                        <LuArrowUpDown className="w-auto h-[18px]" />
+                      </div>
+                    </th>
+                    <th className="border border-slate-300 ... pl-[1rem]">
+                      <div className="flex justify-between">
+                        Action
+                        <LuArrowUpDown className="w-auto h-[18px]" />
+                      </div>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {currentRows.map((designation, index) => (
+                    <tr
+                      key={index}
+                      className="hover:bg-[#F2F2F2] text-lg h-[50px]"
+                    >
+                      <td className="border border-slate-300 pl-[1rem]">
+                        {indexOfFirstRow + index + 1}
+                      </td>
+                      <td className="border border-slate-300 pl-[1rem]">
+                        {designation.designation}
+                      </td>
+                      <td className="border border-slate-300 pl-[1rem]">
+                        <div className="flex justify-center">
+                          <button
+                            className="bg-green-400 px-2 py-2 mx-1"
+                            onClick={() => openUpdateModal(designation)}
+                          >
+                            <GoPencil />
+                          </button>
+                          <button
+                            className="bg-red-400 px-2 py-2"
+                            onClick={() => handleDelete(designation._id)}
+                          >
+                            <CiTrash />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
           <div className="h-[100px] flex justify-end items-center pr-[20px]">
             <button

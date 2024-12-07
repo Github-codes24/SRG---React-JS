@@ -15,6 +15,7 @@ export default function ManageEmployee() {
   const [currentEmployee, setCurrentEmployee] = useState(null);
   const [entriesToShow, setEntriesToShow] = useState(30); // Number of entries to display
   const [currentPageData, setCurrentPageData] = useState([]); // Data to display
+  const [loading, setLoading] = useState(false)
 
   const tableRef = useRef();
   const [updatedEmployeeData, setUpdatedEmployeeData] = useState({
@@ -28,12 +29,17 @@ export default function ManageEmployee() {
 
   useEffect(() => {
     const fetchEmployees = async () => {
+      setLoading(true)
       try {
         const response = await axios.get(`${BASE_URL}/api/employee/getAllEmployee`);
         setManageEmployee(response.data.data);
         console.log(response.data.data);
       } catch (error) {
         console.error("Error fetching employees:", error);
+        setLoading(false)
+      }
+      finally{
+        setLoading(false)
       }
     };
 
@@ -329,7 +335,13 @@ export default function ManageEmployee() {
           </div>
         {/* Table */}
         <div className="relative overflow-x-scroll">
-          <table className="border-collapse border-2 w-full text-center" id="table" ref={tableRef}>
+          {
+            loading ? (
+              <div className="flex justify-center items-center py-10">
+                <div className="loader border-t-4 border-b-4 border-purple-700 w-10 h-10 rounded-full animate-spin"></div>
+              </div>
+            ) : (
+              <table className="border-collapse border-2 w-full text-center" id="table" ref={tableRef}>
             <thead>
               <tr className="bg-gray-200">
                 <th className="border p-2 text-xl">SL.</th>
@@ -392,6 +404,8 @@ export default function ManageEmployee() {
             </tbody>
 
           </table>
+            )
+          }
         </div>
       </div>
 
