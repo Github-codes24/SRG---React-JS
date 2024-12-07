@@ -52,6 +52,9 @@ const ManageBank = () => {
       console.error("Fetching data is unsuccessful:", error);
       setLoading(false);
     }
+    finally{
+      setLoading(false)
+    }
   };
 
   // Handle edit button click
@@ -226,7 +229,13 @@ const ManageBank = () => {
         </div>
 
         <div className="overflow-x-auto">
-          <table className="min-w-full bg-white border border-gray-300">
+          {
+            loading ? (
+              <div className="flex justify-center items-center py-10">
+              <div className="loader border-t-4 border-b-4 border-purple-700 w-10 h-10 rounded-full animate-spin"></div>
+            </div>
+            ) : (
+              <table className="min-w-full bg-white border border-gray-300">
             <thead>
               <tr className="bg-gray-200 text-[#595995]">
                 <th className="px-4 py-2 border border-gray-300">SL.</th>
@@ -286,6 +295,8 @@ const ManageBank = () => {
               ))}
             </tbody>
           </table>
+            )
+          }
         </div>
       </div>
 
