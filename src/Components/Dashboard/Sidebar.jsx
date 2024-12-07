@@ -193,7 +193,7 @@ const Sidebar = () => {
                 className=" py-3 px-4 border-b-2 border-[#2E2E48] cursor-pointer"
                 onClick={() => navigate("/master/manageserviceprovider")}
               >
-                Manage Service
+                Manage Service Provider
               </p>
             </div>
           )}

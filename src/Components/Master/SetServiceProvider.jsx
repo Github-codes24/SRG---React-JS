@@ -2,8 +2,10 @@ import React from "react";
 import { MdMiscellaneousServices } from "react-icons/md";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { MdOutlineHome } from "react-icons/md";
+import { useState } from "react";
 
 const SetServiceProvider = () => {
+  const [loading, setLoading] = useState(true);
   const data = [
     {
       SL: 1,
@@ -243,6 +245,7 @@ const SetServiceProvider = () => {
         <div></div>
         <hr className="mb-5" />
         <div className=" overflow-x-auto p-4">
+          
 
         <table className="w-full border-collapse border  border-gray-300">
           <thead>

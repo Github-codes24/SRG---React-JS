@@ -1,8 +1,10 @@
 import React from 'react';
 import { FaEdit, FaTrashAlt } from 'react-icons/fa';
 import { MdOutlineHome } from "react-icons/md";
+import { useState } from 'react';
 
 const ManageServiceProvider = () => {
+  const [loading, setLoading] = useState(true);
   const data = [
     { SL : 1, SelectAccountHead: '',ParentGroup:"Current Assets" , AccountHeads:'A/C Receivables',},
     {SL : 2, SelectAccountHead: '',ParentGroup:"Current Assets" , AccountHeads:'A/C Receivables',},
@@ -78,6 +80,7 @@ const ManageServiceProvider = () => {
 <div>
 </div>
 <hr className='mb-5'/>
+
 
       <table className="w-full border-collapse border border-gray-300">
         <thead>

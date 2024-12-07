@@ -1,9 +1,11 @@
 import React from 'react';
+import { useState } from 'react';
 import { MdMiscellaneousServices } from "react-icons/md";
 import { MdOutlineFileUpload } from "react-icons/md";
 import { MdOutlineHome } from "react-icons/md";
 
 const AddServiceCategory = () => {
+  const [loading, setLoading] = useState(true);
   return (
     <>
     <div className="flex items-center justify-end mr-5">
