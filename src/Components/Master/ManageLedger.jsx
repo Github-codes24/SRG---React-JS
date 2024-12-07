@@ -8,6 +8,7 @@ import BASE_URL from "../../api";
 
 const ManageLedger = () => {
   const [table, setTable] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [currentLedger, setCurrentLedger] = useState({});
   const [newLedgerName, setNewLedgerName] = useState("");
@@ -18,13 +19,14 @@ const ManageLedger = () => {
   }, []);
 
   const fetchLedger = async () => {
+    setLoading(true); // Start loading
     try {
-      const response = await axios.get(
-        `${BASE_URL}/api/ledgers`
-      );
+      const response = await axios.get(`${BASE_URL}/api/ledgers`);
       setTable(response.data);
     } catch (error) {
       console.error("Error fetching ledger:", error);
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
@@ -33,15 +35,16 @@ const ManageLedger = () => {
       "Are you sure you want to delete this ledger?"
     );
     if (confirmDelete) {
+      setLoading(true); // Start loading for delete
       try {
-        await axios.delete(
-          `${BASE_URL}/api/ledgers/${ledgerId}`
-        );
+        await axios.delete(`${BASE_URL}/api/ledgers/${ledgerId}`);
         alert("Ledger deleted successfully.");
         fetchLedger(); // Refresh ledger list after deletion
       } catch (error) {
         console.error("Error deleting ledger:", error);
         alert("Failed to delete ledger.");
+      } finally {
+        setLoading(false); // Stop loading
       }
     }
   };
@@ -53,20 +56,20 @@ const ManageLedger = () => {
   };
 
   const handleUpdateLedger = async () => {
+    setLoading(true); // Start loading for update
     try {
-      await axios.put(
-        `${BASE_URL}/api/ledgers/${currentLedger._id}`,
-        {
-          ...currentLedger,
-          ledgerName: newLedgerName,
-        }
-      );
+      await axios.put(`${BASE_URL}/api/ledgers/${currentLedger._id}`, {
+        ...currentLedger,
+        ledgerName: newLedgerName,
+      });
       alert("Ledger updated successfully.");
       setEditModalOpen(false);
       fetchLedger();
     } catch (error) {
       console.error("Error updating ledger:", error);
       alert("Failed to update ledger.");
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
@@ -95,6 +98,11 @@ const ManageLedger = () => {
         </div>
         <hr className="h-5" />
         <div className="overflow-x-auto">
+        {loading ? (
+            <div className="flex justify-center items-center py-10">
+              <div className="loader border-t-4 border-b-4 border-purple-700 w-10 h-10 rounded-full animate-spin"></div>
+            </div>
+          ) : (
           <table className="min-w-full border border-gray-300 text-left">
             <thead>
               <tr className="bg-gray-100">
@@ -152,6 +160,7 @@ const ManageLedger = () => {
               ))}
             </tbody>
           </table>
+           )}
           {/* Pagination UI */}
       <div className="flex justify-center items-center space-x-2 mt-10 float-right">
         <button className="px-2 py-1 text-[#9E95FF] border rounded-full border-[#9E95FF]">
