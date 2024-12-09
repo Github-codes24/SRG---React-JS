@@ -133,19 +133,23 @@ const ManageExpenseItem = () => {
  
   const [editItem, setEditItem] = useState(null);
   const [showModal, setShowModal] = useState(false);
-
+  const [loading,setLoading] = useState(false)
 
   // Fetch Expense Items
   useEffect(() => {
     fetchExpenseItems();
-  },);
+  },[]);
 
   const fetchExpenseItems = async () => {
+    setLoading(true)
     try {
       const response = await axios.get(`${BASE_URL}/api/expense-items`); // Replace with your GET API URL
       setExpenseItems(response.data);
     } catch (error) {
       console.error("Error fetching expense items", error);
+    }
+    finally{
+      setLoading(false)
     }
   };
 
@@ -166,6 +170,7 @@ const ManageExpenseItem = () => {
       await deleteItem(id);
       console.log(`deleted successfully`);
       // Update the UI after deletion, e.g., refetch data or remove from state
+      fetchExpenseItems()
     } catch (error) {
       console.error("Failed to delete item", error.message)
     }
@@ -291,7 +296,13 @@ const ManageExpenseItem = () => {
           </div>
         </div>
         <div className="container mx-auto  bg-white p-[10px]">
-        <table ref={tableRef} id="table" className="min-w-full table-auto border-collapse border border-gray-300">
+        {
+          loading ? (
+            <div className="flex justify-center items-center py-10">
+                <div className="loader border-t-4 border-b-4 border-purple-700 w-10 h-10 rounded-full animate-spin"></div>
+              </div>
+          ) : (
+            <table ref={tableRef} id="table" className="min-w-full table-auto border-collapse border border-gray-300">
           <thead>
             <tr className="bg-white">
               <th className="px-4 py-2 w-1/6 text-center text-[#595995] font-medium">
@@ -334,6 +345,8 @@ const ManageExpenseItem = () => {
             ))}
           </tbody>
         </table>
+          )
+        }
       </div>
 
       {/* Modal */}

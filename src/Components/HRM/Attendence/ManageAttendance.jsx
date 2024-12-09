@@ -13,14 +13,20 @@ const ManageAttendance = () => {
   const [attendanceData, setAttendanceData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [loading, setLoading] = useState(false)
+
 
   // Fetch data function
   const fetchData = async () => {
+    setLoading(true)
     try {
       const response = await axios.get(`${BASE_URL}/api/attendance/getAttendances`);
       setAttendanceData(response.data);
     } catch (error) {
       console.error('Error fetching data: ', error);
+    }
+    finally{
+      setLoading(false)
     }
   };
 
@@ -178,7 +184,13 @@ const ManageAttendance = () => {
           </div>
         </div><br />
 
-        <table ref={tableRef} id="table" className="min-w-full bg-white border border-gray-300">
+        {
+          loading ? (
+            <div className="flex justify-center items-center py-10">
+              <div className="loader border-t-4 border-b-4 border-purple-700 w-10 h-10 rounded-full animate-spin"></div>
+              </div>
+          ) : (
+            <table ref={tableRef} id="table" className="min-w-full bg-white border border-gray-300">
           <thead>
             <tr className="bg-gray-200 text-gray-700">
               <th className="py-3 px-4 border border-gray-300">
@@ -219,6 +231,8 @@ const ManageAttendance = () => {
             ))}
           </tbody>
         </table>
+          )
+        }
 
         {/* Pagination Controls */}
         <div className="flex justify-end mt-4 space-x-2">
