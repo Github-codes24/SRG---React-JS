@@ -1,10 +1,83 @@
-import React from 'react'
-import { IoHomeOutline } from 'react-icons/io5'
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { IoHomeOutline } from 'react-icons/io5';
 import { BsPencil } from "react-icons/bs";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { LuArrowUpDown } from "react-icons/lu";
+import BASE_URL from '../../../api';
 
 export default function ManageSalarySetup() {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [formData, setFormData] = useState({
+    employeeName: '',
+    salaryType: ''
+  });
+
+  // Fetch data from API
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(`${BASE_URL}/api/salarySetup/getAllSalarySetup`);
+      setData(response.data.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  // Delete data from API
+  const handleDelete = async (id) => {
+    if (window.confirm("Are you sure you want to delete this entry?")) {
+      try {
+        await axios.put(`${BASE_URL}/api/salarySetup/deleteSalarySetup/${id}`);
+        alert("Entry deleted successfully!");
+        fetchData(); // Refresh the data
+      } catch (error) {
+        console.error("Error deleting data:", error);
+        alert("Failed to delete the entry. Please try again.");
+      }
+    }
+  };
+
+  // Open modal for updating
+  const handleEdit = (item) => {
+    setSelectedItem(item);
+    setFormData({
+      employeeName: item.employeeName,
+      salaryType: item.salaryType,
+    });
+    setIsModalOpen(true);
+  };
+
+  // Handle form input change
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({ ...prevState, [name]: value }));
+  };
+
+  // Update data in API
+  const handleUpdate = async () => {
+    try {
+      const updatedData = {
+        ...formData,
+      };
+      await axios.put(`${BASE_URL}/api/salarySetup/updateSalarySetup/${selectedItem._id}`, updatedData);
+      alert("Entry updated successfully!");
+      setIsModalOpen(false); // Close modal
+      fetchData(); // Refresh data
+    } catch (error) {
+      console.error("Error updating data:", error);
+      alert("Failed to update the entry. Please try again.");
+    }
+  };
   return (
     <div>
       <div className='mb-[11%]'>
@@ -86,7 +159,13 @@ export default function ManageSalarySetup() {
               </div>
             </div>
           </div>
-          <div className="  w-full p-[10px] ">
+          <div className=" overflow-x-auto w-full p-[10px] ">
+          {loading ? (
+              <div className="flex justify-center items-center py-10">
+              <div className="loader border-t-4 border-b-4 border-purple-700 w-10 h-10 rounded-full animate-spin"></div>
+            </div>
+            ) : (
+          
           <table className="border-collapse border-slate-400 border-2 w-full h-full font-bodyPop text-left">
               <thead>
                 <tr className="  text-[#595995]  font-medium  h-[60px]">
@@ -97,57 +176,27 @@ export default function ManageSalarySetup() {
                   <th className="border border-slate-300 pl-[8px]">Action</th>
                 </tr>
               </thead>
+              
               <tbody className="text-left text-[#636465BD]">
+              
+              {data.map((item, index) => (
                 <tr className="  h-[60px]">
-                  <td className="border border-slate-300 pl-[8px]">1</td>
-                  <td className="border border-slate-300 pl-[8px]">IBRAHIM A SEAD</td>
-                  <td className="border border-slate-300 pl-[8px]">Salary</td>
-                  <td className="border border-slate-300 pl-[8px]">2024-May-19</td>
+                  <td className="border border-slate-300 pl-[8px]">{index + 1}</td>
+                  <td className="border border-slate-300 pl-[8px]">{item.employeeName}</td>
+                  <td className="border border-slate-300 pl-[8px]">{item.salaryType}</td>
+                  <td className="border border-slate-300 pl-[8px]">{item.createdAt}</td>
                   <td className="border border-slate-300 pl-[8px]"><div className="flex gap-[4px] w-full justify-left pl-[5px]">
-                    <BsPencil className="bg-[#96CEB4] p-[2px] h-[30px] w-[30px] rounded-[2px] border-[1px] border-[#75A68F]" color="white"/>
-                    <FaRegTrashAlt className="bg-[#CB6040] p-[2px] h-[30px] w-[30px] rounded-[2px] border-[#BF2D35] border-[1px]" color="white"/>
+                    <BsPencil onClick={() => handleEdit(item)} className="bg-[#96CEB4] p-[2px] h-[30px] w-[30px] rounded-[2px] border-[1px] border-[#75A68F]" color="white"/>
+                    <FaRegTrashAlt onClick={() => handleDelete(item._id)} className="bg-[#CB6040] p-[2px] h-[30px] w-[30px] rounded-[2px] border-[#BF2D35] border-[1px]" color="white"/>
                     
                     </div>
                     </td>
                 </tr>
-                <tr className="  h-[60px]">
-                  <td className="border border-slate-300 pl-[8px]">2</td>
-                  <td className="border border-slate-300 pl-[8px]">MOHIT GUPTA</td>
-                  <td className="border border-slate-300 pl-[8px]">Salary</td>
-                  <td className="border border-slate-300 pl-[8px]">2024-May-08</td>
-                  <td className="border border-slate-300 pl-[8px]"><div className="flex gap-[4px] w-full justify-left pl-[5px]">
-                    <BsPencil className="bg-[#96CEB4] p-[2px] h-[30px] w-[30px] rounded-[2px] border-[1px] border-[#75A68F]" color="white"/>
-                    <FaRegTrashAlt className="bg-[#CB6040] p-[2px] h-[30px] w-[30px] rounded-[2px] border-[#BF2D35] border-[1px]" color="white"/>
-                    
-                    </div>
-                    </td>
-                </tr>
-                <tr className="  h-[60px]">
-                  <td className="border border-slate-300 pl-[8px]">3</td>
-                  <td className="border border-slate-300 pl-[8px]">Aboobacker Sidhique</td>
-                  <td className="border border-slate-300 pl-[8px]">Salary</td>
-                  <td className="border border-slate-300 pl-[8px]">2024-Apr-11</td>
-                  <td className="border border-slate-300 pl-[8px]"><div className="flex gap-[4px] w-full justify-left pl-[5px]">
-                    <BsPencil className="bg-[#96CEB4] p-[2px] h-[30px] w-[30px] rounded-[2px] border-[1px] border-[#75A68F]" color="white"/>
-                    <FaRegTrashAlt className="bg-[#CB6040] p-[2px] h-[30px] w-[30px] rounded-[2px] border-[#BF2D35] border-[1px]" color="white"/>
-                    
-                    </div>
-                    </td>
-                </tr>
-                <tr className="  h-[60px]">
-                  <td className="border border-slate-300 pl-[8px]">4</td>
-                  <td className="border border-slate-300 pl-[8px]">MOHIT GUPTA</td>
-                  <td className="border border-slate-300 pl-[8px]">Salary</td>
-                  <td className="border border-slate-300 pl-[8px]">2024-Oct-16</td>
-                  <td className="border border-slate-300 pl-[8px]"><div className="flex gap-[4px] w-full justify-left pl-[5px]">
-                    <BsPencil className="bg-[#96CEB4] p-[2px] h-[30px] w-[30px] rounded-[2px] border-[1px] border-[#75A68F]" color="white"/>
-                    <FaRegTrashAlt className="bg-[#CB6040] p-[2px] h-[30px] w-[30px] rounded-[2px] border-[#BF2D35] border-[1px]" color="white"/>
-                    
-                    </div>
-                    </td>
-                </tr>
+                ))}
               </tbody>
+              
             </table>
+           )}
           </div>
           <div className="h-[100px] flex justify-end items-center pr-[20px]">
             <button className=" border-[2px] xl:w-[100px] sm:w-[80px] rounded-[50px] xl:h-[50px] sm:h-[40px] mr-[4px] border-[#746BD9]">
@@ -173,6 +222,38 @@ export default function ManageSalarySetup() {
             </button>
           </div>
         </div>
+        {/* Modal for Update */}
+        {isModalOpen && (
+          <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
+            <div className="bg-white p-8 rounded-lg w-1/3">
+              <h2 className="text-xl mb-4">Update Salary Setup</h2>
+              <div className="mb-4">
+                <label className="block mb-2">Employee Name</label>
+                <input
+                  type="text"
+                  name="employeeName"
+                  value={formData.employeeName}
+                  onChange={handleInputChange}
+                  className="border w-full p-2 rounded"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block mb-2">Salary Type</label>
+                <input
+                  type="text"
+                  name="salaryType"
+                  value={formData.salaryType}
+                  onChange={handleInputChange}
+                  className="border w-full p-2 rounded"
+                />
+              </div>
+              <div className="flex justify-end gap-4">
+                <button onClick={() => setIsModalOpen(false)} className="bg-gray-300 px-4 py-2 rounded">Cancel</button>
+                <button onClick={handleUpdate} className="bg-blue-500 text-white px-4 py-2 rounded">Update</button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )
