@@ -18,7 +18,7 @@ const Walletrefund = () => {
 
       <div className="bg-white">
         <div className="flex items-center justify-between my-2 bg-white px-2 py-1">
-          <h1 className="text-[#878484] text-2xl">Manage Wallets</h1>
+          <h1 className="text-[#878484] text-2xl">Wallet Refund</h1>
 
           {/* Action Buttons */}
           <div className="flex items-center justify-start gap-x-2">

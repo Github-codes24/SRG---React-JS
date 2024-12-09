@@ -39,11 +39,11 @@ const Walletrecharge = () => {
   };
 
   const generateVoucherNumber = () => {
-    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    let voucherNumber = "";
-    for (let i = 0; i < 5; i++) {
+    const characters = "0123456789";
+    let voucherNumber = "WR";
+    for (let i = 0; i < 3; i++) {
       voucherNumber += characters.charAt(
-        Math.floor(Math.random() * characters.length)
+        Math.floor( characters.length)
       );
     }
     return voucherNumber;
