@@ -5,6 +5,9 @@ import { BsPencil } from "react-icons/bs";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { LuArrowUpDown } from "react-icons/lu";
 import BASE_URL from '../../../api';
+import html2pdf from 'html2pdf.js';
+import { useRef } from "react";
+import * as XLSX from 'xlsx';
 
 export default function ManageSalarySetup() {
   const [data, setData] = useState([]);
@@ -15,6 +18,10 @@ export default function ManageSalarySetup() {
     employeeName: '',
     salaryType: ''
   });
+
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(1);
+  const [rowsPerPage] = useState(1);
 
   // Fetch data from API
   const fetchData = async () => {
@@ -78,6 +85,148 @@ export default function ManageSalarySetup() {
       alert("Failed to update the entry. Please try again.");
     }
   };
+
+  // Calculate the data for the current page
+  const indexOfLastRow = currentPage * rowsPerPage;
+  const indexOfFirstRow = indexOfLastRow - rowsPerPage;
+  const currentData = data.slice(indexOfFirstRow, indexOfLastRow);
+
+  const totalPages = Math.ceil(data.length / rowsPerPage);
+
+  // Handle page change
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+
+  const tableRef = useRef();
+  //csv button
+  const exportToCSV = () => {
+    const table = tableRef.current;
+    let csvContent = "";
+
+    // Get table headers
+    const headers = [];
+    for (let i = 0; i < table.rows[0].cells.length; i++) {
+      headers.push(table.rows[0].cells[i].innerText); // Get header text
+    }
+    csvContent += headers.join(",") + "\n"; // Add header row to CSV
+
+    // Get table rows (excluding the header)
+    for (let i = 1; i < table.rows.length; i++) {
+      const row = table.rows[i];
+      const rowData = [];
+      for (let j = 0; j < row.cells.length; j++) {
+        rowData.push(row.cells[j].innerText); // Get each cell's text
+      }
+      csvContent += rowData.join(",") + "\n"; // Add row to CSV
+    }
+
+    // Create a Blob from the CSV content
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+
+    // Create a link element to trigger the file download
+    const link = document.createElement("a");
+    if (link.download !== undefined) {
+      // Create a URL for the Blob and set the download attribute
+      const url = URL.createObjectURL(blob);
+      link.setAttribute("href", url);
+      link.setAttribute("download", "Manage_Salary_Setup.csv"); // Filename for the CSV
+      link.style.visibility = "hidden"; // Hide the link
+      document.body.appendChild(link); // Append the link to the body
+      link.click(); // Trigger the download
+      document.body.removeChild(link); // Remove the link after the download
+    }
+  };
+
+  //excel button
+  const exportToExcel = () => {
+    const table = tableRef.current;
+
+    // Create a workbook and add a worksheet
+    const wb = XLSX.utils.table_to_book(table, { sheet: "Sheet1" });
+
+    // Write the workbook to an Excel file and trigger the download
+    XLSX.writeFile(wb, "Manage_Salary_Setup.xlsx");
+  };
+  
+  //copy button
+  const copyTableToClipboard = () => {
+    const table = tableRef.current;
+    
+    // Create a range and select the content
+    const range = document.createRange();
+    range.selectNode(table);
+    
+    // Select the content in the table
+    window.getSelection().removeAllRanges();  // Clear previous selections
+    window.getSelection().addRange(range);   // Add the range to the selection
+
+    try {
+      // Execute the copy command
+      document.execCommand('copy');
+      alert('Table content copied to clipboard!');
+    } catch (err) {
+      console.error('Error copying table content: ', err);
+    }
+
+    // Clear the selection (optional)
+    window.getSelection().removeAllRanges();
+  };
+
+
+  //pdfviewer
+  const handleDownloadPDF = () => {
+    // Get the HTML content of the table
+    const element = tableRef.current;
+
+    // Options for html2pdf
+    const options = {
+      filename: 'Manage_Salary_Setup.pdf', // Name of the output PDF file
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 }, // Higher scale for better quality
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }, // PDF paper size and orientation
+    };
+
+    // Convert the table to PDF
+    html2pdf().from(element).set(options).save();
+  };
+
+  //print method
+  const handlePrint = () => {
+    const printContent = document.getElementById('table').outerHTML;
+    const newWindow = window.open('', '_blank');
+    newWindow.document.open();
+    newWindow.document.write(`
+      <html>
+        <head>
+          <title>Expense Statement</title>
+          <style>
+            table { border-collapse: collapse; width: 100%; }
+            th, td { border: 1px solid black; padding: 8px; text-align: left; }
+            th { background-color: #f2f2f2; }
+          </style>
+        </head>
+        <body>${printContent}</body>
+      </html>
+    `);
+    newWindow.document.close();
+    newWindow.print();
+  };
+
+
   return (
     <div>
       <div className='mb-[11%]'>
@@ -120,19 +269,29 @@ export default function ManageSalarySetup() {
               </p>
             </div>
             <div className="flex">
-              <button className=" bg-[#2E2E48] text-white xl:w-[80px] xl:px-[5px] xl:py-[10px] xl:mr-[15px] lg:w-[56px] lg:px-[2px] lg:py-[3px] lg:mr-[9px] sm:w-[56px] sm:px-[2px] sm:py-[3px] sm:mr-[9px] rounded-[5px]">
+            <button 
+              onClick={copyTableToClipboard}
+              className=" bg-[#2E2E48] text-white xl:w-[80px] xl:px-[5px] xl:py-[10px] xl:mr-[15px] lg:w-[56px] lg:px-[2px] lg:py-[3px] lg:mr-[9px] sm:w-[56px] sm:px-[2px] sm:py-[3px] sm:mr-[9px] rounded-[5px]">
                 Copy
               </button>
-              <button className=" bg-[#2E2E48] text-white xl:w-[80px] xl:px-[5px] xl:py-[10px] xl:mr-[15px] lg:w-[56px] lg:px-[2px] lg:py-[3px] lg:mr-[9px] sm:w-[56px] sm:px-[2px] sm:py-[3px] sm:mr-[9px] rounded-[5px]">
+              <button 
+              onClick={exportToCSV}
+              className=" bg-[#2E2E48] text-white xl:w-[80px] xl:px-[5px] xl:py-[10px] xl:mr-[15px] lg:w-[56px] lg:px-[2px] lg:py-[3px] lg:mr-[9px] sm:w-[56px] sm:px-[2px] sm:py-[3px] sm:mr-[9px] rounded-[5px]">
                 CSV
               </button>
-              <button className=" bg-[#2E2E48] text-white xl:w-[80px] xl:px-[5px] xl:py-[10px] xl:mr-[15px] lg:w-[56px] lg:px-[2px] lg:py-[3px] lg:mr-[9px] sm:w-[56px] sm:px-[2px] sm:py-[3px] sm:mr-[9px] rounded-[5px]">
+              <button
+              onClick={exportToExcel}
+              className=" bg-[#2E2E48] text-white xl:w-[80px] xl:px-[5px] xl:py-[10px] xl:mr-[15px] lg:w-[56px] lg:px-[2px] lg:py-[3px] lg:mr-[9px] sm:w-[56px] sm:px-[2px] sm:py-[3px] sm:mr-[9px] rounded-[5px]">
                 Excel
               </button>
-              <button className=" bg-[#2E2E48] text-white xl:w-[80px] xl:px-[5px] xl:py-[10px] xl:mr-[15px] lg:w-[56px] lg:px-[2px] lg:py-[3px] lg:mr-[9px] sm:w-[56px] sm:px-[2px] sm:py-[3px] sm:mr-[9px] rounded-[5px]">
+              <button
+              onClick={handleDownloadPDF}
+              className=" bg-[#2E2E48] text-white xl:w-[80px] xl:px-[5px] xl:py-[10px] xl:mr-[15px] lg:w-[56px] lg:px-[2px] lg:py-[3px] lg:mr-[9px] sm:w-[56px] sm:px-[2px] sm:py-[3px] sm:mr-[9px] rounded-[5px]">
                 PDF
               </button>
-              <button className=" bg-[#2E2E48] text-white xl:w-[80px] xl:px-[5px] xl:py-[10px] xl:mr-[15px] lg:w-[56px] lg:px-[2px] lg:py-[3px] lg:mr-[9px] sm:w-[56px] sm:px-[2px] sm:py-[3px] sm:mr-[9px] rounded-[5px]">
+              <button
+              onClick={handlePrint}
+              className=" bg-[#2E2E48] text-white xl:w-[80px] xl:px-[5px] xl:py-[10px] xl:mr-[15px] lg:w-[56px] lg:px-[2px] lg:py-[3px] lg:mr-[9px] sm:w-[56px] sm:px-[2px] sm:py-[3px] sm:mr-[9px] rounded-[5px]">
                 Print
               </button>
             </div>
@@ -166,7 +325,7 @@ export default function ManageSalarySetup() {
             </div>
             ) : (
           
-          <table className="border-collapse border-slate-400 border-2 w-full h-full font-bodyPop text-left">
+          <table ref={tableRef} id="table" className="border-collapse border-slate-400 border-2 w-full h-full font-bodyPop text-left">
               <thead>
                 <tr className="  text-[#595995]  font-medium  h-[60px]">
                   <th className="border border-slate-300 pl-[8px]"><div className="flex justify-between">SL.<LuArrowUpDown className="w-auto h-[18px]" /></div></th>
@@ -179,7 +338,7 @@ export default function ManageSalarySetup() {
               
               <tbody className="text-left text-[#636465BD]">
               
-              {data.map((item, index) => (
+              {currentData.map((item, index) => (
                 <tr className="  h-[60px]">
                   <td className="border border-slate-300 pl-[8px]">{index + 1}</td>
                   <td className="border border-slate-300 pl-[8px]">{item.employeeName}</td>
@@ -198,29 +357,20 @@ export default function ManageSalarySetup() {
             </table>
            )}
           </div>
-          <div className="h-[100px] flex justify-end items-center pr-[20px]">
-            <button className=" border-[2px] xl:w-[100px] sm:w-[80px] rounded-[50px] xl:h-[50px] sm:h-[40px] mr-[4px] border-[#746BD9]">
-              <p className="text-[#746BD9]">Previous</p>
-            </button>
-            <button className="  border-[2px] rounded-full xl:h-[50px] sm:h-[40px] xl:w-[50px] sm:w-[40px] mr-[4px] border-[#746BD9]">
-              <p className=" text-[#746BD9]">1</p>
-            </button>
-            <button className="  border-[2px] rounded-full xl:h-[50px] sm:h-[40px] xl:w-[50px] sm:w-[40px] mr-[4px] border-[#746BD9]">
-              <p className=" text-[#746BD9]">2</p>
-            </button>
-            <button className="  border-[2px] rounded-full xl:h-[50px] sm:h-[40px] xl:w-[50px] sm:w-[40px] mr-[4px] border-[#746BD9]">
-              <p className=" text-[#746BD9]">3</p>
-            </button>
-            <button className="  border-[2px] rounded-full xl:h-[50px] sm:h-[40px] xl:w-[50px] sm:w-[40px] mr-[4px] border-[#746BD9]">
-              <p className=" text-[#746BD9]">4</p>
-            </button>
-            <button className="  border-[2px] rounded-full xl:h-[50px] sm:h-[40px] xl:w-[50px] sm:w-[40px] mr-[4px] border-[#746BD9]">
-              <p className=" text-[#746BD9]">5</p>
-            </button>
-            <button className=" border-[2px] xl:w-[100px] sm:w-[80px] rounded-[50px] xl:h-[50px] sm:h-[40px] border-[#746BD9]">
-              <p className=" text-[#746BD9]">Next</p>
-            </button>
-          </div>
+           {/* Pagination */}
+      <div className="h-[100px] flex justify-end items-center pr-[20px]">
+        <button onClick={handlePreviousPage} disabled={currentPage === 1} className="border-[2px] xl:w-[100px] sm:w-[80px] rounded-[50px] xl:h-[50px] sm:h-[40px] mr-[4px] border-[#746BD9]">
+          <p className="text-[#746BD9]">Previous</p>
+        </button>
+        {[...Array(totalPages).keys()].map((page) => (
+          <button key={page} onClick={() => handlePageChange(page + 1)} className={`border-[2px] rounded-full xl:h-[50px] sm:h-[40px] xl:w-[50px] sm:w-[40px] mr-[4px] border-[#746BD9] ${currentPage === page + 1 ? "bg-[#746BD9] text-white" : ""}`}>
+            <p>{page + 1}</p>
+          </button>
+        ))}
+        <button onClick={handleNextPage} disabled={currentPage === totalPages} className="border-[2px] xl:w-[100px] sm:w-[80px] rounded-[50px] xl:h-[50px] sm:h-[40px] border-[#746BD9]">
+          <p className="text-[#746BD9]">Next</p>
+        </button>
+      </div>
         </div>
         {/* Modal for Update */}
         {isModalOpen && (
