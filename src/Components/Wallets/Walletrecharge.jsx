@@ -15,6 +15,7 @@ const Walletrecharge = () => {
   });
 
   const [walletData, setWalletData] = useState([]);
+  const [voucherCounter, setVoucherCounter] = useState(1); // Initialize counter
   const navigate = useNavigate();
 
   // Fetch wallet data from API
@@ -38,14 +39,13 @@ const Walletrecharge = () => {
     }));
   };
 
+  
+
   const generateVoucherNumber = () => {
-    const characters = "0123456789";
-    let voucherNumber = "WR";
-    for (let i = 0; i < 3; i++) {
-      voucherNumber += characters.charAt(
-        Math.floor( characters.length)
-      );
-    }
+    // Generate a sequential 3-digit number prefixed with "WR"
+    const paddedNumber = voucherCounter.toString().padStart(3, "0");
+    const voucherNumber = `WR${paddedNumber}`;
+    setVoucherCounter((prev) => prev + 1); // Increment counter
     return voucherNumber;
   };
 
@@ -130,8 +130,9 @@ const Walletrecharge = () => {
               type="text"
               name="voucherNumber"
               placeholder="Voucher Number"
-              value={formData.voucherNumber}
-              onClick={handleVoucherClick}
+              value={formData.voucherNumber} // Bind to formData
+              onClick={handleVoucherClick} // Trigger generation on click
+              
               className="w-full h-9 p-2 border border-[#D3D1D1] outline-none rounded"
               readOnly
             />
